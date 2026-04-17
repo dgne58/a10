@@ -19,7 +19,7 @@
 # - Add flash-attn later only after the base training flow is stable.
 
 # Core training stack
-unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git
+# unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git
 transformers==4.43.0,<5
 datasets>=2.20.0
 trl>=0.9.4
