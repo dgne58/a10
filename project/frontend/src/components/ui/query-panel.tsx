@@ -192,7 +192,7 @@ export default function QueryPanel() {
         initial={{ opacity: 0, y: 32 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 flex w-full max-w-[560px] flex-col items-center gap-6 px-4 py-20"
+        className="relative z-10 flex w-full max-w-[620px] flex-col items-center gap-6 px-4 py-20"
       >
         {/* Heading */}
         <div className="text-center space-y-2">
@@ -303,13 +303,13 @@ export default function QueryPanel() {
               <span
                 key={b}
                 className={cn(
-                  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium border transition-all duration-300",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium border transition-all duration-300",
                   active
                     ? cn(color, bg, border)
-                    : "text-white/60 bg-white/15 border-white/25"
+                    : "text-white/70 bg-white/15 border-white/25"
                 )}
               >
-                <Icon className="h-3 w-3" />
+                <Icon className="h-3.5 w-3.5" />
                 {label}
               </span>
             );
@@ -319,7 +319,7 @@ export default function QueryPanel() {
         {/* Benchmark CTA */}
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-benchmark"))}
-          className="group flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
+          className="group flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
           style={{
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
@@ -329,7 +329,7 @@ export default function QueryPanel() {
           }}
         >
           See the benchmarks
-          <ArrowRight className="h-3 w-3 transition-transform duration-150 group-hover:translate-x-0.5" />
+          <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
         </button>
 
         {/* Error */}

@@ -28,7 +28,7 @@ from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
 
-BASE_MODEL = os.getenv("ROUTER_BASE_MODEL", "Qwen/Qwen2.5-1.5B-Instruct")
+BASE_MODEL = os.getenv("ROUTER_BASE_MODEL", "Qwen/Qwen2-1.5B-Instruct")
 MAX_SEQ_LEN = int(os.getenv("ROUTER_MAX_SEQ_LEN", "512"))
 LORA_RANK = int(os.getenv("ROUTER_LORA_RANK", "16"))
 LORA_ALPHA = int(os.getenv("ROUTER_LORA_ALPHA", "32"))
