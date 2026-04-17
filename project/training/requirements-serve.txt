@@ -5,17 +5,18 @@
 # - integrate.py
 #
 # Install flow:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
 #   pip install -r requirements-serve.txt
 #
 # Notes:
-# - This environment intentionally excludes Unsloth / TRL / PEFT.
-# - It only owns local inference and the HTTP classifier service.
-# - transformers stays here because serve.py currently uses AutoTokenizer.
+# - vllm dropped Python 3.9 support; we use plain transformers inference instead.
+# - This is sufficient for a small Qwen2-0.5B / 1.5B classifier.
+# - transformers pinned to match the version used during training.
 
-vllm>=0.5.0
 fastapi>=0.111.0
 uvicorn[standard]>=0.30.0
 pydantic>=2.7.0
-transformers>=4.43.0,<5
-sentencepiece
-protobuf
+transformers==4.41.2
+sentencepiece==0.2.0
+protobuf==5.27.3
+accelerate>=0.31.0

@@ -119,7 +119,11 @@ function Divider() {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function QueryPanel() {
+interface QueryPanelProps {
+  onOpenBenchmark: () => void;
+}
+
+export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-80px" });
@@ -303,13 +307,13 @@ export default function QueryPanel() {
               <span
                 key={b}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium border transition-all duration-300",
+                  "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border transition-all duration-300",
                   active
                     ? cn(color, bg, border)
                     : "text-white/70 bg-white/15 border-white/25"
                 )}
               >
-                <Icon className="h-3.5 w-3.5" />
+                <Icon className="h-4 w-4" />
                 {label}
               </span>
             );
@@ -318,7 +322,7 @@ export default function QueryPanel() {
 
         {/* Benchmark CTA */}
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent("open-benchmark"))}
+          onClick={onOpenBenchmark}
           className="group flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
           style={{
             backdropFilter: "blur(10px)",

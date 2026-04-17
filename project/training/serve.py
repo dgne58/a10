@@ -1,7 +1,7 @@
 """
 serve.py
 
-Minimal FastAPI server that loads the merged classifier model via vLLM
+Minimal FastAPI server that loads the merged classifier model via Transformers
 and exposes a single POST /classify endpoint.
 
 Prerequisites:
@@ -12,10 +12,6 @@ Prerequisites:
 Run:
     python serve.py                     # default port 8001
     python serve.py --port 8001
-
-Returns:
-    {"complexity": "simple"|"medium"|"hard"|"verify",
-     "domain":     "factual"|"math"|"code"|"project"}
 """
 
 import argparse
@@ -23,16 +19,16 @@ import json
 import re
 from pathlib import Path
 
+import torch
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from transformers import AutoTokenizer
-from vllm import LLM, SamplingParams
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-ROOT       = Path(__file__).parent
-MODEL_DIR  = ROOT / "models" / "router-classifier-merged"
+ROOT      = Path(__file__).parent
+MODEL_DIR = ROOT / "models" / "router-classifier-merged"
 
 SYSTEM_PROMPT = (
     "You are a query classifier for an LLM routing system. "
@@ -58,21 +54,20 @@ VALID_DOMAIN     = {"factual", "math", "code", "project"}
 
 FALLBACK = {"complexity": "hard", "domain": "factual"}
 
+MAX_NEW_TOKENS = 32
+
 # ── Model loading ─────────────────────────────────────────────────────────────
 
 print(f"Loading model from {MODEL_DIR} ...")
-llm = LLM(
-    model=str(MODEL_DIR),
-    dtype="bfloat16",
-    max_model_len=512,
-    gpu_memory_utilization=0.4,   # classifier is small; leave room for other workloads
-)
+device = "cuda" if torch.cuda.is_available() else "cpu"
 tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
-
-sampling = SamplingParams(
-    temperature=0.0,   # deterministic
-    max_tokens=32,     # JSON label fits in <20 tokens
+model = AutoModelForCausalLM.from_pretrained(
+    str(MODEL_DIR),
+    torch_dtype=torch.bfloat16,
+    device_map="auto",
 )
+model.eval()
+print(f"Model loaded on {device}.")
 
 # ── App ───────────────────────────────────────────────────────────────────────
 
@@ -90,16 +85,14 @@ class ClassifyResponse(BaseModel):
 
 def build_prompt(query: str) -> str:
     messages = [
-        {"role": "system",    "content": SYSTEM_PROMPT},
-        {"role": "user",      "content": f"{INSTRUCTION}\n\n{query}"},
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user",   "content": f"{INSTRUCTION}\n\n{query}"},
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 
 def parse_output(raw: str) -> dict:
-    """Extract JSON from model output; fall back to FALLBACK on parse error."""
     raw = raw.strip()
-    # strip markdown code fences if present
     raw = re.sub(r"^```[a-z]*\n?", "", raw)
     raw = re.sub(r"\n?```$", "", raw)
     try:
@@ -108,7 +101,6 @@ def parse_output(raw: str) -> dict:
         domain     = parsed.get("domain", "")
         if complexity not in VALID_COMPLEXITY or domain not in VALID_DOMAIN:
             return FALLBACK
-        # project domain only valid with verify complexity
         if domain == "project" and complexity != "verify":
             complexity = "verify"
         return {"complexity": complexity, "domain": domain}
@@ -122,10 +114,19 @@ def classify(req: ClassifyRequest):
         raise HTTPException(status_code=400, detail="query must not be empty")
 
     prompt = build_prompt(req.query)
-    outputs = llm.generate([prompt], sampling)
-    raw = outputs[0].outputs[0].text
-    result = parse_output(raw)
-    return ClassifyResponse(**result)
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+
+    with torch.no_grad():
+        output_ids = model.generate(
+            **inputs,
+            max_new_tokens=MAX_NEW_TOKENS,
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+
+    new_tokens = output_ids[0][inputs["input_ids"].shape[1]:]
+    raw = tokenizer.decode(new_tokens, skip_special_tokens=True)
+    return ClassifyResponse(**parse_output(raw))
 
 
 @app.get("/health")

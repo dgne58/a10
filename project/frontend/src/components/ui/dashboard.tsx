@@ -307,28 +307,17 @@ function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-export default function Dashboard() {
-  const [isOpen, setIsOpen] = useState<boolean>(() => {
-    try { return sessionStorage.getItem("benchmarkPanel") === "open"; }
-    catch { return false; }
-  });
+interface DashboardProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function Dashboard({ isOpen, onClose }: DashboardProps) {
+  const setIsOpen = (val: boolean) => { if (!val) onClose(); };
   const [summary, setSummary] = useState<EvalSummary | null>(null);
   const [allQuestions, setAllQuestions] = useState<EvalQuestion[]>([]);
   const [error, setError] = useState(false);
   const hasFetched = useRef(false);
-
-  // Persist panel state
-  useEffect(() => {
-    try { sessionStorage.setItem("benchmarkPanel", isOpen ? "open" : "closed"); }
-    catch { /* noop */ }
-  }, [isOpen]);
-
-  // Open via custom event from QueryPanel CTA
-  useEffect(() => {
-    const handler = () => setIsOpen(true);
-    window.addEventListener("open-benchmark", handler);
-    return () => window.removeEventListener("open-benchmark", handler);
-  }, []);
 
   // Fetch on first open
   useEffect(() => {

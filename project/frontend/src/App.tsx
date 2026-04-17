@@ -1,8 +1,11 @@
+import { useState } from "react";
 import IntroAnimation from "@/components/ui/scroll-morph-hero";
 import QueryPanel from "@/components/ui/query-panel";
 import Dashboard from "@/components/ui/dashboard";
 
 export default function App() {
+  const [benchmarkOpen, setBenchmarkOpen] = useState(false);
+
   return (
     <>
       <div className="w-full" style={{ background: "#FAF8F5" }}>
@@ -13,11 +16,11 @@ export default function App() {
           </div>
         </div>
 
-        <QueryPanel />
+        <QueryPanel onOpenBenchmark={() => setBenchmarkOpen(true)} />
       </div>
 
       {/* Benchmark panel — fixed overlay, outside page flow */}
-      <Dashboard />
+      <Dashboard isOpen={benchmarkOpen} onClose={() => setBenchmarkOpen(false)} />
     </>
   );
 }
