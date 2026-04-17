@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUp, Loader2, Zap, Brain, Database, Search, Cpu, Paperclip, Globe, FolderCode } from "lucide-react";
+import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu, Paperclip, Globe, FolderCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -315,6 +315,22 @@ export default function QueryPanel() {
             );
           })}
         </div>
+
+        {/* Benchmark CTA */}
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent("open-benchmark"))}
+          className="group flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
+          style={{
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.30)",
+            color: "rgba(255,255,255,0.80)",
+          }}
+        >
+          See the benchmarks
+          <ArrowRight className="h-3 w-3 transition-transform duration-150 group-hover:translate-x-0.5" />
+        </button>
 
         {/* Error */}
         <AnimatePresence>

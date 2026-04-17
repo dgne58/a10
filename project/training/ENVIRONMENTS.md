@@ -13,7 +13,7 @@ The router classifier has two distinct runtime surfaces:
 
    Stack:
    - PyTorch
-   - Unsloth
+   - plain PyTorch / Transformers training
    - TRL
    - PEFT
    - Transformers
@@ -32,7 +32,7 @@ The router classifier has two distinct runtime surfaces:
 
 These stacks should not share one pip environment by default because:
 
-- Unsloth and vLLM have different binary expectations.
+- the training stack and vLLM have different binary expectations.
 - Mixing them causes pip resolver backtracking.
 - FlashAttention is optional for this classifier and should not block first-pass setup.
 

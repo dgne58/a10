@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  X, ArrowRight,
+  X,
   Zap, Brain, Database, Search, Cpu,
   CheckCircle, XCircle, TrendingDown,
 } from "lucide-react";
@@ -323,6 +323,13 @@ export default function Dashboard() {
     catch { /* noop */ }
   }, [isOpen]);
 
+  // Open via custom event from QueryPanel CTA
+  useEffect(() => {
+    const handler = () => setIsOpen(true);
+    window.addEventListener("open-benchmark", handler);
+    return () => window.removeEventListener("open-benchmark", handler);
+  }, []);
+
   // Fetch on first open
   useEffect(() => {
     if (!isOpen || hasFetched.current) return;
@@ -352,58 +359,6 @@ export default function Dashboard() {
 
   return (
     <>
-      {/* ── Floating CTA pill ─────────────────────────────────────────────────
-          Wrapper owns fixed+translateY so Framer Motion x-transforms don't
-          fight the CSS transform needed for vertical centering. */}
-      <div
-        style={{
-          position: "fixed",
-          right: 16,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 40,
-          pointerEvents: isOpen ? "none" : "auto",
-        }}
-      >
-        <AnimatePresence>
-          {!isOpen && (
-            <motion.button
-              className="group"
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 24 }}
-              whileHover={{ x: -2 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => setIsOpen(true)}
-              aria-label="Open benchmark panel"
-              style={{
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                background: "rgba(255,245,235,0.85)",
-                border: "1px solid rgba(255,255,255,0.68)",
-                boxShadow: "0 4px 24px rgba(100,50,10,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
-                borderRadius: 999,
-                padding: "10px 18px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                color: TEXT_DARK,
-                letterSpacing: "0.01em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              See the benchmarks
-              <span className="inline-flex transition-transform duration-150 group-hover:translate-x-0.5">
-                <ArrowRight style={{ width: 14, height: 14 }} />
-              </span>
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
-
       {/* ── Backdrop + slide-out panel ─────────────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
