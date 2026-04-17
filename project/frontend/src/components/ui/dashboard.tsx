@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { Zap, Brain, Database, Search, Cpu, CheckCircle, XCircle, TrendingDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  X, ArrowRight,
+  Zap, Brain, Database, Search, Cpu,
+  CheckCircle, XCircle, TrendingDown,
+} from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -25,138 +28,165 @@ interface EvalQuestion {
   label: { complexity: string; domain: string };
 }
 
-// ── Branch config — light mode ────────────────────────────────────────────────
+// ── Design tokens ─────────────────────────────────────────────────────────────
 
-const BRANCH_META: Record<string, {
-  label: string; color: string; bg: string; border: string; bar: string; dot: string;
-  Icon: React.ElementType;
-}> = {
-  memory_answer:     { label: "Memory", color: "text-emerald-700", bg: "bg-emerald-50",  border: "border-emerald-200", bar: "bg-emerald-500", dot: "bg-emerald-500", Icon: Database },
-  cheap_model:       { label: "Fast",   color: "text-blue-700",    bg: "bg-blue-50",     border: "border-blue-200",   bar: "bg-blue-500",    dot: "bg-blue-500",    Icon: Zap },
-  mid_model:         { label: "Mid",    color: "text-amber-700",   bg: "bg-amber-50",    border: "border-amber-200",  bar: "bg-amber-500",   dot: "bg-amber-500",   Icon: Cpu },
-  strong_model:      { label: "Strong", color: "text-orange-700",  bg: "bg-orange-50",   border: "border-orange-200", bar: "bg-orange-500",  dot: "bg-orange-500",  Icon: Brain },
-  verification_tool: { label: "Verify", color: "text-violet-700",  bg: "bg-violet-50",   border: "border-violet-200", bar: "bg-violet-500",  dot: "bg-violet-500",  Icon: Search },
+const TEXT_DARK    = "#1A0E05";
+const TEXT_MED     = "#6B4C30";
+const TEXT_MUTED   = "#A89880";
+const FONT_DISPLAY = '"DM Serif Display", Georgia, serif';
+
+const INNER_CARD: React.CSSProperties = {
+  background: "rgba(255,255,255,0.65)",
+  border: "1px solid rgba(0,0,0,0.07)",
+  borderRadius: 14,
 };
 
-// ── Fade-in wrapper ───────────────────────────────────────────────────────────
+const LABEL_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  textTransform: "uppercase",
+  letterSpacing: "0.12em",
+  fontWeight: 500,
+  color: TEXT_MUTED,
+};
 
-function Reveal({ children, delay = 0, className }: {
-  children: React.ReactNode; delay?: number; className?: string;
-}) {
+// ── Branch meta (gradient palette) ───────────────────────────────────────────
+
+const BRANCH_META: Record<string, {
+  label: string; barColor: string; textColor: string; Icon: React.ElementType;
+}> = {
+  memory_answer:     { label: "Memory", barColor: "#EEAECA", textColor: "#8B3A62", Icon: Database },
+  cheap_model:       { label: "Fast",   barColor: "#94C9E9", textColor: "#1A6A99", Icon: Zap },
+  mid_model:         { label: "Mid",    barColor: "#CAB3D6", textColor: "#6B3FA0", Icon: Cpu },
+  strong_model:      { label: "Strong", barColor: "#F55702", textColor: "#B33D00", Icon: Brain },
+  verification_tool: { label: "Verify", barColor: "#F5AA64", textColor: "#9A5A00", Icon: Search },
+};
+
+function hexAlpha(hex: string, alpha: number): string {
+  return `${hex}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
+}
+
+// ── Branch chip ───────────────────────────────────────────────────────────────
+
+function BranchChip({ branch }: { branch: string }) {
+  const meta = BRANCH_META[branch] ?? { label: branch, barColor: "#A89880", textColor: TEXT_MED, Icon: Cpu };
+  const { label, barColor, textColor, Icon } = meta;
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+    <span
+      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap border"
+      style={{
+        background: hexAlpha(barColor, 0.14),
+        borderColor: hexAlpha(barColor, 0.38),
+        color: textColor,
+      }}
     >
-      {children}
-    </motion.div>
+      <Icon className="h-3 w-3 shrink-0" />
+      {label}
+    </span>
   );
 }
 
-// ── Stat strip ────────────────────────────────────────────────────────────────
+// ── Stat grid (2×2 for panel width) ──────────────────────────────────────────
 
-function StatStrip({ summary }: { summary: EvalSummary }) {
+function StatGrid({ summary }: { summary: EvalSummary }) {
   const stats = [
     {
       label: "Router accuracy",
       value: `${Math.round(summary.router_accuracy * 100)}%`,
-      sub: `${Math.round(summary.router_accuracy * summary.total)} / ${summary.total} correct`,
-      accent: false,
+      sub: `${Math.round(summary.router_accuracy * summary.total)} / ${summary.total}`,
+      green: false,
     },
     {
       label: "Naive GPT-4o",
       value: `${Math.round(summary.naive_accuracy * 100)}%`,
-      sub: `${Math.round(summary.naive_accuracy * summary.total)} / ${summary.total} correct`,
-      accent: false,
+      sub: `${Math.round(summary.naive_accuracy * summary.total)} / ${summary.total}`,
+      green: false,
     },
     {
       label: "Cost saved",
       value: `${summary.cost_reduction_pct}%`,
       sub: `$${summary.router_cost_usd.toFixed(4)} vs $${summary.naive_cost_usd.toFixed(4)}`,
-      accent: true,
+      green: true,
     },
     {
       label: "Savings factor",
       value: `${(summary.naive_cost_usd / summary.router_cost_usd).toFixed(1)}×`,
       sub: "cheaper than GPT-4o",
-      accent: true,
+      green: false,
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-      {stats.map((s, i) => (
-        <motion.div
-          key={s.label}
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.05 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-1 px-6 py-5"
-        >
-          <span className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">{s.label}</span>
-          <span className={cn("text-3xl font-bold tracking-tight font-mono", s.accent ? "text-emerald-600" : "text-gray-900")}>
-            {s.value}
-          </span>
-          <span className="text-xs text-gray-400 font-mono">{s.sub}</span>
-        </motion.div>
-      ))}
+    <div style={{ ...INNER_CARD, overflow: "hidden" }}>
+      <div className="grid grid-cols-2">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.05 + i * 0.07 }}
+            className="flex flex-col gap-1 p-4"
+            style={{
+              borderRight: i % 2 === 0 ? "1px solid rgba(0,0,0,0.07)" : undefined,
+              borderBottom: i < 2 ? "1px solid rgba(0,0,0,0.07)" : undefined,
+            }}
+          >
+            <span style={LABEL_STYLE}>{s.label}</span>
+            <span
+              className="text-2xl font-bold font-mono tracking-tight"
+              style={{ color: s.green ? "#059669" : TEXT_DARK }}
+            >
+              {s.value}
+            </span>
+            <span className="text-[11px] font-mono" style={{ color: TEXT_MUTED }}>{s.sub}</span>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
 
-// ── Branch routing card ───────────────────────────────────────────────────────
+// ── Branch routing chart ──────────────────────────────────────────────────────
 
-function BranchCard({ questions }: { questions: EvalQuestion[] }) {
+function BranchChart({ questions }: { questions: EvalQuestion[] }) {
   const dist: Record<string, number> = {};
   for (const q of questions) dist[q.router_branch] = (dist[q.router_branch] ?? 0) + 1;
   const total = questions.length;
   const sorted = Object.entries(dist).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 space-y-5">
-      <div>
-        <h3 className="text-sm font-semibold text-gray-900">Branch routing</h3>
-        <p className="text-xs text-gray-400 mt-0.5">How the router split 100 MMLU questions</p>
-      </div>
-      <div className="space-y-3">
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Branch routing</span>
+      <div style={{ ...INNER_CARD, padding: 16 }} className="space-y-3">
         {sorted.map(([branch, count], i) => {
-          const meta = BRANCH_META[branch];
+          const meta = BRANCH_META[branch] ?? { label: branch, barColor: "#A89880", textColor: TEXT_MED, Icon: Cpu };
           const pct = Math.round((count / total) * 100);
-          const Icon = meta?.Icon ?? Cpu;
           return (
             <motion.div
               key={branch}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.35, delay: i * 0.06 }}
-              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
+              className="space-y-1.5"
             >
-              <span className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium w-[4.5rem] shrink-0",
-                meta?.color ?? "text-gray-600",
-                meta?.bg ?? "bg-gray-50",
-                meta?.border ?? "border-gray-200"
-              )}>
-                <Icon className="h-3 w-3 shrink-0" />
-                {meta?.label ?? branch}
-              </span>
-              <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div className="flex items-center justify-between">
+                <BranchChip branch={branch} />
+                <span className="text-xs font-mono" style={{ color: TEXT_MUTED }}>
+                  {count}{" "}
+                  <span style={{ color: "#D4C4B4" }}>({pct}%)</span>
+                </span>
+              </div>
+              <div
+                className="h-1.5 rounded-full overflow-hidden"
+                style={{ background: "rgba(0,0,0,0.07)" }}
+              >
                 <motion.div
-                  className={cn("h-full rounded-full", meta?.bar ?? "bg-gray-400")}
+                  className="h-full rounded-full"
+                  style={{ background: meta.barColor }}
                   initial={{ width: 0 }}
-                  whileInView={{ width: `${pct}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.65, delay: 0.1 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  animate={{ width: `${pct}%` }}
+                  transition={{ duration: 0.65, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 />
               </div>
-              <span className="w-16 shrink-0 text-right text-xs font-mono text-gray-400">
-                {count} <span className="text-gray-300">({pct}%)</span>
-              </span>
             </motion.div>
           );
         })}
@@ -165,118 +195,111 @@ function BranchCard({ questions }: { questions: EvalQuestion[] }) {
   );
 }
 
-// ── Accuracy comparison card ──────────────────────────────────────────────────
+// ── Accuracy chart ────────────────────────────────────────────────────────────
 
-function AccuracyCard({ summary }: { summary: EvalSummary }) {
+function AccuracyChart({ summary }: { summary: EvalSummary }) {
   const routerPct = Math.round(summary.router_accuracy * 100);
-  const naivePct = Math.round(summary.naive_accuracy * 100);
-  const delta = naivePct - routerPct;
+  const naivePct  = Math.round(summary.naive_accuracy * 100);
+  const delta     = naivePct - routerPct;
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 space-y-5">
-      <div>
-        <h3 className="text-sm font-semibold text-gray-900">Accuracy trade-off</h3>
-        <p className="text-xs text-gray-400 mt-0.5">Router vs GPT-4o baseline</p>
-      </div>
-
-      <div className="space-y-4">
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Accuracy trade-off</span>
+      <div style={{ ...INNER_CARD, padding: 16 }} className="space-y-4">
         {[
-          { label: "Router", pct: routerPct, color: "bg-blue-500", textColor: "text-blue-700" },
-          { label: "GPT-4o", pct: naivePct, color: "bg-gray-800", textColor: "text-gray-700" },
+          { label: "Router", pct: routerPct, color: "#94C9E9" },
+          { label: "GPT-4o", pct: naivePct,  color: "#6B4C30" },
         ].map((row, i) => (
           <div key={row.label} className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-gray-600">{row.label}</span>
-              <span className={cn("font-mono font-semibold", row.textColor)}>{row.pct}%</span>
+              <span className="font-medium" style={{ color: TEXT_MED }}>{row.label}</span>
+              <span className="font-mono font-semibold" style={{ color: TEXT_DARK }}>{row.pct}%</span>
             </div>
-            <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+            <div
+              className="h-1.5 rounded-full overflow-hidden"
+              style={{ background: "rgba(0,0,0,0.07)" }}
+            >
               <motion.div
-                className={cn("h-full rounded-full", row.color)}
+                className="h-full rounded-full"
+                style={{ background: row.color }}
                 initial={{ width: 0 }}
-                whileInView={{ width: `${row.pct}%` }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.65, delay: 0.15 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                animate={{ width: `${row.pct}%` }}
+                transition={{ duration: 0.65, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Delta callout */}
-      <div className="rounded-xl bg-gray-50 border border-gray-100 px-4 py-3 flex items-start gap-2.5">
-        <TrendingDown className="h-3.5 w-3.5 text-gray-400 mt-0.5 shrink-0" />
-        <p className="text-xs text-gray-500 leading-relaxed">
-          <span className="font-semibold text-gray-700">{delta}-point accuracy gap</span> — the Pareto
-          trade-off. RouteLLM shows the same pattern: {summary.cost_reduction_pct}% cost reduction
-          at ~{delta}% accuracy cost.
-        </p>
+        <div
+          className="rounded-xl px-3 py-2.5 flex items-start gap-2"
+          style={{ background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.05)" }}
+        >
+          <TrendingDown className="h-3.5 w-3.5 mt-0.5 shrink-0" style={{ color: TEXT_MUTED }} />
+          <p className="text-xs leading-relaxed" style={{ color: TEXT_MED }}>
+            <span className="font-semibold" style={{ color: TEXT_DARK }}>{delta}-point accuracy gap</span>
+            {" "}— the Pareto trade-off. {summary.cost_reduction_pct}% cost reduction at ~{delta}%
+            accuracy cost.
+          </p>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Question table ────────────────────────────────────────────────────────────
+// ── Question table (compact for 456px content width) ─────────────────────────
 
 function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-      {/* Header */}
-      <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-4 bg-gray-50 border-b border-gray-100 px-5 py-3">
-        {["Question", "Branch", "Router", "Naive", "Cost"].map((h, i) => (
-          <span key={h} className={cn(
-            "text-[10px] font-semibold uppercase tracking-widest text-gray-400",
-            i === 2 || i === 3 ? "text-center" : "",
-            i === 4 ? "text-right" : ""
-          )}>{h}</span>
-        ))}
-      </div>
-
-      {/* Rows */}
-      <div className="divide-y divide-gray-50">
-        {questions.map((q, i) => {
-          const meta = BRANCH_META[q.router_branch];
-          const Icon = meta?.Icon ?? Cpu;
-          return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Sample questions</span>
+      <div style={{ ...INNER_CARD, overflow: "hidden" }}>
+        <div
+          className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 px-3 py-2"
+          style={{ borderBottom: "1px solid rgba(0,0,0,0.07)" }}
+        >
+          {(["Question", "Branch", "R", "N", "Cost"] as const).map((h, i) => (
+            <span
+              key={h}
+              style={{
+                ...LABEL_STYLE,
+                textAlign: (i === 2 || i === 3) ? "center" : i === 4 ? "right" : "left",
+              }}
+            >
+              {h}
+            </span>
+          ))}
+        </div>
+        <div>
+          {questions.map((q, i) => (
             <motion.div
               key={q.id}
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.025 }}
-              className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-4 items-center px-5 py-3 hover:bg-gray-50/70 transition-colors duration-150"
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.02 + i * 0.025 }}
+              className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 items-center px-3 py-2.5 transition-colors duration-150 cursor-default"
+              style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.045)" : undefined }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.02)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "")}
             >
-              <span className="text-sm text-gray-600 truncate pr-2">
-                {q.question.length > 65 ? q.question.slice(0, 65) + "…" : q.question}
+              <span className="text-xs truncate pr-1" style={{ color: TEXT_MED }}>
+                {q.question.length > 30 ? q.question.slice(0, 30) + "…" : q.question}
               </span>
-
-              <span className={cn(
-                "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap",
-                meta?.color ?? "text-gray-600",
-                meta?.bg ?? "bg-gray-50",
-                meta?.border ?? "border-gray-200"
-              )}>
-                <Icon className="h-3 w-3" />
-                {meta?.label ?? q.router_branch}
-              </span>
-
+              <BranchChip branch={q.router_branch} />
               <span className="flex justify-center">
                 {q.router_correct
-                  ? <CheckCircle className="h-4 w-4 text-emerald-500" />
-                  : <XCircle className="h-4 w-4 text-red-400" />}
+                  ? <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
+                  : <XCircle className="h-3.5 w-3.5 text-red-400" />}
               </span>
-
               <span className="flex justify-center">
                 {q.naive_correct
-                  ? <CheckCircle className="h-4 w-4 text-emerald-500" />
-                  : <XCircle className="h-4 w-4 text-red-400" />}
+                  ? <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
+                  : <XCircle className="h-3.5 w-3.5 text-red-400" />}
               </span>
-
-              <span className="text-right font-mono text-[11px] text-gray-400">
-                ${q.router_cost.toFixed(6)}
+              <span className="text-right font-mono text-[10px]" style={{ color: TEXT_MUTED }}>
+                ${q.router_cost.toFixed(5)}
               </span>
             </motion.div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -285,15 +308,25 @@ function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function Dashboard() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-
+  const [isOpen, setIsOpen] = useState<boolean>(() => {
+    try { return sessionStorage.getItem("benchmarkPanel") === "open"; }
+    catch { return false; }
+  });
   const [summary, setSummary] = useState<EvalSummary | null>(null);
   const [allQuestions, setAllQuestions] = useState<EvalQuestion[]>([]);
   const [error, setError] = useState(false);
+  const hasFetched = useRef(false);
 
+  // Persist panel state
   useEffect(() => {
-    if (!isInView) return;
+    try { sessionStorage.setItem("benchmarkPanel", isOpen ? "open" : "closed"); }
+    catch { /* noop */ }
+  }, [isOpen]);
+
+  // Fetch on first open
+  useEffect(() => {
+    if (!isOpen || hasFetched.current) return;
+    hasFetched.current = true;
     Promise.all([
       fetch("http://localhost:5000/api/eval/summary").then((r) => r.json()),
       fetch("http://localhost:5000/api/eval/questions").then((r) => r.json()),
@@ -303,100 +336,303 @@ export default function Dashboard() {
         setAllQuestions(Array.isArray(qs) ? qs : []);
       })
       .catch(() => setError(true));
-  }, [isInView]);
+  }, [isOpen]);
+
+  // Esc to close
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen]);
 
   const questions = allQuestions.slice(0, 10);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full"
-      style={{
-        background:
-          "linear-gradient(to bottom, rgba(202,179,214,0.6) 0%, rgba(238,174,202,0.25) 20%, rgba(245,170,100,0.06) 36%, #FAFAFA 52%)",
-      }}
-    >
-      <div className="relative mx-auto max-w-4xl px-5 pt-20 pb-28 space-y-10">
-
-        {/* Section heading — sits on gradient, no card */}
-        <Reveal>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-6 bg-white/60" />
-            <span className="text-[10px] uppercase tracking-widest text-white/70 font-medium drop-shadow-sm">
-              MMLU Benchmark · 100 questions · 5 subjects
-            </span>
-          </div>
-          <h2 className="text-4xl font-semibold tracking-tight text-gray-900 drop-shadow-sm">
-            Benchmark results
-          </h2>
-          <p className="mt-2 text-sm text-gray-600 max-w-lg leading-relaxed">
-            Router vs naive GPT-4o. Grounded in{" "}
-            <span className="text-gray-800 font-medium">RouteLLM (Berkeley, 2024)</span>{" "}
-            — up to 3.66× cost reduction at minimal accuracy cost.
-          </p>
-        </Reveal>
-
-        {/* Hero metric — floats on gradient */}
-        <Reveal delay={0.08}>
-          <div className="flex flex-col sm:flex-row sm:items-end gap-4 py-6 border-y border-white/40">
-            <div>
-              <span className="block text-[5.5rem] font-black leading-none tracking-tighter text-emerald-700 drop-shadow-sm">
-                94%
+    <>
+      {/* ── Floating CTA pill ─────────────────────────────────────────────────
+          Wrapper owns fixed+translateY so Framer Motion x-transforms don't
+          fight the CSS transform needed for vertical centering. */}
+      <div
+        style={{
+          position: "fixed",
+          right: 16,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 40,
+          pointerEvents: isOpen ? "none" : "auto",
+        }}
+      >
+        <AnimatePresence>
+          {!isOpen && (
+            <motion.button
+              className="group"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 24 }}
+              whileHover={{ x: -2 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => setIsOpen(true)}
+              aria-label="Open benchmark panel"
+              style={{
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                background: "rgba(255,245,235,0.85)",
+                border: "1px solid rgba(255,255,255,0.68)",
+                boxShadow: "0 4px 24px rgba(100,50,10,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
+                borderRadius: 999,
+                padding: "10px 18px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                fontSize: 13,
+                fontWeight: 600,
+                color: TEXT_DARK,
+                letterSpacing: "0.01em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              See the benchmarks
+              <span className="inline-flex transition-transform duration-150 group-hover:translate-x-0.5">
+                <ArrowRight style={{ width: 14, height: 14 }} />
               </span>
-              <span className="text-xl font-light text-gray-600 tracking-wide">
-                cheaper than GPT-4o
-              </span>
-            </div>
-            <div className="sm:ml-auto sm:text-right space-y-1 pb-1">
-              <p className="text-xs text-gray-500 font-mono">$0.0025 router cost</p>
-              <p className="text-xs text-gray-400 font-mono">vs $0.0417 GPT-4o</p>
-              <p className="text-xs text-gray-500">16.6× savings factor</p>
-            </div>
-          </div>
-        </Reveal>
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
 
-        {/* Backend offline */}
-        {error && (
-          <div className="rounded-xl border border-red-100 bg-red-50 px-5 py-4 text-sm text-red-500">
-            Backend offline — start Flask server to load live data.
-          </div>
-        )}
+      {/* ── Backdrop + slide-out panel ─────────────────────────────────────── */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop dim — click to close */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}
+              onClick={() => setIsOpen(false)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.10)",
+                zIndex: 45,
+              }}
+            />
 
-        {/* Stat strip */}
-        {summary && (
-          <Reveal delay={0.12}>
-            <StatStrip summary={summary} />
-          </Reveal>
-        )}
+            {/* Panel */}
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Benchmark results"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                position: "fixed",
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: "min(520px, 100vw)",
+                zIndex: 50,
+                background: "#FDF8F4",
+                borderRadius: "20px 0 0 20px",
+                boxShadow: "-8px 0 48px rgba(100,50,10,0.14), -1px 0 0 rgba(0,0,0,0.07)",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {/* Sticky header */}
+              <div
+                style={{
+                  position: "sticky",
+                  top: 0,
+                  background: "#FDF8F4",
+                  padding: "28px 32px 20px",
+                  borderBottom: "1px solid rgba(0,0,0,0.07)",
+                  flexShrink: 0,
+                  zIndex: 2,
+                }}
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close benchmark panel"
+                  style={{
+                    position: "absolute",
+                    top: 20,
+                    right: 20,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    border: "1px solid rgba(0,0,0,0.10)",
+                    background: "rgba(0,0,0,0.04)",
+                    cursor: "pointer",
+                    color: TEXT_MUTED,
+                    transition: "background 0.15s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.09)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.04)")}
+                >
+                  <X style={{ width: 14, height: 14 }} />
+                </button>
 
-        {/* Two-column: routing + accuracy */}
-        {summary && allQuestions.length > 0 && (
-          <div className="grid md:grid-cols-5 gap-4">
-            <Reveal delay={0.1} className="md:col-span-3">
-              <BranchCard questions={allQuestions} />
-            </Reveal>
-            <Reveal delay={0.18} className="md:col-span-2">
-              <AccuracyCard summary={summary} />
-            </Reveal>
-          </div>
-        )}
-
-        {/* Question table */}
-        {questions.length > 0 && (
-          <Reveal delay={0.15}>
-            <div className="space-y-3">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">Sample questions</h3>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  First 10 of 100 — router branch, correctness vs GPT-4o
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ height: 1, width: 16, background: "rgba(168,152,128,0.4)" }} />
+                  <span style={LABEL_STYLE}>MMLU Benchmark · 100 questions · 5 subjects</span>
+                </div>
+                <h2 style={{
+                  fontFamily: FONT_DISPLAY,
+                  fontSize: 28,
+                  lineHeight: 1.2,
+                  color: TEXT_DARK,
+                  marginBottom: 8,
+                }}>
+                  Benchmark results
+                </h2>
+                <p style={{ fontSize: 13, color: TEXT_MED, lineHeight: 1.6, maxWidth: 380 }}>
+                  Router vs naive GPT-4o. Grounded in{" "}
+                  <span style={{ fontWeight: 600, color: TEXT_DARK }}>RouteLLM (Berkeley, 2024)</span>
+                  {" "}— up to 3.66× cost reduction at minimal accuracy cost.
                 </p>
               </div>
-              <QuestionTable questions={questions} />
-            </div>
-          </Reveal>
-        )}
 
-      </div>
-    </section>
+              {/* Scrollable body */}
+              <div style={{ flex: 1, overflowY: "auto", padding: "24px 32px 48px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+                  {/* Hero stat */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.06 }}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "space-between",
+                      gap: 16,
+                      padding: "20px 0",
+                      borderTop: "1px solid rgba(0,0,0,0.07)",
+                      borderBottom: "1px solid rgba(0,0,0,0.07)",
+                    }}
+                  >
+                    <div>
+                      <span style={{
+                        display: "block",
+                        fontSize: 72,
+                        fontWeight: 900,
+                        lineHeight: 1,
+                        letterSpacing: "-0.04em",
+                        color: TEXT_DARK,
+                      }}>
+                        94%
+                      </span>
+                      <span style={{ fontSize: 16, fontWeight: 300, letterSpacing: "0.02em", color: TEXT_MED }}>
+                        cheaper than GPT-4o
+                      </span>
+                    </div>
+                    <div style={{ textAlign: "right", paddingBottom: 4 }}>
+                      <p style={{ fontSize: 11, fontFamily: "monospace", color: TEXT_MED, marginBottom: 2 }}>
+                        $0.0025 router cost
+                      </p>
+                      <p style={{ fontSize: 11, fontFamily: "monospace", color: TEXT_MUTED, marginBottom: 2 }}>
+                        vs $0.0417 GPT-4o
+                      </p>
+                      <p style={{ fontSize: 11, fontWeight: 600, color: TEXT_MED }}>
+                        16.6× savings factor
+                      </p>
+                    </div>
+                  </motion.div>
+
+                  {/* Error */}
+                  {error && (
+                    <div style={{
+                      borderRadius: 12,
+                      border: "1px solid rgba(254,202,202,0.8)",
+                      background: "rgba(254,242,242,0.8)",
+                      padding: "12px 16px",
+                      fontSize: 13,
+                      color: "#EF4444",
+                    }}>
+                      Backend offline — start Flask server to load live data.
+                    </div>
+                  )}
+
+                  {/* Loading */}
+                  {!summary && !error && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                      style={{
+                        textAlign: "center",
+                        padding: "48px 0",
+                        color: TEXT_MUTED,
+                        fontSize: 13,
+                      }}
+                    >
+                      Loading benchmark data…
+                    </motion.div>
+                  )}
+
+                  {/* Stat grid */}
+                  {summary && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.12 }}
+                    >
+                      <StatGrid summary={summary} />
+                    </motion.div>
+                  )}
+
+                  {/* Branch chart */}
+                  {allQuestions.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.18 }}
+                    >
+                      <BranchChart questions={allQuestions} />
+                    </motion.div>
+                  )}
+
+                  {/* Accuracy chart */}
+                  {summary && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.24 }}
+                    >
+                      <AccuracyChart summary={summary} />
+                    </motion.div>
+                  )}
+
+                  {/* Table */}
+                  {questions.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.3 }}
+                    >
+                      <QuestionTable questions={questions} />
+                    </motion.div>
+                  )}
+
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

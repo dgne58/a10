@@ -196,7 +196,10 @@ export default function QueryPanel() {
       >
         {/* Heading */}
         <div className="text-center space-y-2">
-          <h2 className="text-3xl font-semibold tracking-tight text-white drop-shadow-sm">
+          <h2
+            className="text-3xl tracking-tight text-white drop-shadow-sm"
+            style={{ fontFamily: '"DM Serif Display", Georgia, serif' }}
+          >
             Try the router
           </h2>
           <p className="text-sm text-white/60">
@@ -212,7 +215,7 @@ export default function QueryPanel() {
         {/* Input box — styled to match reference dark pill */}
         <div
           className={cn(
-            "w-full rounded-3xl border border-white/15 bg-[#1F2023] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.24)] transition-all duration-300",
+            "w-full rounded-3xl border border-white/20 bg-[rgba(25,12,4,0.82)] backdrop-blur-md p-2 shadow-[0_8px_40px_rgba(100,40,0,0.25)] transition-all duration-300",
             loading && "border-white/25"
           )}
         >
@@ -303,7 +306,7 @@ export default function QueryPanel() {
                   "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium border transition-all duration-300",
                   active
                     ? cn(color, bg, border)
-                    : "text-white/25 bg-white/5 border-white/10"
+                    : "text-white/60 bg-white/15 border-white/25"
                 )}
               >
                 <Icon className="h-3 w-3" />
