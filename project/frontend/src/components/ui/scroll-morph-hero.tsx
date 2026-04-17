@@ -211,24 +211,70 @@ export default function IntroAnimation() {
         {/* Arc content */}
         <motion.div
           style={{ opacity: contentOpacity, y: contentY }}
-          className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
+          className="absolute top-[14%] z-10 flex flex-col items-center text-center px-6 w-full max-w-5xl left-1/2 -translate-x-1/2"
         >
-          <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
+          <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-3">
             Right model. Every time.
           </h2>
-          <GooeyText
-            texts={[
-              "94% lower cost than GPT-4o.",
-              "Cheap when possible.",
-              "Strong when needed.",
-              "Task-aware. Cost-optimized.",
-              "13× cheaper. Same quality.",
-            ]}
-            morphTime={1.8}
-            cooldownTime={2.2}
-            className="mt-1"
-            textClassName="text-sm md:text-base text-gray-500 font-light tracking-wide whitespace-nowrap"
-          />
+          <div className="block w-full text-center" style={{ marginBottom: "3rem" }}>
+            <GooeyText
+              texts={[
+                "94% lower cost than GPT-4o.",
+                "Cheap when possible.",
+                "Strong when needed.",
+                "Task-aware. Cost-optimized.",
+                "13× cheaper. Same quality.",
+              ]}
+              morphTime={1.8}
+              cooldownTime={2.2}
+              className="mt-1"
+              textClassName="text-sm md:text-base text-gray-500 font-light tracking-wide whitespace-nowrap"
+            />
+          </div>
+
+          {/* Feature cards */}
+          <div className="grid grid-cols-3 gap-16 w-full pointer-events-none select-none">
+            {[
+              {
+                num: "01",
+                label: "What it is",
+                title: "Task-Aware LLM Router",
+                body: "Every query is classified by complexity and domain, then sent to the cheapest sufficient path — local memory, 8B, 70B, GPT-4o Mini, or local file verification. No single model handles everything.",
+              },
+              {
+                num: "02",
+                label: "Tech Stack",
+                title: "Built end-to-end in 8 hours",
+                body: "React + TypeScript · Flask + OpenRouter · Fine-tuned Qwen2-1.5B classifier (LoRA / PEFT) on an NVIDIA H200 MIG slice · Real-time streaming via SSE",
+              },
+              {
+                num: "03",
+                label: "Results",
+                title: "93.8% cost savings on MMLU-100",
+                body: "Router: $0.0026 vs GPT-4o: $0.0417 across 100 questions. 71% accuracy. Based on RouteLLM (UC Berkeley + Anyscale, 2024) — up to 3.66× savings on MT-Bench.",
+              },
+            ].map(({ num, label, title, body }) => (
+              <div
+                key={num}
+                className="rounded-2xl border border-gray-200/80 bg-white/90 backdrop-blur-sm text-left shadow-sm"
+                style={{ padding: "2rem" }}
+              >
+                <span className="block text-5xl font-black leading-none text-gray-100 select-none mb-5">
+                  {num}
+                </span>
+                <div className="h-px bg-gray-100 mb-5" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400 mb-2">
+                  {label}
+                </p>
+                <p className="text-sm font-semibold text-gray-900 mb-3 leading-snug">
+                  {title}
+                </p>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  {body}
+                </p>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Cards */}

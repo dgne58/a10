@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu, Paperclip, Globe, FolderCode } from "lucide-react";
+import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
@@ -137,12 +137,6 @@ function RouteTrace({
       </div>
     </motion.div>
   );
-}
-
-// ── Divider between action buttons ───────────────────────────────────────────
-
-function Divider() {
-  return <div className="h-5 w-px bg-white/15 mx-1" />;
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -309,53 +303,12 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
             onKeyDown={handleKeyDown}
             disabled={loading}
             placeholder="Type your message here..."
-            className="w-full resize-none bg-transparent px-3 py-2 text-sm text-gray-100 placeholder:text-gray-500 focus:outline-none disabled:opacity-50"
-            style={{ minHeight: 44, maxHeight: 200 }}
+            className="w-full resize-none bg-transparent text-sm text-gray-100 placeholder:text-gray-500 focus:outline-none disabled:opacity-50"
+            style={{ minHeight: 44, maxHeight: 200, padding: "10px 14px" }}
           />
 
           {/* Actions row */}
-          <div className="flex items-center justify-between gap-2 px-1 pt-1">
-            {/* Left: attachment + routing mode chips */}
-            <div className="flex items-center gap-1">
-              {/* Paperclip (decorative, disabled for our use) */}
-              <button
-                disabled
-                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 opacity-40 cursor-default"
-              >
-                <Paperclip className="h-4 w-4" />
-              </button>
-
-              <Divider />
-
-              {/* Globe = web search mode chip */}
-              <button
-                disabled
-                className="flex h-8 items-center justify-center gap-1 rounded-full px-2 text-gray-500 opacity-40 cursor-default"
-              >
-                <Globe className="h-4 w-4" />
-              </button>
-
-              <Divider />
-
-              {/* Brain = router intelligence */}
-              <button
-                disabled
-                className="flex h-8 items-center justify-center gap-1 rounded-full px-2 text-gray-500 opacity-40 cursor-default"
-              >
-                <Brain className="h-4 w-4" />
-              </button>
-
-              <Divider />
-
-              {/* FolderCode = verify branch */}
-              <button
-                disabled
-                className="flex h-8 items-center justify-center gap-1 rounded-full px-2 text-gray-500 opacity-40 cursor-default"
-              >
-                <FolderCode className="h-4 w-4" />
-              </button>
-            </div>
-
+          <div className="flex items-center justify-end gap-2 px-1 pt-1">
             {/* Right: send button */}
             <button
               onClick={handleSubmit}
@@ -384,11 +337,12 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
               <span
                 key={b}
                 className={cn(
-                  "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border transition-all duration-300",
+                  "inline-flex items-center gap-2 rounded-full text-sm font-medium border transition-all duration-300",
                   active
                     ? cn(color, bg, border)
                     : "text-white/70 bg-white/15 border-white/25"
                 )}
+                style={{ padding: "8px 16px" }}
               >
                 <Icon className="h-4 w-4" />
                 {label}
@@ -400,8 +354,9 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
         {/* Benchmark CTA */}
         <button
           onClick={onOpenBenchmark}
-          className="group flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
+          className="group flex items-center gap-2 rounded-full text-sm font-semibold transition-all duration-200 hover:bg-white/25 cursor-pointer"
           style={{
+            padding: "10px 22px",
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
             background: "rgba(255,255,255,0.15)",

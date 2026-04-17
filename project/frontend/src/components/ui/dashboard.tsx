@@ -72,8 +72,9 @@ function BranchChip({ branch }: { branch: string }) {
   const { label, barColor, textColor, Icon } = meta;
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap border"
+      className="inline-flex items-center gap-1 rounded-full text-[11px] font-medium whitespace-nowrap border"
       style={{
+        padding: "2px 8px",
         background: hexAlpha(barColor, 0.14),
         borderColor: hexAlpha(barColor, 0.38),
         color: textColor,
@@ -124,8 +125,9 @@ function StatGrid({ summary }: { summary: EvalSummary }) {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.05 + i * 0.07 }}
-            className="flex flex-col gap-1 p-4"
+            className="flex flex-col gap-1"
             style={{
+              padding: 16,
               borderRight: i % 2 === 0 ? "1px solid rgba(0,0,0,0.07)" : undefined,
               borderBottom: i < 2 ? "1px solid rgba(0,0,0,0.07)" : undefined,
             }}
@@ -253,8 +255,8 @@ function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
       <span style={LABEL_STYLE}>Sample questions</span>
       <div style={{ ...INNER_CARD, overflow: "hidden" }}>
         <div
-          className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 px-3 py-2"
-          style={{ borderBottom: "1px solid rgba(0,0,0,0.07)" }}
+          className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2"
+          style={{ borderBottom: "1px solid rgba(0,0,0,0.07)", padding: "8px 12px" }}
         >
           {(["Question", "Branch", "R", "N", "Cost"] as const).map((h, i) => (
             <span
@@ -275,8 +277,8 @@ function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.02 + i * 0.025 }}
-              className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 items-center px-3 py-2.5 transition-colors duration-150 cursor-default"
-              style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.045)" : undefined }}
+              className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 items-center transition-colors duration-150 cursor-default"
+              style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.045)" : undefined, padding: "10px 12px" }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.02)")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "")}
             >
