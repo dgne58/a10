@@ -1,14 +1,31 @@
-# Training pipeline — install on H200 VM
-# CUDA 12.x assumed; adjust torch index if needed
+# Training pipeline — H200 on CentOS
+#
+# Before installing, check your CUDA version:
+#   nvcc --version
+#
+# Then install system deps (CentOS):
+#   sudo dnf install -y gcc gcc-c++ ninja-build python3-devel
+#
+# Install PyTorch first (match your CUDA version):
+#   CUDA 12.1: pip install torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+#   CUDA 12.4: pip install torch==2.3.1 --index-url https://download.pytorch.org/whl/cu124
+#   CUDA 12.6: pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu126
+#
+# Then install the rest:
+#   pip install -r requirements.txt
 
 # Core training
-torch==2.3.1
-unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git
+# Unsloth: replace cu121 with your CUDA version (cu121 / cu124 / cu126)
+unsloth[cu124-torch230] @ git+https://github.com/unslothai/unsloth.git
 transformers>=4.43.0
 datasets>=2.20.0
 trl>=0.9.4
 accelerate>=0.31.0
 peft>=0.11.0
+
+# Flash Attention 2 — significant speedup on H200 (Hopper sm_90)
+# Compiled from source; requires gcc + ninja installed above
+flash-attn>=2.5.9 --no-build-isolation
 
 # Serving
 vllm>=0.5.0
