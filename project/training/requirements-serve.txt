@@ -1,0 +1,21 @@
+# Serving environment for the fine-tuned router classifier.
+#
+# Intended for:
+# - serve.py
+# - integrate.py
+#
+# Install flow:
+#   pip install -r requirements-serve.txt
+#
+# Notes:
+# - This environment intentionally excludes Unsloth / TRL / PEFT.
+# - It only owns local inference and the HTTP classifier service.
+# - transformers stays here because serve.py currently uses AutoTokenizer.
+
+vllm>=0.5.0
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+transformers>=4.43.0,<5
+sentencepiece
+protobuf

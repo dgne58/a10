@@ -5,7 +5,7 @@ Minimal FastAPI server that loads the merged classifier model via vLLM
 and exposes a single POST /classify endpoint.
 
 Prerequisites:
-    pip install -r requirements.txt
+    pip install -r requirements-serve.txt
     # Merge must already exist at models/router-classifier-merged/
     # (run train.py first)
 
@@ -26,6 +26,7 @@ from pathlib import Path
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -66,6 +67,7 @@ llm = LLM(
     max_model_len=512,
     gpu_memory_utilization=0.4,   # classifier is small; leave room for other workloads
 )
+tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
 
 sampling = SamplingParams(
     temperature=0.0,   # deterministic
@@ -87,13 +89,11 @@ class ClassifyResponse(BaseModel):
 
 
 def build_prompt(query: str) -> str:
-    from transformers import AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(str(MODEL_DIR))
     messages = [
         {"role": "system",    "content": SYSTEM_PROMPT},
         {"role": "user",      "content": f"{INSTRUCTION}\n\n{query}"},
     ]
-    return tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 
 def parse_output(raw: str) -> dict:

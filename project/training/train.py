@@ -5,7 +5,8 @@ Fine-tune Llama 3.1 8B Instruct for query classification (routing labels).
 Uses Unsloth for fast LoRA training on H200.
 
 Prerequisites:
-    pip install -r requirements.txt
+    pip install torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+    pip install -r requirements-train.txt
     huggingface-cli login     # accept Meta license at hf.co/meta-llama
 
 Run:

@@ -1,0 +1,32 @@
+# Training environment for the router classifier.
+#
+# Intended for:
+# - prepare_dataset.py
+# - train.py
+#
+# Install flow:
+#   1. Check driver / toolkit:
+#        nvidia-smi
+#        nvcc --version
+#   2. Install a PyTorch wheel first:
+#        pip install torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+#   3. Install this file:
+#        pip install -r requirements-train.txt
+#
+# Notes:
+# - This environment intentionally excludes vLLM.
+# - FlashAttention is not required for first-pass classifier training.
+# - Add flash-attn later only after the base training flow is stable.
+
+# Core training stack
+unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git
+transformers>=4.43.0,<5
+datasets>=2.20.0
+trl>=0.9.4
+accelerate>=0.31.0
+peft>=0.11.0
+
+# Utilities
+huggingface-hub>=0.23.0
+sentencepiece
+protobuf
