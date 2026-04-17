@@ -1,17 +1,17 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu, Paperclip, Globe, FolderCode } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-interface RouteResponse {
+interface RouteMeta {
   branch: string;
   rationale: string;
-  model: string | null;
+  model_used: string | null;
   cost_usd: number;
   naive_cost_usd: number;
-  answer: string;
   latency_ms?: number;
 }
 
@@ -76,9 +76,17 @@ function CostTicker({ routerTotal, naiveTotal }: { routerTotal: number; naiveTot
   );
 }
 
-function RouteTrace({ result }: { result: RouteResponse }) {
-  const modelLabel = result.model
-    ? result.model.split("/").pop() ?? result.model
+function RouteTrace({
+  meta,
+  answer,
+  isStreaming,
+}: {
+  meta: RouteMeta;
+  answer: string;
+  isStreaming: boolean;
+}) {
+  const modelLabel = meta.model_used
+    ? meta.model_used.split("/").pop() ?? meta.model_used
     : "local";
 
   return (
@@ -89,24 +97,44 @@ function RouteTrace({ result }: { result: RouteResponse }) {
       className="w-full rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-5 space-y-4"
     >
       <div className="flex flex-wrap items-center gap-2">
-        <BranchBadge branch={result.branch} />
+        <BranchBadge branch={meta.branch} />
         <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-white/50 font-mono">
           {modelLabel}
         </span>
         <span className="ml-auto text-xs text-white/30 font-mono">
-          ${result.cost_usd.toFixed(6)}
-          {result.latency_ms !== undefined && (
-            <span className="ml-2 text-white/20">{result.latency_ms}ms</span>
+          {isStreaming ? (
+            <span className="text-white/20 animate-pulse">streaming…</span>
+          ) : (
+            <>
+              ${meta.cost_usd.toFixed(6)}
+              {meta.latency_ms !== undefined && (
+                <span className="ml-2 text-white/20">{meta.latency_ms}ms</span>
+              )}
+            </>
           )}
         </span>
       </div>
       <p className="text-xs text-white/40 italic border-l-2 border-white/10 pl-3">
-        {result.rationale}
+        {meta.rationale}
       </p>
       <div className="h-px bg-white/10" />
-      <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap">
-        {result.answer}
-      </p>
+      <div className="prose prose-sm prose-invert max-w-none text-white/80
+        [&>h1]:text-base [&>h1]:font-semibold [&>h1]:mt-3 [&>h1]:mb-1
+        [&>h2]:text-base [&>h2]:font-semibold [&>h2]:mt-3 [&>h2]:mb-1
+        [&>h3]:text-sm  [&>h3]:font-semibold [&>h3]:mt-2 [&>h3]:mb-0.5
+        [&>p]:leading-relaxed [&>p]:mb-2
+        [&>ul]:pl-4 [&>ul]:mb-2 [&>ul>li]:list-disc [&>ul>li]:mb-0.5
+        [&>ol]:pl-4 [&>ol]:mb-2 [&>ol>li]:list-decimal [&>ol>li]:mb-0.5
+        [&>pre]:bg-white/5 [&>pre]:rounded-lg [&>pre]:p-3 [&>pre]:overflow-x-auto [&>pre]:mb-2
+        [&_code]:bg-white/10 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_code]:font-mono
+        [&>pre_code]:bg-transparent [&>pre_code]:p-0
+        [&>blockquote]:border-l-2 [&>blockquote]:border-white/20 [&>blockquote]:pl-3 [&>blockquote]:text-white/50
+        [&>hr]:border-white/10">
+        <ReactMarkdown>{answer}</ReactMarkdown>
+        {isStreaming && (
+          <span className="inline-block w-0.5 h-4 bg-white/60 ml-0.5 animate-[blink_0.9s_step-end_infinite] align-middle" />
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -130,7 +158,9 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<RouteResponse | null>(null);
+  const [meta, setMeta] = useState<RouteMeta | null>(null);
+  const [answer, setAnswer] = useState("");
+  const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [routerTotal, setRouterTotal] = useState(0);
   const [naiveTotal, setNaiveTotal] = useState(0);
@@ -148,24 +178,71 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
     const q = query.trim();
     if (!q || loading) return;
     setLoading(true);
+    setIsStreaming(false);
     setError(null);
-    setResult(null);
+    setMeta(null);
+    setAnswer("");
+    setQuery("");
+
     try {
-      const res = await fetch("http://localhost:5000/api/route", {
+      const res = await fetch("http://localhost:5000/api/route/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: q }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data: RouteResponse = await res.json();
-      setResult(data);
-      setRouterTotal((t) => t + (data.cost_usd ?? 0));
-      setNaiveTotal((t) => t + (data.naive_cost_usd ?? 0));
-      setQuery("");
+      if (!res.body) throw new Error("No response body");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      setLoading(false);
+      setIsStreaming(true);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (event.type === "meta") {
+              setMeta({
+                branch: event.branch,
+                rationale: event.rationale,
+                model_used: event.model_used,
+                cost_usd: 0,
+                naive_cost_usd: 0,
+              });
+            } else if (event.type === "token") {
+              setAnswer((a) => a + event.text);
+            } else if (event.type === "done") {
+              setMeta((m) => m ? {
+                ...m,
+                cost_usd: event.cost_usd,
+                naive_cost_usd: event.naive_cost_usd,
+                latency_ms: event.latency_ms,
+              } : m);
+              setRouterTotal((t) => t + (event.cost_usd ?? 0));
+              setNaiveTotal((t) => t + (event.naive_cost_usd ?? 0));
+              setIsStreaming(false);
+            }
+          } catch {
+            // malformed SSE line — skip
+          }
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Request failed");
     } finally {
       setLoading(false);
+      setIsStreaming(false);
     }
   }
 
@@ -302,7 +379,7 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
         <div className="flex flex-wrap justify-center gap-2">
           {(Object.keys(BRANCH_META) as Array<keyof typeof BRANCH_META>).map((b) => {
             const { label, color, bg, border, Icon } = BRANCH_META[b];
-            const active = result?.branch === b;
+            const active = meta?.branch === b;
             return (
               <span
                 key={b}
@@ -352,7 +429,9 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
 
         {/* Route trace */}
         <AnimatePresence>
-          {result && <RouteTrace result={result} />}
+          {meta && (
+            <RouteTrace meta={meta} answer={answer} isStreaming={isStreaming} />
+          )}
         </AnimatePresence>
       </motion.div>
     </section>

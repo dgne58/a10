@@ -3,35 +3,37 @@
     "id": "high_school_geography_0",
     "question": "The main factor preventing subsistence economies from advancing economically is the lack of",
     "correct_answer": "B",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
-    "router_correct": false,
-    "router_cost": 3.4e-06,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 9.6e-06,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.00016,
+    "naive_cost": 0.0001625,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_1",
     "question": "The tendency for a population to continue to grow long after replacement fertility has been achieved is called",
     "correct_answer": "D",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 3.6e-06,
+    "router_cost": 1.02e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.00018,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_2",
@@ -44,45 +46,48 @@
     "router_cost": 3.05e-06,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.000145,
+    "naive_cost": 0.0001525,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_3",
     "question": "Which zone contains low-income slums, ethnic ghettos, and general deterioration in Burgess's concentric zone model of urban form?",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
     "router_correct": false,
-    "router_cost": 3.6e-06,
+    "router_cost": 1.05e-05,
     "naive_answer": "B",
     "naive_correct": false,
-    "naive_cost": 0.000175,
+    "naive_cost": 0.0001725,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_4",
     "question": "Which of the following statements is TRUE concerning women in the labor force?",
     "correct_answer": "D",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "A",
-    "router_correct": false,
-    "router_cost": 5e-06,
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.465e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.00024,
     "label": {
-      "complexity": "simple",
+      "complexity": "medium",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_5",
@@ -90,67 +95,71 @@
     "correct_answer": "D",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
-    "router_correct": true,
+    "router_answer": "C",
+    "router_correct": false,
     "router_cost": 3.1e-06,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.000145,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_6",
     "question": "Which of the following countries does NOT have a well-known example of a relict boundary?",
     "correct_answer": "D",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 3.2e-06,
+    "router_cost": 9e-06,
     "naive_answer": "B",
     "naive_correct": false,
     "naive_cost": 0.0001575,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_7",
     "question": "Which form of migration below are farm workers from another country most likely to be practicing during the year?",
     "correct_answer": "C",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.45e-06,
+    "router_cost": 2.415e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0001625,
+    "naive_cost": 0.000165,
     "label": {
-      "complexity": "simple",
-      "domain": "factual"
-    }
+      "complexity": "medium",
+      "domain": "code"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_8",
     "question": "Which of the following is a centrifugal force in a country?",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.4e-06,
+    "router_cost": 9.6e-06,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0001575,
+    "naive_cost": 0.00016,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_9",
@@ -160,14 +169,15 @@
     "router_model": "meta-llama/llama-3.1-8b-instruct",
     "router_answer": "A",
     "router_correct": false,
-    "router_cost": 3.65e-06,
+    "router_cost": 3.7e-06,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.0001725,
+    "naive_cost": 0.000175,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_10",
@@ -175,16 +185,17 @@
     "correct_answer": "A",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
-    "router_correct": false,
+    "router_answer": "A",
+    "router_correct": true,
     "router_cost": 4.15e-06,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0001975,
+    "naive_cost": 0.0002,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_11",
@@ -197,28 +208,30 @@
     "router_cost": 2.905e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.0001975,
+    "naive_cost": 0.000205,
     "label": {
       "complexity": "medium",
-      "domain": "factual"
-    }
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_12",
     "question": "What is the most rapidly growing religion in the United States today?",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3e-06,
+    "router_cost": 8.4e-06,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0001375,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_13",
@@ -231,11 +244,12 @@
     "router_cost": 3.15e-06,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.0001475,
+    "naive_cost": 0.00015,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_14",
@@ -243,16 +257,17 @@
     "correct_answer": "B",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "C",
-    "router_correct": false,
-    "router_cost": 3.95e-06,
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 3.9e-06,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.000185,
+    "naive_cost": 0.0001875,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_15",
@@ -269,7 +284,8 @@
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_16",
@@ -279,31 +295,33 @@
     "router_model": "meta-llama/llama-3.1-8b-instruct",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 4.8e-06,
+    "router_cost": 4.75e-06,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.000225,
+    "naive_cost": 0.0002275,
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_17",
     "question": "Which type of transportation system created the star-shaped city pattern?",
     "correct_answer": "D",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "B",
-    "router_correct": false,
-    "router_cost": 4e-06,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 1.11e-05,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.000185,
+    "naive_cost": 0.0001875,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_18",
@@ -313,31 +331,33 @@
     "router_model": "meta-llama/llama-3.1-8b-instruct",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 3.25e-06,
+    "router_cost": 3.3e-06,
     "naive_answer": "B",
     "naive_correct": true,
     "naive_cost": 0.00015,
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_geography_19",
     "question": "The latitude and longitude coordinates of a place are an example of",
     "correct_answer": "C",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.3e-06,
+    "router_cost": 9.45e-06,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0001575,
+    "naive_cost": 0.000155,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_0",
@@ -350,11 +370,12 @@
     "router_cost": 4.095e-05,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.0006825,
+    "naive_cost": 0.000685,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_1",
@@ -364,14 +385,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 4.965e-05,
+    "router_cost": 4.98e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0008275,
+    "naive_cost": 0.00083,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_2",
@@ -381,14 +403,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 2.46e-05,
+    "router_cost": 2.475e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.000415,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_3",
@@ -398,14 +421,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 5.955e-05,
+    "router_cost": 5.97e-05,
     "naive_answer": "B",
     "naive_correct": true,
     "naive_cost": 0.0009925,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_4",
@@ -422,7 +446,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_5",
@@ -435,11 +460,12 @@
     "router_cost": 4.065e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.00068,
+    "naive_cost": 0.0006775,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_6",
@@ -449,14 +475,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": false,
-    "router_cost": 4.41e-05,
+    "router_cost": 4.425e-05,
     "naive_answer": "A",
     "naive_correct": false,
-    "naive_cost": 0.000735,
+    "naive_cost": 0.0007375,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_7",
@@ -466,14 +493,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 4.395e-05,
+    "router_cost": 4.38e-05,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.00073,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_8",
@@ -483,14 +511,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 4.455e-05,
+    "router_cost": 4.47e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.000745,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_9",
@@ -503,11 +532,12 @@
     "router_cost": 5.505e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.000915,
+    "naive_cost": 0.0009175,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_10",
@@ -520,11 +550,12 @@
     "router_cost": 4.38e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.00073,
+    "naive_cost": 0.0007275,
     "label": {
       "complexity": "hard",
-      "domain": "code"
-    }
+      "domain": "factual"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_11",
@@ -534,14 +565,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 4.125e-05,
+    "router_cost": 4.11e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.000685,
+    "naive_cost": 0.0006875,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_12",
@@ -551,14 +583,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.765e-05,
+    "router_cost": 3.78e-05,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0006275,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_13",
@@ -575,7 +608,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_14",
@@ -585,14 +619,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 5.235e-05,
+    "router_cost": 5.22e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.00087,
+    "naive_cost": 0.0008725,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_15",
@@ -602,14 +637,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 4.845e-05,
+    "router_cost": 4.86e-05,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.0008075,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_16",
@@ -619,14 +655,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 5.475e-05,
+    "router_cost": 5.46e-05,
     "naive_answer": "B",
     "naive_correct": true,
     "naive_cost": 0.00091,
     "label": {
       "complexity": "hard",
-      "domain": "code"
-    }
+      "domain": "factual"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_17",
@@ -636,14 +673,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 5.61e-05,
+    "router_cost": 5.625e-05,
     "naive_answer": "B",
     "naive_correct": true,
     "naive_cost": 0.000935,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_18",
@@ -660,7 +698,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "high_school_us_history_19",
@@ -673,45 +712,48 @@
     "router_cost": 4.215e-05,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.00071,
+    "naive_cost": 0.0007,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_0",
     "question": "Based on the characteristic population curves that result from plotting population growth of a species, the most effective means of controlling the mosquito population is to",
     "correct_answer": "C",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
-    "router_answer": "C",
-    "router_correct": true,
-    "router_cost": 3.99e-05,
-    "naive_answer": "C",
-    "naive_correct": true,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 1.665e-05,
+    "naive_answer": "D",
+    "naive_correct": false,
     "naive_cost": 0.000275,
     "label": {
-      "complexity": "medium",
-      "domain": "factual"
-    }
+      "complexity": "hard",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_1",
     "question": "A frameshift mutation is created when",
     "correct_answer": "C",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 5.75e-06,
+    "router_cost": 1.605e-05,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.0002675,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_2",
@@ -726,60 +768,64 @@
     "naive_correct": true,
     "naive_cost": 0.0001825,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_3",
     "question": "Which of the following is a second messenger that stimulates release of calcium ions into the cytoplasm?",
     "correct_answer": "B",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 3.85e-06,
+    "router_cost": 1.11e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.000185,
+    "naive_cost": 0.0001825,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_4",
     "question": "Synthesis of an RNA/DNA hybrid from a single-stranded RNA template requires",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 4.15e-06,
+    "router_cost": 1.2e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0001975,
+    "naive_cost": 0.0002,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_5",
     "question": "In order for the Hardy-Weinberg law to operate with respect to a population of organisms, each of the following conditions must be met EXCEPT:",
     "correct_answer": "A",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.255e-05,
+    "router_cost": 1.305e-05,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0002175,
     "label": {
-      "complexity": "medium",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_6",
@@ -789,14 +835,15 @@
     "router_model": "meta-llama/llama-3.1-8b-instruct",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 3.55e-06,
+    "router_cost": 3.85e-06,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.0001675,
+    "naive_cost": 0.0001825,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_7",
@@ -804,33 +851,35 @@
     "correct_answer": "B",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
+    "router_answer": "C",
     "router_correct": false,
     "router_cost": 3.3e-06,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.000155,
+    "naive_cost": 0.0001625,
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_8",
     "question": "The concept of punctuated equilibrium refers to",
     "correct_answer": "D",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 4.4e-06,
+    "router_cost": 1.26e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.00021,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_9",
@@ -838,33 +887,35 @@
     "correct_answer": "C",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "A",
-    "router_correct": false,
-    "router_cost": 5e-06,
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 4.95e-06,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.0002375,
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_10",
     "question": "Cleavage symmetry arising from early cell divisions that occur at an oblique angle to the polar axis is known as",
     "correct_answer": "C",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "A",
-    "router_correct": false,
-    "router_cost": 3.95e-06,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 1.05e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0001825,
+    "naive_cost": 0.0001775,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_11",
@@ -877,11 +928,12 @@
     "router_cost": 2.625e-05,
     "naive_answer": "B",
     "naive_correct": false,
-    "naive_cost": 0.000175,
+    "naive_cost": 0.00018,
     "label": {
       "complexity": "medium",
-      "domain": "factual"
-    }
+      "domain": "code"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_12",
@@ -891,14 +943,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 2.31e-05,
+    "router_cost": 2.295e-05,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.0003825,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_13",
@@ -906,8 +959,8 @@
     "correct_answer": "D",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
-    "router_correct": true,
+    "router_answer": "A",
+    "router_correct": false,
     "router_cost": 3.7e-06,
     "naive_answer": "D",
     "naive_correct": true,
@@ -915,7 +968,8 @@
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_14",
@@ -925,31 +979,33 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.015e-05,
+    "router_cost": 3.03e-05,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0005025,
     "label": {
       "complexity": "hard",
-      "domain": "code"
-    }
+      "domain": "factual"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_15",
     "question": "A rise in intracellular free calcium in the sea urchin oocyte causes the release of proteolytic enzymes which act to prevent polyspermy. The events just described entail the",
     "correct_answer": "C",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.15e-05,
+    "router_cost": 1.275e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.000215,
+    "naive_cost": 0.0002125,
     "label": {
-      "complexity": "medium",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_16",
@@ -966,7 +1022,8 @@
     "label": {
       "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_17",
@@ -974,8 +1031,8 @@
     "correct_answer": "C",
     "router_branch": "strong_model",
     "router_model": "openai/gpt-4o-mini",
-    "router_answer": "C",
-    "router_correct": true,
+    "router_answer": "A",
+    "router_correct": false,
     "router_cost": 1.695e-05,
     "naive_answer": "C",
     "naive_correct": true,
@@ -983,41 +1040,44 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_18",
     "question": "Which of the following most accurately describes a retrotransposon?",
     "correct_answer": "C",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.605e-05,
+    "router_cost": 5.15e-06,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.0002475,
     "label": {
-      "complexity": "medium",
+      "complexity": "simple",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_biology_19",
     "question": "The soils of which of the following biomes has the highest rate of leaching and cycling of nutrients?",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.55e-06,
+    "router_cost": 1.005e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0001675,
+    "naive_cost": 0.00017,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_0",
@@ -1027,31 +1087,33 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 1.845e-05,
-    "naive_answer": "C",
-    "naive_correct": false,
-    "naive_cost": 0.0003075,
+    "router_cost": 1.83e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000305,
     "label": {
       "complexity": "hard",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_1",
     "question": "Up to isomorphism, how many additive abelian groups G of order 16 have the property that x + x + x + x = 0 for each x in G ?",
     "correct_answer": "D",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
-    "router_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
     "router_correct": false,
-    "router_cost": 3.01e-05,
+    "router_cost": 1.23e-05,
     "naive_answer": "D",
     "naive_correct": true,
     "naive_cost": 0.0002075,
     "label": {
-      "complexity": "medium",
-      "domain": "factual"
-    }
+      "complexity": "hard",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_2",
@@ -1062,13 +1124,14 @@
     "router_answer": "A",
     "router_correct": false,
     "router_cost": 1.965e-05,
-    "naive_answer": "A",
+    "naive_answer": "B",
     "naive_correct": false,
     "naive_cost": 0.0003275,
     "label": {
       "complexity": "hard",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_3",
@@ -1076,50 +1139,53 @@
     "correct_answer": "A",
     "router_branch": "cheap_model",
     "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "D",
-    "router_correct": false,
-    "router_cost": 3.4e-06,
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.35e-06,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0001575,
     "label": {
       "complexity": "simple",
-      "domain": "factual"
-    }
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_4",
     "question": "There are 25 suitcases, 5 of which are damaged. Three suitcases are selected at random. What is the probability that exactly 2 are damaged?",
     "correct_answer": "C",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
-    "router_answer": "C",
-    "router_correct": true,
-    "router_cost": 1.305e-05,
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 3.15e-05,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.000215,
     "label": {
-      "complexity": "hard",
+      "complexity": "medium",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_5",
     "question": "Let (Z_{10} , +, x) be the ring of integers modulo 10, and let S be the subset of Z_{10} represented by {0, 2, 4, 6, 8}. Which of the following statements is FALSE?",
     "correct_answer": "D",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
-    "router_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
     "router_correct": false,
-    "router_cost": 5.425e-05,
+    "router_cost": 2.265e-05,
     "naive_answer": "C",
     "naive_correct": false,
     "naive_cost": 0.00038,
     "label": {
-      "complexity": "medium",
-      "domain": "factual"
-    }
+      "complexity": "hard",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_6",
@@ -1130,30 +1196,32 @@
     "router_answer": "B",
     "router_correct": false,
     "router_cost": 2.19e-05,
-    "naive_answer": "C",
-    "naive_correct": true,
-    "naive_cost": 0.0003625,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.000365,
     "label": {
       "complexity": "hard",
-      "domain": "factual"
-    }
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_7",
     "question": "Consider a segment of length 10. Points A and B are chosen randomly such that A and B divide the segment into three smaller segments. What is the probability that the three smaller segments could form the sides of a triangle?",
     "correct_answer": "C",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 1.365e-05,
+    "router_cost": 3.29e-05,
     "naive_answer": "D",
     "naive_correct": false,
     "naive_cost": 0.000225,
     "label": {
-      "complexity": "hard",
+      "complexity": "medium",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_8",
@@ -1166,11 +1234,12 @@
     "router_cost": 1.59e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0002625,
+    "naive_cost": 0.000265,
     "label": {
       "complexity": "hard",
-      "domain": "factual"
-    }
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_9",
@@ -1185,26 +1254,28 @@
     "naive_correct": false,
     "naive_cost": 0.000175,
     "label": {
-      "complexity": "simple",
+      "complexity": "verify",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_10",
     "question": "A discrete graph is complete if there is an edge connecting any pair of vertices. How many edges does a complete graph with 10 vertices have?",
     "correct_answer": "D",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "D",
     "router_correct": true,
-    "router_cost": 2.73e-05,
+    "router_cost": 1.11e-05,
     "naive_answer": "D",
     "naive_correct": true,
-    "naive_cost": 0.000185,
+    "naive_cost": 0.0001875,
     "label": {
-      "complexity": "medium",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_11",
@@ -1217,113 +1288,120 @@
     "router_cost": 1.965e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.0003375,
+    "naive_cost": 0.000325,
     "label": {
       "complexity": "hard",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_12",
     "question": "Let V and W be 4-dimensional subspaces of a 7-dimensional vector space X. Which of the following CANNOT be the dimension of the subspace V intersect W?",
     "correct_answer": "A",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
-    "router_answer": "C",
-    "router_correct": false,
-    "router_cost": 2.975e-05,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 1.215e-05,
     "naive_answer": "D",
     "naive_correct": false,
-    "naive_cost": 0.000205,
+    "naive_cost": 0.0002025,
     "label": {
-      "complexity": "medium",
-      "domain": "factual"
-    }
+      "complexity": "hard",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_13",
     "question": "A large class is to be divided into teams and each student must be a member of exactly one team. However, each student dislikes three of their classmates. Dislike between students need not be mutual. If the teams do not need to be equally sized, how many must be created so that no student is the teammate of someone they dislike?",
     "correct_answer": "B",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
-    "router_answer": "C",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
     "router_correct": false,
-    "router_cost": 1.695e-05,
-    "naive_answer": "C",
-    "naive_correct": false,
+    "router_cost": 4.095e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
     "naive_cost": 0.000285,
     "label": {
-      "complexity": "hard",
-      "domain": "code"
-    }
+      "complexity": "medium",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_14",
     "question": "Sofia and Tess will each randomly choose one of the 10 integers from 1 to 10. What is the probability that neither integer chosen will be the square of the other?",
     "correct_answer": "D",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
-    "router_answer": "B",
-    "router_correct": false,
-    "router_cost": 1.35e-05,
-    "naive_answer": "D",
-    "naive_correct": true,
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.325e-05,
+    "naive_answer": "B",
+    "naive_correct": false,
     "naive_cost": 0.0002375,
     "label": {
-      "complexity": "hard",
+      "complexity": "medium",
       "domain": "math"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_15",
     "question": "Let K be a nonempty subset of R^n, where n > 1. Which of the following statements must be true?\nI. If K is compact, then every continuous real-valued function defined on K is bounded.\nII. If every continuous real-valued function defined on K is bounded, then K is compact.\nIII. If K is compact, then K is connected.",
     "correct_answer": "D",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
-    "router_answer": "D",
-    "router_correct": true,
-    "router_cost": 1.89e-05,
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 4.515e-05,
     "naive_answer": "A",
     "naive_correct": false,
-    "naive_cost": 0.000315,
+    "naive_cost": 0.0003175,
     "label": {
-      "complexity": "hard",
-      "domain": "code"
-    }
+      "complexity": "medium",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_16",
     "question": "Suppose V is a real vector space of finite dimension n. Call the set of matrices from V into itself M(V). Let T be in M(V). Consider the two subspaces U = {X \u2208 M(V) : TX = XT} and W = {TX \u2212 XT : X \u2208 M(V)}. Which of the following must be TRUE?\nI. If V has a basis containing only eigenvectors of T then U = M(V).\nII. dim (U) + dim (W) = n^2\nIII. dim (U) < n",
     "correct_answer": "B",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_answer": "D",
     "router_correct": false,
-    "router_cost": 2.49e-05,
+    "router_cost": 5.845e-05,
     "naive_answer": "B",
     "naive_correct": true,
-    "naive_cost": 0.000415,
+    "naive_cost": 0.0004125,
     "label": {
-      "complexity": "hard",
-      "domain": "factual"
-    }
+      "complexity": "medium",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_17",
     "question": "Let F be a constant unit force that is parallel to the vector (-1, 0, 1) in xyz-space. What is the work done by F on a particle that moves along the path given by (t, t^2, t^3) between time t=0 and time t=1?",
     "correct_answer": "C",
-    "router_branch": "strong_model",
-    "router_model": "openai/gpt-4o-mini",
-    "router_answer": "A",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "B",
     "router_correct": false,
-    "router_cost": 1.77e-05,
-    "naive_answer": "C",
-    "naive_correct": true,
-    "naive_cost": 0.0002975,
+    "router_cost": 4.27e-05,
+    "naive_answer": "B",
+    "naive_correct": false,
+    "naive_cost": 0.000295,
     "label": {
-      "complexity": "hard",
-      "domain": "factual"
-    }
+      "complexity": "medium",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_18",
@@ -1340,24 +1418,26 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "college_mathematics_19",
     "question": "Let x_1 = 1 and x_(n+1) = sqrt(3+2x_n) for all positive integers n. If it is assumed that {x_n} converges, then lim x_n =",
     "correct_answer": "A",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
-    "router_answer": "A",
-    "router_correct": true,
-    "router_cost": 3.325e-05,
-    "naive_answer": "C",
-    "naive_correct": false,
-    "naive_cost": 0.0002275,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 1.365e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.00023,
     "label": {
-      "complexity": "medium",
-      "domain": "factual"
-    }
+      "complexity": "hard",
+      "domain": "math"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_0",
@@ -1367,14 +1447,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 4.56e-05,
+    "router_cost": 4.545e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0007575,
+    "naive_cost": 0.00076,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_1",
@@ -1384,14 +1465,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": false,
-    "router_cost": 4.98e-05,
+    "router_cost": 4.965e-05,
     "naive_answer": "A",
     "naive_correct": false,
-    "naive_cost": 0.00083,
+    "naive_cost": 0.0008275,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_2",
@@ -1401,14 +1483,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": false,
-    "router_cost": 3.315e-05,
-    "naive_answer": "D",
-    "naive_correct": true,
+    "router_cost": 3.33e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
     "naive_cost": 0.0005525,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_3",
@@ -1421,11 +1504,12 @@
     "router_cost": 3.045e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0005075,
+    "naive_cost": 0.000505,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_4",
@@ -1436,30 +1520,32 @@
     "router_answer": "A",
     "router_correct": false,
     "router_cost": 3.255e-05,
-    "naive_answer": "A",
-    "naive_correct": false,
+    "naive_answer": "B",
+    "naive_correct": true,
     "naive_cost": 0.0005425,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_5",
     "question": "The accused made a confession to the police, but his defense attorney needs to find out if the confession is admissible. In which of the following situations would a confession be inadmissible?",
     "correct_answer": "A",
-    "router_branch": "mid_model",
-    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 3.99e-05,
+    "router_cost": 1.68e-05,
     "naive_answer": "A",
     "naive_correct": true,
     "naive_cost": 0.0002775,
     "label": {
-      "complexity": "medium",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_6",
@@ -1469,31 +1555,33 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": true,
-    "router_cost": 4.98e-05,
+    "router_cost": 4.965e-05,
     "naive_answer": "C",
     "naive_correct": false,
-    "naive_cost": 0.00083,
+    "naive_cost": 0.0008275,
     "label": {
       "complexity": "hard",
-      "domain": "code"
-    }
+      "domain": "factual"
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_7",
     "question": "Which of the following is not a warrantless search exception?",
     "correct_answer": "A",
-    "router_branch": "cheap_model",
-    "router_model": "meta-llama/llama-3.1-8b-instruct",
-    "router_answer": "B",
-    "router_correct": false,
-    "router_cost": 3.3e-06,
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 9.3e-06,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.000155,
+    "naive_cost": 0.0001525,
     "label": {
-      "complexity": "simple",
+      "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_8",
@@ -1503,14 +1591,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.135e-05,
+    "router_cost": 3.12e-05,
     "naive_answer": "C",
     "naive_correct": true,
     "naive_cost": 0.00052,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_9",
@@ -1520,14 +1609,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "B",
     "router_correct": false,
-    "router_cost": 4.38e-05,
-    "naive_answer": "A",
-    "naive_correct": false,
-    "naive_cost": 0.00073,
+    "router_cost": 4.395e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0007325,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_10",
@@ -1537,14 +1627,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "A",
     "router_correct": true,
-    "router_cost": 5.28e-05,
+    "router_cost": 5.295e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.00088,
+    "naive_cost": 0.0008825,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_11",
@@ -1552,8 +1643,8 @@
     "correct_answer": "A",
     "router_branch": "strong_model",
     "router_model": "openai/gpt-4o-mini",
-    "router_answer": "A",
-    "router_correct": true,
+    "router_answer": "C",
+    "router_correct": false,
     "router_cost": 7.665e-05,
     "naive_answer": "A",
     "naive_correct": true,
@@ -1561,7 +1652,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_12",
@@ -1572,13 +1664,14 @@
     "router_answer": "A",
     "router_correct": true,
     "router_cost": 5.07e-05,
-    "naive_answer": "C",
-    "naive_correct": false,
+    "naive_answer": "A",
+    "naive_correct": true,
     "naive_cost": 0.0008425,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_13",
@@ -1595,7 +1688,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_14",
@@ -1612,7 +1706,8 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_15",
@@ -1622,14 +1717,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 2.79e-05,
+    "router_cost": 2.805e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.000465,
+    "naive_cost": 0.0004675,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_16",
@@ -1642,11 +1738,12 @@
     "router_cost": 3.27e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0005425,
+    "naive_cost": 0.000545,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_17",
@@ -1659,11 +1756,12 @@
     "router_cost": 4.635e-05,
     "naive_answer": "A",
     "naive_correct": true,
-    "naive_cost": 0.0007725,
+    "naive_cost": 0.00077,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_18",
@@ -1673,14 +1771,15 @@
     "router_model": "openai/gpt-4o-mini",
     "router_answer": "C",
     "router_correct": true,
-    "router_cost": 3.315e-05,
+    "router_cost": 3.3e-05,
     "naive_answer": "C",
     "naive_correct": true,
-    "naive_cost": 0.0005525,
+    "naive_cost": 0.00055,
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   },
   {
     "id": "professional_law_19",
@@ -1697,6 +1796,7 @@
     "label": {
       "complexity": "hard",
       "domain": "factual"
-    }
+    },
+    "classifier": "trained (https://a9ad-69-5-185-3.ngrok-free.app)"
   }
 ]

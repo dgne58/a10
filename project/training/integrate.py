@@ -18,12 +18,14 @@ The server must be running:
 """
 
 import json
+import os
 import urllib.error
 import urllib.request
 from typing import Literal
 
-CLASSIFIER_URL = "http://localhost:8001/classify"
-TIMEOUT_S = 2.0
+_base = os.getenv("CLASSIFIER_URL", "http://localhost:8001").rstrip("/")
+CLASSIFIER_URL = f"{_base}/classify"
+TIMEOUT_S = 10.0
 
 Complexity = Literal["simple", "medium", "hard", "verify"]
 Domain = Literal["factual", "math", "code", "project"]
