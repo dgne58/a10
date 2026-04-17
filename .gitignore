@@ -18,6 +18,7 @@ WIKI.md
 
 # ── Codex / Codex plugin ─────────────────────────────────────────────────────
 .codex/
+.codex-plugin/
 codex-local/
 CODEX.md
 # Obsidian Codex plugin data
