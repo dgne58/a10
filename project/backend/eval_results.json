@@ -1,0 +1,1702 @@
+[
+  {
+    "id": "high_school_geography_0",
+    "question": "The main factor preventing subsistence economies from advancing economically is the lack of",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 3.4e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00016,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_1",
+    "question": "The tendency for a population to continue to grow long after replacement fertility has been achieved is called",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.6e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.00018,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_2",
+    "question": "The tendency for migration to decrease with distance is called",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.05e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000145,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_3",
+    "question": "Which zone contains low-income slums, ethnic ghettos, and general deterioration in Burgess's concentric zone model of urban form?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 3.6e-06,
+    "naive_answer": "B",
+    "naive_correct": false,
+    "naive_cost": 0.000175,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_4",
+    "question": "Which of the following statements is TRUE concerning women in the labor force?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 5e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.00024,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_5",
+    "question": "All the following factors can be considered pull factors of migration EXCEPT",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.1e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000145,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_6",
+    "question": "Which of the following countries does NOT have a well-known example of a relict boundary?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.2e-06,
+    "naive_answer": "B",
+    "naive_correct": false,
+    "naive_cost": 0.0001575,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_7",
+    "question": "Which form of migration below are farm workers from another country most likely to be practicing during the year?",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.45e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0001625,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_8",
+    "question": "Which of the following is a centrifugal force in a country?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.4e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001575,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_9",
+    "question": "Early settlements and high population density along coastlines and rivers are best attributed to which of the following?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 3.65e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0001725,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_10",
+    "question": "The first stage of the demographic transition exhibits",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 4.15e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001975,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_11",
+    "question": "What is the population statistic that tells us the level of fertility at which a population will have just enough births to replace parents and compensate for early deaths?",
+    "correct_answer": "B",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 2.905e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.0001975,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_12",
+    "question": "What is the most rapidly growing religion in the United States today?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001375,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_13",
+    "question": "The outlying area serviced by a urban center is referred to as a",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.15e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0001475,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_14",
+    "question": "The best definition of an urban area is",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 3.95e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000185,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_15",
+    "question": "Which of the following religions developed first?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 2.7e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0001275,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_16",
+    "question": "Which one of the following is NOT a characteristic of world cities?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 4.8e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000225,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_17",
+    "question": "Which type of transportation system created the star-shaped city pattern?",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 4e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000185,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_18",
+    "question": "In which urban US setting below would you expect to find planned communities?",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 3.25e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00015,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_geography_19",
+    "question": "The latitude and longitude coordinates of a place are an example of",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.3e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0001575,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_0",
+    "question": "This question refers to the following information.\n\"The far-reaching, the boundless future will be the era of American greatness. In its magnificent domain of space and time, the nation of many nations is destined to manifest to mankind the excellence of divine principles; to establish on earth the noblest temple ever dedicated to the worship of the Most High\u2014the Sacred and the True. Its floor shall be a hemisphere\u2014its roof the firmament of the star-studded heavens, and its congregation a Union of many Republics, comprising hundreds of happy millions, calling, owning no man master, but governed by God's natural and moral law of equality, the law of brotherhood\u2014of 'peace and good will amongst men.'\"\nJohn L. O'Sullivan, \"The Great Nation of Futurity,\" 1839\nBy what means did the United States take possession of the Oregon Territory?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 4.095e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0006825,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_1",
+    "question": "This question refers to the following information.\nBECAUSE no People can be truly happy, though under the greatest Enjoyment of Civil Liberties, if abridged of the Freedom of their Consciences, as to their Religious Profession and Worship: And Almighty God being the only Lord of Conscience, Father of Lights and Spirits; and the Author as well as Object of all divine Knowledge, Faith and Worship, who only doth enlighten the Minds, and persuade and convince the Understanding of People, I do hereby grant and declare, That no Person or Persons, inhabiting in this Province or Territories, who shall confess and acknowledge One almighty God, the Creator, Upholder and Ruler of the World; and profess him or themselves obliged to live quietly under the Civil Government, shall be in any Case molested or prejudiced, in his or their Person or Estate, because of his or their conscientious Persuasion or Practice, nor be compelled to frequent or maintain any religious Worship, Place or Ministry, contrary to his or their Mind.\u2026\n\u2014William Penn, Charter of Privileges Granted by William Penn,\nesq. to the Inhabitants of Pennsylvania and Territories, October 28, 1701\nBecause of Penn's Charter of Privileges, Pennsylvania became",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 4.965e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0008275,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_2",
+    "question": "This question refers to the following information.\n\"We conclude that, in the field of public education, the doctrine of \"separate but equal\" has no place. Separate educational facilities are inherently unequal. Therefore, we hold that the plaintiffs and others similarly situated for whom the actions have been brought are, by reason of the segregation complained of, deprived of the equal protection of the laws guaranteed by the Fourteenth Amendment.\"\nBrown v. Board of Education, 1954\nDesegregation of schools was, in part, a response to unfulfilled promises from which of the following initiatives?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 2.46e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000415,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_3",
+    "question": "This question refers to the following information.\n\"Since the foundations of the American commonwealth were laid in colonial times over 300 years ago, vigorous complaint and more or less bitter persecution have been aimed at newcomers to our shores. Also the congressional reports of about 1840 are full of abuse of English, Scotch, Welsh immigrants as paupers, criminals, and so forth. Old citizens in Detroit of Irish and German descent have told me of the fierce tirades and propaganda directed against the great waves of Irish and Germans who came over from 1840 on for a few decades to escape civil, racial, and religious persecution in their native lands. The \"Know-Nothings,\" lineal ancestors of the Ku-Klux Klan, bitterly denounced the Irish and Germans as mongrels, scum, foreigners, and a menace to our institutions, much as other great branches of the Caucasian race of glorious history and antecedents are berated to-day\u2026.But to-day it is the Italians, Spanish, Poles, Jews, Greeks, Russians, Balkanians, and so forth, who are the racial lepers\u2026..In this bill we find racial discrimination at its worst\u2014a deliberate attempt to go back 84 years in our census taken every 10 years so that a blow may be aimed at peoples of eastern and southern Europe, particularly at our recent allies in the Great War\u2014Poland and Italy.\"\nRobert H. Clancy, Congressional Record, 68th Congress, 1st Session, 1924\nWhich one of the following legislative acts is most closely an example of nativism?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.955e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.0009925,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_4",
+    "question": "This question refers to the following information.\nNow, we have organized a society, and we call it \"Share Our Wealth Society,\" a society with the motto \"Every Man a King.\"\u2026\nWe propose to limit the wealth of big men in the country. There is an average of $15,000 in wealth to every family in America. That is right here today.\nWe do not propose to divide it up equally. We do not propose a division of wealth, but we do propose to limit poverty that we will allow to be inflicted on any man's family. We will not say we are going to try to guarantee any equality \u2026 but we do say that one third of the average is low enough for any one family to hold, that there should be a guarantee of a family wealth of around $5,000; enough for a home, an automobile, a radio, and the ordinary conveniences, and the opportunity to educate their children.\u2026\nWe will have to limit fortunes. Our present plan is that we will allow no man to own more than $50,000,000. We think that with that limit we will be able to carry out the balance of the program.\n\u2014Senator Huey P. Long of Louisiana, Radio Address, February 23, 1934\nPresident Franklin D. Roosevelt responded to political challenges like that of Senator Long by doing which of the following?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.475e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00091,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_5",
+    "question": "This question refers to the following information.\n\"I was once a tool of oppression\nAnd as green as a sucker could be\nAnd monopolies banded together\nTo beat a poor hayseed like me.\n\"The railroads and old party bosses\nTogether did sweetly agree;\nAnd they thought there would be little trouble\nIn working a hayseed like me. . . .\"\n\u2014\"The Hayseed\"\nThe song, and the movement that it was connected to, highlight which of the following developments in the broader society in the late 1800s?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 4.065e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.00068,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_6",
+    "question": "This question refers to the following information.\n\"Some men look at constitutions with sanctimonious reverence, and deem them like the ark of the covenant, too sacred to be touched. They ascribe to the men of the preceding age a wisdom more than human, and suppose what they did to be beyond amendment\u2026.But I know also, that laws and institutions must go hand in hand with the progress of the human mind. As that becomes more developed, more enlightened, as new discoveries are made, new truths disclosed, and manners and opinions change with the change of circumstances, institutions must advance also, and keep pace with the times.\"\nThomas Jefferson, 1816\nWhich of the following statements is most accurate regarding the existence of political parties in the early United States?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 4.41e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.000735,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_7",
+    "question": "This question refers to the following information.\nAt a meeting of working girls held at Hull House during a strike in a large shoe factory, the discussions made it clear that the strikers who had been most easily frightened, and therefore the first to capitulate, were naturally those girls who were paying board and were afraid of being put out if they fell too far behind. After a recital of a case of peculiar hardship one of them exclaimed: \"Wouldn't it be fine if we had a boarding club of our own, and then we could stand behind each other in a time like this?\" After that events moved quickly. We \u2026 discussed all the difficulties and fascinations of such an undertaking, and on the first of May, 1891, two comfortable apartments near Hull House were rented and furnished. The Settlement was responsible for the furniture and paid the first month's rent, but beyond that the members managed the club themselves.\u2026 At the end of the third year the club occupied all of the six apartments which the original building contained, and numbered fifty members.\n\u2014Jane Addams, Twenty Years at Hull House, 1912\nA settlement house worker was most likely to be motivated by which of the following?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 4.395e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.00073,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_8",
+    "question": "This question refers to the following information.\n\"Lincoln was strongly anti-slavery, but he was not an abolitionist or a Radical Republican and never claimed to be one. He made a sharp distinction between his frequently reiterated personal wish that 'all men everywhere could be free' and his official duties as a legislator, congressman, and president in a legal and constitutional system that recognized the South's right to property in slaves. Even after issuing the Emancipation Proclamation he continued to declare his preference for gradual abolition. While his racial views changed during the Civil War, he never became a principled egalitarian in the manner of abolitionists such as Frederick Douglass or Wendell Phillips or Radical Republicans like Charles Sumner.\"\n\u2014Eric Foner, The Fiery Trial, 2010\nHow did President Lincoln's issuance of the Emancipation Proclamation alter the course of the Civil War?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 4.455e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000745,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_9",
+    "question": "This question refers to the following information.\n\"Yesterday, December 7, 1941\u2014a date which will live in infamy\u2014the United States of America was suddenly and deliberately attacked by naval and air forces of the Empire of Japan. The United States was at peace with that nation and, at the solicitation of Japan, was still in conversation with its Government and its Emperor looking toward the maintenance of peace in the Pacific. Indeed, one hour after Japanese air squadrons had commenced bombing\u2026the Japanese Ambassador to the United States and his colleague delivered to the Secretary of State a formal reply to a recent American message. While this reply stated that it seemed useless to continue the existing diplomatic negotiations, it contained no threat or hint of war or armed attack\u2026.The attack yesterday\u2026has caused severe damage to American naval and military forces. Very many American lives have been lost. In addition American ships have been reported torpedoed on the high seas\u2026.As Commander-in-Chief of the Army and Navy, I have directed that all measures be taken for our defense.\"\nPresident Franklin D. Roosevelt, radio address, December 8, 1941\nWhich of the following statements best characterizes the economic consequences of the declaration of war described above?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.505e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000915,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_10",
+    "question": "This question refers to the following information.\n\"If any person or persons shall, from and after the passing of this act, by force and violence, take and carry away, or cause to be taken or carried away, and shall, by fraud or false pretense, seduce, or cause to be seduced, or shall attempt so to take, carry away or seduce, any negro or mulatto, from any part or parts of this commonwealth, to any other place or places whatsoever, out of this commonwealth, with a design and intention of selling and disposing of, or of causing to be sold, or of keeping and detaining, or of causing to be kept and detained, such negro or mulatto, as a slave or servant for life, or for any term whatsoever, every such person or persons, his or their aiders or abettors, shall on conviction thereof, in any court of this commonwealth having competent jurisdiction, be deemed guilty of a felony.\"\n\u2014Excerpt from Pennsylvania law, 1826\nThe passage and implementation of this Pennsylvania law reflected an ongoing conflict between",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 4.38e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00073,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "high_school_us_history_11",
+    "question": "This question refers to the following information.\n\"The far-reaching, the boundless future will be the era of American greatness. In its magnificent domain of space and time, the nation of many nations is destined to manifest to mankind the excellence of divine principles; to establish on earth the noblest temple ever dedicated to the worship of the Most High\u2014the Sacred and the True. Its floor shall be a hemisphere\u2014its roof the firmament of the star-studded heavens, and its congregation a Union of many Republics, comprising hundreds of happy millions, calling, owning no man master, but governed by God's natural and moral law of equality, the law of brotherhood\u2014of 'peace and good will amongst men.'\"\nJohn L. O'Sullivan, \"The Great Nation of Futurity,\" 1839\nWhich of the following best states the principle described above?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 4.125e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000685,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_12",
+    "question": "This question refers to the following information.\n\"I observe the great and wonderful mistake, both our own and our fathers, as to the civil powers of this world, acting in spiritual matters. I have read\u2026the last will and testament of the Lord Jesus over many times, and yet I cannot find by one tittle of that testament that if He had been pleased to have accepted of a temporal crown and government that ever He would have put forth the least finger of temporal or civil power in the matters of His spiritual affairs and Kingdom. Hence must it lamentably be against the testimony of Christ Jesus for the civil state to impose upon the souls of the people a religion, a worship, a ministry, oaths (in religious and civil affairs), tithes, times, days, marryings, and buryings in holy ground\u2026\"\nRoger Williams, The Hireling Ministry None of Christ's, 1652\nThe Puritans believed that the freedom to practice religion should be extended to",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.765e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0006275,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_13",
+    "question": "This question refers to the following information.\nTonight, the daughter of a woman whose highest goal was a future for her children talks to our nation's oldest political party about a future for us all. Tonight, the daughter of working Americans tells all Americans that the future is within our reach, if we're willing to reach for it. Tonight, the daughter of an immigrant from Italy has been chosen to run for (vice) president in the new land my father came to love.\u2026 Americans want to live by the same set of rules. But under this administration, the rules are rigged against too many of our people. It isn't right that every year the share of taxes paid by individual citizens is going up, while the share paid by large corporations is getting smaller and smaller.\u2026 It isn't right that young couples question whether to bring children into a world of 50,000 nuclear warheads. That isn't the vision for which Americans have struggled for more than two centuries.\u2026 Tonight, we reclaim our dream. We're going to make the rules of American life work for all Americans again.\u2026 The issue is not what America can do for women, but what women can do for America.\n\u2014Geraldine Ferraro, Vice Presidential Nomination Acceptance Address, July 19, 1984\nThe ideas expressed in the passage above would most directly have strengthened which of the following during the 1980s?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 5.13e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.000855,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_14",
+    "question": "This question refers to the following information.\nI appeal to any white man to say, if ever he entered Logan's cabin hungry, and he gave him not meat: if ever he came cold and naked, and he clothed him not? During the course of the last long and bloody war, Logan remained idle in his cabin, an advocate for peace. Such was my love for the whites, that my countrymen pointed as they passed, and said, \"Logan is the friend of the white man.\" I had even thought to have lived with you but for the injuries of one man. Colonel Cresap, the last spring, in cold blood and unprovoked; murdered all the relations of Logan, not even sparing my women and children. There runs not a drop of my blood in the veins of any living creature. This called on me for revenge. I have sought it: I have killed many; I have fully glutted my vengeance. For my country, I rejoice at the beams of peace. But do not harbor a thought that mine is the joy of fear. Logan never felt fear. He will not turn on his heel to save his life. Who is there to mourn for Logan? Not one.\n\u2014Address attributed to Logan, an Indian leader, 1774\nWhich of the following best expresses the perspective of Logan in the passage above?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.235e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00087,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_15",
+    "question": "This question refers to the following information.\nThose who came before us made certain that this country rode the first waves of the industrial revolutions, the first waves of modern invention, and the first wave of nuclear power, and this generation does not intend to flounder in the backwash of the coming age of space. We mean to be a part of it\u2014we mean to lead it. For the eyes of the world now look into space, to the moon, and the planets beyond, and we have vowed that we shall not see it governed by a hostile flag of conquest, but by a banner of freedom and peace. We have vowed that we shall not see space filled with weapons of mass destruction, but with instruments of knowledge and understanding.\u2026 We choose to go to the moon. We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard, because that goal will serve to organize and measure the best of our energies and skills, because that challenge is one that we are willing to accept, one we are unwilling to postpone, and one which we intend to win, and the others, too.\n\u2014John F. Kennedy, September 12, 1962\nKennedy's speech most directly led to which of the following?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 4.845e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0008075,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_16",
+    "question": "This question refers to the following information.\nThe 1980s have been born in turmoil, strife, and change. This is a time of challenge to our interests and our values and it's a time that tests our wisdom and skills.\nAt this time in Iran, 50 Americans are still held captive, innocent victims of terrorism and anarchy. Also at this moment, massive Soviet troops are attempting to subjugate the fiercely independent and deeply religious people of Afghanistan. These two acts\u2014one of international terrorism and one of military aggression\u2014present a serious challenge to the United States of America and indeed to all the nations of the world. Together we will meet these threats to peace.\u2026\nThree basic developments have helped to shape our challenges: the steady growth and increased projection of Soviet military power beyond its own borders; the overwhelming dependence of the Western democracies on oil supplies from the Middle East; and the press of social and religious and economic and political change in the many nations of the developing world, exemplified by the revolution in Iran.\nEach of these factors is important in its own right. Each interacts with the others. All must be faced together, squarely and courageously. We will face these challenges, and we will meet them with the best that is in us. And we will not fail.\n\u2014Jimmy Carter, State of the Union Address, January 23, 1980\nThe situation Carter described led most directly to which of the following?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.475e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00091,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "high_school_us_history_17",
+    "question": "This question refers to the following information.\n\"Americans have more freedom and broader rights than citizens of almost any other nation in the world, including the capacity to criticize their government and their elected officials. But we do not have the right to resort to violence\u2014or the threat of violence\u2014when we don't get our way. Our founders constructed a system of government so that reason could prevail over fear. Oklahoma City proved once again that without the law there is no freedom. Criticism is part of the lifeblood of democracy. No one is right all the time. But we should remember that there is a big difference between criticizing a policy or a politician and demonizing the government that guarantees our freedoms and the public servants who enforce our laws.\"\nPresident Bill Clinton, \"What We Learned in Oklahoma City,\" 2010\n(Written on the 15th anniversary of the Oklahoma City bombing)\n\"If there would not have been a Waco, I would have put down roots somewhere and not been so unsettled with the fact that my government\u2026was a threat to me. Everything that Waco implies was on the forefront of my thoughts. That sort of guided my path for the next couple of years.\"\nTimothy McVeigh, Oklahoma City bomber, 2001\nU.S. Representative John Conyers, Events Surrounding the Branch Davidian Cult Standoff in Waco, Texas: Hearing Before the Committee on the Judiciary, House of Representatives, 1993\nIn the third excerpt, Representative Conyers refers to \"Wounded Knee\" as an example of",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 5.61e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000935,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_18",
+    "question": "This question refers to the following information.\n\"If any person or persons shall, from and after the passing of this act, by force and violence, take and carry away, or cause to be taken or carried away, and shall, by fraud or false pretense, seduce, or cause to be seduced, or shall attempt so to take, carry away or seduce, any negro or mulatto, from any part or parts of this commonwealth, to any other place or places whatsoever, out of this commonwealth, with a design and intention of selling and disposing of, or of causing to be sold, or of keeping and detaining, or of causing to be kept and detained, such negro or mulatto, as a slave or servant for life, or for any term whatsoever, every such person or persons, his or their aiders or abettors, shall on conviction thereof, in any court of this commonwealth having competent jurisdiction, be deemed guilty of a felony.\"\n\u2014Excerpt from Pennsylvania law, 1826\nDebate and conflict over the Pennsylvania law, excerpted above, reflected the fact that the framers of the Constitution",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 4.89e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0008125,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "high_school_us_history_19",
+    "question": "This question refers to the following information.\n\"Whereas the laws and treaties of the United States, without interfering with the free expression of opinion and sympathy, or with the commercial manufacture or sale of arms or munitions of war, nevertheless impose upon all persons who may be within their territory and jurisdiction the duty of an impartial neutrality during the existence of the contest; And Whereas it is the duty of a neutral government not to permit or suffer the making of its waters subservient to the purposes of war;\n\"Now, Therefore, I, Woodrow Wilson, President of the United States of America, in order to preserve the neutrality of the United States\u2026do hereby declare and proclaim\u2026.\n\"That the statutes and the treaties of the United States and the law of nations alike require that no person, within the territory and jurisdiction of the United States, shall take part, directly or indirectly, in the said wars, but shall remain at peace with all of the said belligerents, and shall maintain a strict and impartial neutrality\u2026.\"\nWoodrow Wilson, 1914\nAll of the following increased federal government power during World War I EXCEPT the",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 4.215e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.00071,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_0",
+    "question": "Based on the characteristic population curves that result from plotting population growth of a species, the most effective means of controlling the mosquito population is to",
+    "correct_answer": "C",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.99e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000275,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_1",
+    "question": "A frameshift mutation is created when",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 5.75e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0002675,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_2",
+    "question": "To prevent desiccation and injury, the embryos of terrestrial vertebrates are encased within a fluid secreted by the",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.85e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001825,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_3",
+    "question": "Which of the following is a second messenger that stimulates release of calcium ions into the cytoplasm?",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 3.85e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000185,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_4",
+    "question": "Synthesis of an RNA/DNA hybrid from a single-stranded RNA template requires",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 4.15e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001975,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_5",
+    "question": "In order for the Hardy-Weinberg law to operate with respect to a population of organisms, each of the following conditions must be met EXCEPT:",
+    "correct_answer": "A",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.255e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0002175,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_6",
+    "question": "The Barr body found within female mammalian cells' nuclei is an example of",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 3.55e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.0001675,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_7",
+    "question": "Which of the following is NOT a source of atmospheric carbon?",
+    "correct_answer": "B",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 3.3e-06,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000155,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_8",
+    "question": "The concept of punctuated equilibrium refers to",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 4.4e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.00021,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_9",
+    "question": "When an influenza virus enters a cell, it immediately starts to do which of the following?",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 5e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0002375,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_10",
+    "question": "Cleavage symmetry arising from early cell divisions that occur at an oblique angle to the polar axis is known as",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 3.95e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0001825,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_11",
+    "question": "Targeting of a newly synthesized protein is most likely to require two different signal peptides for which of the following destinations?",
+    "correct_answer": "D",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 2.625e-05,
+    "naive_answer": "B",
+    "naive_correct": false,
+    "naive_cost": 0.000175,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_12",
+    "question": "In Sweden, the red fox (Vulpes vulpes) severely limits populations of its prey, including hares. However, red fox populations are sometimes attacked by a fatal parasite, the mange mite. As mite population sizes increase at a given site, how are hare and fox populations most likely to respond at the same site? (Assume that hares have no major predators at this site other than foxes.)",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 2.31e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0003825,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_13",
+    "question": "A cell nucleus contains which of the following?\nI. DNA\nII. Protein\nIII. RNA",
+    "correct_answer": "D",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.7e-06,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000175,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_14",
+    "question": "In one taxonomic classification, Archaea, Eukarya, and Bacteria represent the three major domains of life. Eukarya utilize the general transcription factors TBP (TATA-binding protein) and TFIIB in transcription, whereas Bacteria do not. At least one member of Archaea has a protein similar to TBP and a protein similar to TFIIB. Based on this observation, which of the following scenarios is most likely?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.015e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0005025,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "college_biology_15",
+    "question": "A rise in intracellular free calcium in the sea urchin oocyte causes the release of proteolytic enzymes which act to prevent polyspermy. The events just described entail the",
+    "correct_answer": "C",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.15e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000215,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_16",
+    "question": "Which of the following is a benefit that mycorrhizal fungi confer to many plants?",
+    "correct_answer": "C",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 5.75e-06,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000275,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_17",
+    "question": "Experiments on song development in birds have shown that when a young male reared in isolation hears only the song of a different bird species, he will develop an adult song repertoire that lacks certain characteristics typical of his own species. This result shows that the song of his species is most likely",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 1.695e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000285,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_18",
+    "question": "Which of the following most accurately describes a retrotransposon?",
+    "correct_answer": "C",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.605e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0002475,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_biology_19",
+    "question": "The soils of which of the following biomes has the highest rate of leaching and cycling of nutrients?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.55e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001675,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_0",
+    "question": "Let k be the number of real solutions of the equation e^x + x - 2 = 0 in the interval [0, 1], and let n be the number of real solutions that are not in [0, 1]. Which of the following is true?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 1.845e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.0003075,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_1",
+    "question": "Up to isomorphism, how many additive abelian groups G of order 16 have the property that x + x + x + x = 0 for each x in G ?",
+    "correct_answer": "D",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 3.01e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0002075,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_2",
+    "question": "Suppose P is the set of polynomials with coefficients in Z_5 and degree less than or equal to 7. If the operator D sends p(x) in P to its derivative p\u2032(x), what are the dimensions of the null space n and range r of D?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 1.965e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.0003275,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_3",
+    "question": "The shortest distance from the curve xy = 8 to the origin is",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 3.4e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0001575,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_4",
+    "question": "There are 25 suitcases, 5 of which are damaged. Three suitcases are selected at random. What is the probability that exactly 2 are damaged?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 1.305e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000215,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_5",
+    "question": "Let (Z_{10} , +, x) be the ring of integers modulo 10, and let S be the subset of Z_{10} represented by {0, 2, 4, 6, 8}. Which of the following statements is FALSE?",
+    "correct_answer": "D",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 5.425e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.00038,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_6",
+    "question": "A ladder 9 meters in length is leaning against a vertical wall on level ground. As the bottom end of the ladder is moved away from the wall at a constant rate of 2 meters per second, the top end slides downward along the wall. How fast, in meters per second, will the top end of the ladder be sliding downward at the moment the top end is 3 meters above the ground?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 2.19e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0003625,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_7",
+    "question": "Consider a segment of length 10. Points A and B are chosen randomly such that A and B divide the segment into three smaller segments. What is the probability that the three smaller segments could form the sides of a triangle?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 1.365e-05,
+    "naive_answer": "D",
+    "naive_correct": false,
+    "naive_cost": 0.000225,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_8",
+    "question": "Let V be a finite-dimensional real vector space and let P be a linear transformation of V such that P^2 = P. Which of the following must be true?\nI. P is invertible.\nII. P is diagonalizable.\nIII. P is either the identity transformation or the zero transformation.",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 1.59e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0002625,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_9",
+    "question": "Which of the following is true?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "?",
+    "router_correct": false,
+    "router_cost": 4.1e-06,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.000175,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_10",
+    "question": "A discrete graph is complete if there is an edge connecting any pair of vertices. How many edges does a complete graph with 10 vertices have?",
+    "correct_answer": "D",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 2.73e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000185,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_11",
+    "question": "Suppose X is a discrete random variable on the set of positive integers such that for each positive integer n, the probability that X = n is 1/2^n. If Y is a random variable with the same probability distribution and X and Y are independent, what is the probability that the value of at least one of the variables X and Y is greater than 3 ?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 1.965e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.0003375,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_12",
+    "question": "Let V and W be 4-dimensional subspaces of a 7-dimensional vector space X. Which of the following CANNOT be the dimension of the subspace V intersect W?",
+    "correct_answer": "A",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 2.975e-05,
+    "naive_answer": "D",
+    "naive_correct": false,
+    "naive_cost": 0.000205,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_13",
+    "question": "A large class is to be divided into teams and each student must be a member of exactly one team. However, each student dislikes three of their classmates. Dislike between students need not be mutual. If the teams do not need to be equally sized, how many must be created so that no student is the teammate of someone they dislike?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": false,
+    "router_cost": 1.695e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.000285,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "college_mathematics_14",
+    "question": "Sofia and Tess will each randomly choose one of the 10 integers from 1 to 10. What is the probability that neither integer chosen will be the square of the other?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 1.35e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0002375,
+    "label": {
+      "complexity": "hard",
+      "domain": "math"
+    }
+  },
+  {
+    "id": "college_mathematics_15",
+    "question": "Let K be a nonempty subset of R^n, where n > 1. Which of the following statements must be true?\nI. If K is compact, then every continuous real-valued function defined on K is bounded.\nII. If every continuous real-valued function defined on K is bounded, then K is compact.\nIII. If K is compact, then K is connected.",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 1.89e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.000315,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "college_mathematics_16",
+    "question": "Suppose V is a real vector space of finite dimension n. Call the set of matrices from V into itself M(V). Let T be in M(V). Consider the two subspaces U = {X \u2208 M(V) : TX = XT} and W = {TX \u2212 XT : X \u2208 M(V)}. Which of the following must be TRUE?\nI. If V has a basis containing only eigenvectors of T then U = M(V).\nII. dim (U) + dim (W) = n^2\nIII. dim (U) < n",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 2.49e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.000415,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_17",
+    "question": "Let F be a constant unit force that is parallel to the vector (-1, 0, 1) in xyz-space. What is the work done by F on a particle that moves along the path given by (t, t^2, t^3) between time t=0 and time t=1?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 1.77e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0002975,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_18",
+    "question": "Let X be a topological space, and let A, B, and C be nonempty subsets of X such that A c B c C; that is, A is a proper subset of B, and B is a proper subset of C. Which of the following statements is (are) true?\nI. If A and C are connected, then B is connected.\nII. If A and C are compact, then B is compact.\nIII. If A and C are Hausdorff, then B is Hausdorff.",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 2.4e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.0004025,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "college_mathematics_19",
+    "question": "Let x_1 = 1 and x_(n+1) = sqrt(3+2x_n) for all positive integers n. If it is assumed that {x_n} converges, then lim x_n =",
+    "correct_answer": "A",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.325e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.0002275,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_0",
+    "question": "One afternoon, a pilot was flying a small airplane when it suddenly ran out of gas. As he was coming in for an emergency landing, the plane crossed into a neighboring state at a very low altitude. At this time, a 9-year-old boy was walking to school when he was struck and injured by an object, which may have fallen from the plane. In federal court, a negligence suit was brought against the pilot by the father of the boy for his son. Accompanied by his father, the boy had visited an attorney for preliminary discussions regarding the case. However, the father did not retain the attorney to represent his son in the lawsuit. Instead, the father hired another lawyer to handle the case. At trial, the pilot's attorney calls the consulting attorney to testify what the boy had said to him regarding his physical condition during the consultation that the attorney had had with the boy and his father. The attorney's testimony is",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 4.56e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0007575,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_1",
+    "question": "A state statute provides: \"Whenever a person knows or should know that he (or she) is being arrested by a police officer, it is the duty of such person to refrain from using force or any weapon in resisting arrest. \" Violation of the statute is made punishable by fine and/or imprisonment. One morning, there was a bank robbery in the state. That afternoon, a police officer arrested a suspect who he believed was involved in the crime. However, the police officer and the suspect have given different accounts concerning what happened next. According to the police officer, after the suspect was apprehended, he resisted arrest and hit the police officer in the mouth with his fist. The police officer, who was momentarily stunned, pulled out his nightstick and struck the suspect over the head with it. On the other hand, the suspect claimed that after he was arrested, he cursed at the policeman, whereupon the police officer began hitting the suspect with his nightstick. To avoid being hit again, the suspect hit the police officer with his fist, knocking him down. The suspect was charged with assault. The suspect should be found",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 4.98e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.00083,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_2",
+    "question": "A taxpayer was notified by the government that her individual income tax was underpaid by $1,012. 69. The taxpayer retained an attorney to represent her in contesting the assessment. During the preparation of his client's case, the attorney suggested that it might be a good idea if the taxpayer hired an accountant to organize her records and prepare a financial statement for the year in question. Following the attorney's advice, the taxpayer consulted an accountant, an old family friend, who prepared a financial statement, which the attorney referred to at trial. During the trial, the attorney representing the government called the accountant to testif' about statements that the taxpayer made to him. The accountant's proposed testimony is",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 3.315e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.0005525,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_3",
+    "question": "A resident announced his candidacy for state representative. A law in the state requires new political entrants (regardless of party affiliation) to obtain three times the number of signatures as other candidates who have run for office previously. The resident, however, failed to obtain the necessary number of authenticating signatures to have his name placed on the ballot. The resident filed a complaint in federal district court alleging the unconstitutionality of the authenticating requirement. Which of the following, if established, is the state's strongest argument for sustaining the validity of the authenticating requirement?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.045e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0005075,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_4",
+    "question": "A defendant was angry at his friend for marrying the defendant's former girlfriend. As the friend was painting his house one afternoon, the defendant fired a shot from his gun at him. Although the shot missed the friend, the bullet struck and killed the friend's daughter. The defendant is subsequently charged with the first-degree murder of the daughter. The relevant statutes in effect in this jurisdiction are as follows:Section 169: Murder in the first degree is the unlawful and intentional killing of a human being with malice aforethought. Section 170: Malice is expressed when there is manifested a deliberate intention to take away the life of another. Which of the following, if established, would provide the defendant with his best defense?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 3.255e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.0005425,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_5",
+    "question": "The accused made a confession to the police, but his defense attorney needs to find out if the confession is admissible. In which of the following situations would a confession be inadmissible?",
+    "correct_answer": "A",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 3.99e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0002775,
+    "label": {
+      "complexity": "medium",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_6",
+    "question": "A devastating earthquake struck a foreign country. The earthquake destroyed hundreds of homes and buildings. Thousands of residents were killed, injured, and left homeless by the earthquake. The leader of the foreign country sought the assistance of the United States in providing emergency aid. The President initially wanted to send troops from a west coast military base but learned that they were out on training maneuvers. As a result, the President issued an executive order directing members of a federal agency under the supervision of the Immigration and Naturalization Service, to travel to the foreign country to engage in emergency rescue operations. This federal agency's main function is to patrol the borders to prevent illegal aliens from entering the United States. A member of this federal agency refused to comply with the executive order and assist in the relief effort. He claimed that participating in such operations in a foreign country is beyond the scope of his job responsibilities. He brought suit in federal court challenging the validity of the President's executive order. Assuming the member of the federal agency has adequate standing, the court should rule the executive order",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": true,
+    "router_cost": 4.98e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.00083,
+    "label": {
+      "complexity": "hard",
+      "domain": "code"
+    }
+  },
+  {
+    "id": "professional_law_7",
+    "question": "Which of the following is not a warrantless search exception?",
+    "correct_answer": "A",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 3.3e-06,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.000155,
+    "label": {
+      "complexity": "simple",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_8",
+    "question": "A grocery store purchased a large mirror to hang on a wall in the store. Along with the mirror itself, the manufacturer provided brackets and bolts to be used for hanging the mirror. The grocery store paid a local carpenter to come in and hang the mirror. A few days after the carpenter installed the mirror, the mirror suddenly fell from the wall because of a defect in the brackets. It struck a shopper on the head, causing serious injuries to him. If the shopper asserts a claim against the carpenter based on strict liability in tort, the plaintiff will",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.135e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.00052,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_9",
+    "question": "A man who was separated but never divorced from his first wife, married another woman and lived with her as husband and wife. The man and his purported second wife bought a home together as tenants by the entirety. They lived there together for a few years, when the man was accused and convicted of killing his purported wife. He was given a life sentence. The decedent's estate brought a quiet title action to declare the property forfeited to the decedent on the basis that a murderer cannot benefit from his crime. The trial court awarded the property to the estate. The man appealed from his prison cell. Under the common law, will the appellate court affirm the trial court's decision and strip the man of all ownership rights in the home?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "B",
+    "router_correct": false,
+    "router_cost": 4.38e-05,
+    "naive_answer": "A",
+    "naive_correct": false,
+    "naive_cost": 0.00073,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_10",
+    "question": "Bill, a single man, owned pasture land in Deerwoods, Florida, which he leased to a tenant. He also owned a condominium in Miami, which he held for investment. In his will, he devised the pasture land to his son Tommy and the condominium to his daughter Julie. All other assets would pass equally to Tommy and Julie. Bill met Kathy and married her after she executed a valid prenuptial agreement relinquishing all rights she might otherwise enjoy by marrying Bill. On their Miami honeymoon they drove by the condominium and Kathy declared she'd love to live there. Bill was so happy with Kathy that after the honeymoon he signed and delivered to Kathy a deed conveying the condominium to himself and Kathy as an estate by the entirety and made plans to live in the condominium as soon as the tenant vacated. Bill died the next day. How are the foregoing assets distributed?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 5.28e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.00088,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_11",
+    "question": "For many years, persons engaged in real estate transactions in a state have utilized installment land contracts. The so-called installment land contract has been popular as a substitute for the mortgage or deed of trust. Under such a contract, the seller agrees to accept, and the buyer agrees to pay, the purchase price in installments over a stipulated period of time. The vendor retains legal title as security for the payment of the purchase price; and the vendee has equitable title under the doctrine of equitable conversion. The most important characteristic of the installment land contract, however, is the forfeiture clause, which provides that if the vendee is in default for 30 days, the vendor may, at his option, declare a forfeiture of the contract, in which case all payments made shall be forfeited as \"liquidated\" damages and the buyer shall become a tenant at will of the seller. Over the years, many sellers of property under such installment land contracts have declared forfeitures in situations where the prospective buyers were delinquent in their payments, even when the buyer was late with a single payment after nearly all the other payments had been made. In order to remedy this inequitable situation, the state legislature enacted a statute requiring any seller attempting to declare a forfeiture of an installment land contract to do so by instituting a formal foreclosure action in the courts. The new law also provided that prior to the commencement of such a foreclosure action, the seller under such an arrangement must give the buyer a 60-day grace period to make up any delinquent installment payment with interest. The new law expressly applied both to installment land contracts entered into subsequent to its enactment and to installment land contracts already in existence at the time of its enactment. Is this new state statute likely to be held constitutional?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 7.665e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0012775,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_12",
+    "question": "A man placed the following advertisement in his local newspaper:\"Public Auction Sale . . . without reserve December 7, 10:00 a. m. 110 Walnut St. , City, StateEntire furnishings of home must go: antiques, piano, pool table, appliances, tables, stereo system, etc. \"On the morning of December 7, a group of approximately 20 people showed up at the man's home. The first item the man put up for bid was an antique Baldwin grand piano. The man announced that the bidding would be \"without reserve\" and said, \"What's the opening bid on this beautiful Baldwin grand piano?\" A woman opened the bidding with $100. The man then commented, \"This piano is worth at least $5,000. What other bids am I offered?\" When the man did not receive any other bids, he informed the woman that he would not accept $100 and was removing the piano from the sale. If the woman asserts an action against the man for breach of contract, the woman will most likely",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 5.07e-05,
+    "naive_answer": "C",
+    "naive_correct": false,
+    "naive_cost": 0.0008425,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_13",
+    "question": "A defendant offers into evidence his computer business records to show his good faith monitoring of the accounts in his business. The defendant testifies that he kept the records on a regular business basis \u0080\u0093 but did not explain the records in any other way. The government objected to the records as being hearsay and not authenticated. What will the court decide regarding the admissibility of the computer business records?",
+    "correct_answer": "B",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": false,
+    "router_cost": 2.82e-05,
+    "naive_answer": "B",
+    "naive_correct": true,
+    "naive_cost": 0.00047,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_14",
+    "question": "A regulation prevents persons with a drug arrest and conviction and/or those undergoing current treatment for drug abuse from working in certain state run facilities for the safety of the general public. One employee of the department of treasury brought an action claiming a denial of equal protection and due process by taking away his right to a job. It is claimed that the prohibition is necessary to protect the public from potential problems that could arise. Which test of constitutional validity would be likely applied to this regulation?",
+    "correct_answer": "D",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": true,
+    "router_cost": 3.105e-05,
+    "naive_answer": "D",
+    "naive_correct": true,
+    "naive_cost": 0.000515,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_15",
+    "question": "A man was driving while drunk. He was speeding down a center city street, veering from lane to lane, when he lost control of his car while going over a slick puddle of water. Without realizing it, he drove his car onto the sidewalk and killed two persons. What common law crime most appropriately fits the man's situation?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 2.79e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.000465,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_16",
+    "question": "The authorities arrested a man without a warrant and held him imprisoned for 14 days without a determination of probable cause. He finally saw a public defender who filed a motion to dismiss alleging an unconstitutional detention in violation of due process. The prosecution countered that the state's rules allowed for detention without a probable cause hearing for up to 30 days, and that the procedure was constitutional. Will the court most likely decide that this detention is unconstitutional?",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.27e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0005425,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_17",
+    "question": "A man owned land along the south side of a highway. To the south of the man's land was a lot owned by a woman who lived on it in a house. Five years ago the man conveyed a right-of-way easement over his land to the woman because it provided a more direct route between her house and the highway. The easement was evidenced by a clearly marked path. The document granting the easement was promptly recorded. Three years ago, the woman conveyed her house to the man. The man never took actual possession of the house. Two years ago, the man conveyed the house to a purchaser by a warranty deed. Two months after the purchaser moved into the house, a neighbor informed him about the easement. He then began using the path that had been marked on the man's land. When the man noticed the purchaser using the path, he erected a barricade on his land that effectively prevented the purchaser from using the path. The purchaser has sued the man, claiming that he has an easement over the man's land. Who is likely to prevail?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "D",
+    "router_correct": false,
+    "router_cost": 4.635e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0007725,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_18",
+    "question": "Rainmaking Lawfirm regularly purchased its office supplies from catalogs. Marty Manager saw an advertising catalog from Costco offering 10,000 envelopes for $1,000 CIF. He immediately sent a purchase order which stated \"our law firm accepts your $1,000 offer for 10,000 envelopes for $1,000 CIF.\"\u009d Costco then sent Rainmaking an order confirmation which stated \"Envelope order acceptance conditional upon a loading charge of $50 per thousand envelopes.\" If the parties disagree on the proper contract relationship, a court would likely rule:",
+    "correct_answer": "C",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "C",
+    "router_correct": true,
+    "router_cost": 3.315e-05,
+    "naive_answer": "C",
+    "naive_correct": true,
+    "naive_cost": 0.0005525,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  },
+  {
+    "id": "professional_law_19",
+    "question": "A woman sued her former employer in state court, asserting age and sex discrimination claims under both state and federal law. The woman's attorney had recently been embarrassed in court by the judge to whom the case was assigned. Wishing to avoid difficulties with the judge, the woman's attorney promptly removed the case to federal court on the basis of federal-question jurisdiction. The employer's attorney has timely moved to remand. How is the federal court likely to proceed?",
+    "correct_answer": "A",
+    "router_branch": "strong_model",
+    "router_model": "openai/gpt-4o-mini",
+    "router_answer": "A",
+    "router_correct": true,
+    "router_cost": 2.805e-05,
+    "naive_answer": "A",
+    "naive_correct": true,
+    "naive_cost": 0.0004675,
+    "label": {
+      "complexity": "hard",
+      "domain": "factual"
+    }
+  }
+]

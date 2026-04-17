@@ -1,0 +1,22 @@
+# Training pipeline — install on H200 VM
+# CUDA 12.x assumed; adjust torch index if needed
+
+# Core training
+torch==2.3.1
+unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git
+transformers>=4.43.0
+datasets>=2.20.0
+trl>=0.9.4
+accelerate>=0.31.0
+peft>=0.11.0
+
+# Serving
+vllm>=0.5.0
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+
+# Utilities
+huggingface-hub>=0.23.0
+sentencepiece
+protobuf

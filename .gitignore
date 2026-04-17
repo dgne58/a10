@@ -1,0 +1,94 @@
+# ── Project content (local only) ────────────────────────────────────────────
+Clippings/
+Wiki/
+nimbalyst-local/
+scripts/
+
+# ── Project root docs (sensitive / local contracts) ──────────────────────────
+AGENTS.md
+CLAUDE.md
+WIKI.md
+
+# ── Claude Code ──────────────────────────────────────────────────────────────
+.claude/
+
+# ── Obsidian ─────────────────────────────────────────────────────────────────
+.obsidian/
+.trash/
+
+# ── Codex / Codex plugin ─────────────────────────────────────────────────────
+.codex/
+codex-local/
+CODEX.md
+# Obsidian Codex plugin data
+.obsidian/plugins/codex/
+
+# ── Node / JS / TS ───────────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.output/
+out/
+*.tsbuildinfo
+.turbo/
+.cache/
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.env/
+*.egg-info/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── Environment / secrets ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.local
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ── Editors ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+
+# ── Logs / temp ──────────────────────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+logs/
+tmp/
+
+# ── Package manager locks ────────────────
+# Uncomment to ignore lock files if this repo is not a published package
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ── Coverage / test artifacts ────────────────────────────────────────────────
+coverage/
+.coverage
+htmlcov/
+*.lcov
