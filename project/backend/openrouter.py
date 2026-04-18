@@ -51,12 +51,23 @@ def call_model(model_id: str, query: str, max_tokens: int = 512, system: str | N
     }
 
 
-def stream_model(model_id: str, query: str, max_tokens: int = 512, system: str | None = None) -> Generator[str, None, None]:
-    """Yield text chunks from OpenRouter streaming completions."""
-    messages = []
-    if system:
-        messages.append({"role": "system", "content": system})
-    messages.append({"role": "user", "content": query})
+def stream_model(
+    model_id: str,
+    query: str,
+    max_tokens: int = 512,
+    system: str | None = None,
+    messages: list[dict] | None = None,
+) -> Generator[str, None, None]:
+    """Yield text chunks from OpenRouter streaming completions.
+
+    Pass `messages` directly to override the default user/system construction
+    (used for tool follow-up calls where the conversation already exists).
+    """
+    if messages is None:
+        messages = []
+        if system:
+            messages.append({"role": "system", "content": system})
+        messages.append({"role": "user", "content": query})
     with httpx.stream(
         "POST",
         f"{OPENROUTER_BASE}/chat/completions",
@@ -85,6 +96,76 @@ def stream_model(model_id: str, query: str, max_tokens: int = 512, system: str |
                 delta = chunk["choices"][0]["delta"].get("content") or ""
                 if delta:
                     yield delta
+            except (json.JSONDecodeError, KeyError, IndexError):
+                continue
+
+
+def stream_with_tools(
+    model_id: str,
+    messages: list[dict],
+    tools: list[dict] | None = None,
+    max_tokens: int = 1024,
+) -> Generator[str | dict, None, None]:
+    """Stream from OpenRouter with optional tool support.
+
+    Yields str tokens for direct content. If the model calls a tool, the final
+    yielded item is {"tool_call": <tool_call_dict>} and content will be empty.
+    """
+    accumulated_tc: dict[int, dict] = {}
+
+    payload: dict = {
+        "model": model_id,
+        "messages": messages,
+        "max_tokens": max_tokens,
+        "stream": True,
+    }
+    if tools:
+        payload["tools"] = tools
+        payload["tool_choice"] = "auto"
+
+    with httpx.stream(
+        "POST",
+        f"{OPENROUTER_BASE}/chat/completions",
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "HTTP-Referer": "https://hackathon-router.dev",
+            "X-Title": "Task-Aware Cost Router",
+        },
+        json=payload,
+        timeout=30.0,
+    ) as resp:
+        resp.raise_for_status()
+        for line in resp.iter_lines():
+            if not line.startswith("data: "):
+                continue
+            raw = line[6:]
+            if raw.strip() == "[DONE]":
+                break
+            try:
+                chunk = json.loads(raw)
+                choice = chunk["choices"][0]
+                delta = choice.get("delta", {})
+                finish = choice.get("finish_reason")
+
+                content = delta.get("content")
+                if content:
+                    yield content
+
+                for tc_delta in delta.get("tool_calls", []):
+                    idx = tc_delta.get("index", 0)
+                    if idx not in accumulated_tc:
+                        accumulated_tc[idx] = {
+                            "id": tc_delta.get("id", ""),
+                            "type": "function",
+                            "function": {"name": "", "arguments": ""},
+                        }
+                    fn = tc_delta.get("function", {})
+                    accumulated_tc[idx]["function"]["name"] += fn.get("name", "")
+                    accumulated_tc[idx]["function"]["arguments"] += fn.get("arguments", "")
+
+                if finish == "tool_calls" and accumulated_tc:
+                    yield {"tool_call": accumulated_tc[0]}
+
             except (json.JSONDecodeError, KeyError, IndexError):
                 continue
 

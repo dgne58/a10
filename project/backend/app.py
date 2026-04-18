@@ -1,6 +1,5 @@
 import json
 import os
-import re
 import sys
 import time
 from flask import Flask, request, jsonify, Response, stream_with_context
@@ -8,8 +7,8 @@ from flask_cors import CORS
 from router import route_and_call, classify, select_branch, build_rationale, _naive_cost
 from memory import check_memory
 from verifier import run_verification
-from tools import execute_tool
-from openrouter import stream_model, call_with_fallback, compute_cost
+from tools import TOOL_DEFINITIONS, dispatch_tool
+from openrouter import stream_model, stream_with_tools, call_with_fallback, compute_cost
 from config import MODEL_MAP, FALLBACK_MODEL, COST_PER_1M
 
 app = Flask(__name__)
@@ -95,32 +94,40 @@ def route_stream():
             yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": 5})
             return
 
-        # Tool call — free, no model cost
-        if branch == "tool_call":
-            domain = label.get("domain", "")
-            params = _extract_tool_params(query, domain)
-            t0 = time.monotonic()
-            tool_result = execute_tool(domain, params)
-            latency_ms = int((time.monotonic() - t0) * 1000)
-            answer = _format_tool_answer(tool_result, domain)
-            rationale = build_rationale(label, branch, None)
-            yield _sse({"type": "meta", "branch": "tool_call", "model_used": None, "rationale": rationale})
-            yield _sse({"type": "token", "text": answer})
-            yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": latency_ms})
-            return
-
         model = MODEL_MAP.get(branch, FALLBACK_MODEL)
         rationale = build_rationale(label, branch, model)
         yield _sse({"type": "meta", "branch": branch, "model_used": model, "rationale": rationale})
 
         t0 = time.monotonic()
         full_text = ""
+        messages = [{"role": "user", "content": query}]
+
         try:
-            for token in stream_model(model, query):
-                full_text += token
-                yield _sse({"type": "token", "text": token})
+            for item in stream_with_tools(model, messages, tools=TOOL_DEFINITIONS):
+                if isinstance(item, str):
+                    full_text += item
+                    yield _sse({"type": "token", "text": item})
+                elif isinstance(item, dict) and "tool_call" in item:
+                    tc = item["tool_call"]
+                    fn_name = tc["function"]["name"]
+                    try:
+                        fn_args = json.loads(tc["function"]["arguments"])
+                    except (json.JSONDecodeError, ValueError):
+                        fn_args = {}
+                    tool_result = dispatch_tool(fn_name, fn_args)
+                    yield _sse({"type": "tool_use", "tool": fn_name, "result": tool_result})
+
+                    # Follow-up: model summarizes the tool result in context
+                    followup_messages = [
+                        {"role": "user", "content": query},
+                        {"role": "assistant", "content": None, "tool_calls": [tc]},
+                        {"role": "tool", "tool_call_id": tc["id"], "content": tool_result},
+                    ]
+                    for tok in stream_model(model, "", messages=followup_messages):
+                        full_text += tok
+                        yield _sse({"type": "token", "text": tok})
+
         except Exception:
-            # Streaming failed — fall back to blocking call
             result = call_with_fallback(model, query)
             actual = FALLBACK_MODEL if result["used_fallback"] else model
             yield _sse({"type": "token", "text": result["answer"]})
@@ -143,27 +150,6 @@ def route_stream():
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
-
-def _extract_tool_params(query: str, domain: str) -> dict:
-    if domain == "weather":
-        q = re.sub(r"weather|temperature|forecast|in|for|at|the|what|is|today", "", query.lower())
-        location = q.strip().title() or "New York"
-        return {"location": location}
-    if domain == "code_exec":
-        code_match = re.search(r"```(?:python)?\s*([\s\S]+?)```", query)
-        if code_match:
-            return {"code": code_match.group(1).strip()}
-        lines = [l for l in query.splitlines() if l.strip().startswith(("import", "print", "def ", "x =", "result"))]
-        return {"code": "\n".join(lines) if lines else query}
-    return {}
-
-
-def _format_tool_answer(result: str, domain: str) -> str:
-    if domain == "weather":
-        return f"[tool: weather]\n{result}"
-    if domain == "code_exec":
-        return f"[tool: code_exec]\nOutput:\n{result}"
-    return result
 
 
 @app.route("/api/eval/summary")
@@ -261,7 +247,7 @@ def eval_confusion():
     if not os.path.exists(HUMANEVAL_PATH):
         return jsonify({"error": "humaneval_results.json not found"}), 404
     data = json.load(open(HUMANEVAL_PATH))
-    branches = ["memory_answer", "cheap_model", "mid_model", "strong_model", "tool_call", "verification_tool"]
+    branches = ["memory_answer", "cheap_model", "mid_model", "strong_model", "verification_tool"]
     matrix: dict = {b: {b2: 0 for b2 in branches} for b in branches}
     for r in data:
         actual = r.get("router_branch", "cheap_model")

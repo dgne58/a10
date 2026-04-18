@@ -23,10 +23,9 @@ from pathlib import Path
 SYSTEM_PROMPT = (
     "You are a query classifier for an LLM routing system. "
     "Given a user query, output a JSON object with two fields:\n"
-    '  "complexity": one of "simple", "medium", "hard", "verify", "tool"\n'
-    '  "domain":     one of "factual", "math", "code", "project", "weather", "code_exec"\n\n'
+    '  "complexity": one of "simple", "medium", "hard", "verify"\n'
+    '  "domain":     one of "factual", "math", "code", "project"\n\n'
     "Rules:\n"
-    '- "tool"    → query asks to execute code or check weather (use domain "code_exec" or "weather")\n'
     '- "verify"  → query asks about this specific project\'s architecture, models, or files\n'
     '- "simple"  → short factual or coding lookup, < 20 words, no reasoning required\n'
     '- "medium"  → requires explanation or multi-step description, 20-40 words\n'
@@ -34,9 +33,7 @@ SYSTEM_PROMPT = (
     '- "code"    → involves programming, debugging, or software implementation\n'
     '- "math"    → involves calculation, equations, or proofs\n'
     '- "factual" → general knowledge not covered by other domains\n'
-    '- "project" → only used when complexity is "verify"\n'
-    '- "weather" → only used when complexity is "tool"\n'
-    '- "code_exec" → only used when complexity is "tool"\n\n'
+    '- "project" → only used when complexity is "verify"\n\n'
     "Output only the JSON object, no explanation."
 )
 
@@ -122,26 +119,6 @@ SYNTHETIC: list[dict] = [
     {"q": "What is the difference between P and NP complexity classes?",                              "c": "hard", "d": "math"},
     {"q": "Calculate the expected number of collisions in a hash table with n keys and m buckets.",   "c": "hard", "d": "math"},
     {"q": "Prove that comparison-based sorting cannot be faster than O(n log n) in the worst case.",  "c": "hard", "d": "math"},
-
-    # tool / code_exec — run this code
-    {"q": "Run this code: print(sum(range(10)))",                                                     "c": "tool", "d": "code_exec"},
-    {"q": "Execute this snippet: x = [i**2 for i in range(5)]; print(x)",                            "c": "tool", "d": "code_exec"},
-    {"q": "What does this print? for i in range(3): print(i*2)",                                      "c": "tool", "d": "code_exec"},
-    {"q": "Run this code and tell me the output: import math; print(math.pi)",                        "c": "tool", "d": "code_exec"},
-    {"q": "Execute: result = sorted([3,1,4,1,5,9,2,6]); print(result)",                              "c": "tool", "d": "code_exec"},
-    {"q": "What is the output of this code? print(list(map(lambda x: x*2, [1,2,3])))",                "c": "tool", "d": "code_exec"},
-    {"q": "Run this Python: print({k: k**2 for k in range(1,6)})",                                   "c": "tool", "d": "code_exec"},
-    {"q": "Execute this code and show me the result: print('hello world'.upper())",                   "c": "tool", "d": "code_exec"},
-
-    # tool / weather — weather queries
-    {"q": "What's the weather in San Francisco?",                   "c": "tool", "d": "weather"},
-    {"q": "What is the temperature in Tokyo right now?",            "c": "tool", "d": "weather"},
-    {"q": "Is it raining in London today?",                         "c": "tool", "d": "weather"},
-    {"q": "What's the forecast for New York?",                      "c": "tool", "d": "weather"},
-    {"q": "How hot is it in Dubai right now?",                      "c": "tool", "d": "weather"},
-    {"q": "What is the weather like in Paris today?",               "c": "tool", "d": "weather"},
-    {"q": "Tell me the current temperature in Austin.",             "c": "tool", "d": "weather"},
-    {"q": "Is it sunny in Seattle right now?",                      "c": "tool", "d": "weather"},
 
     # verify / project
     {"q": "What models does this router use?",                                     "c": "verify", "d": "project"},

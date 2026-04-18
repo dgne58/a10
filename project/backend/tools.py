@@ -52,3 +52,55 @@ def execute_tool(name: str, params: dict) -> str:
     if name == "code_exec":
         return code_exec(params.get("code", ""))
     return f"Unknown tool: {name!r}"
+
+
+TOOL_DEFINITIONS: list[dict] = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": (
+                "Get current weather for a location. "
+                "Only call this when the user explicitly asks about weather, temperature, or forecast."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "City name, e.g. 'London' or 'New York'",
+                    }
+                },
+                "required": ["location"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "execute_python",
+            "description": (
+                "Execute a Python code snippet and return stdout. "
+                "Only call this when the user explicitly asks to run, execute, or evaluate code."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "description": "Python code to execute",
+                    }
+                },
+                "required": ["code"],
+            },
+        },
+    },
+]
+
+
+def dispatch_tool(fn_name: str, fn_args: dict) -> str:
+    if fn_name == "get_weather":
+        return weather(fn_args.get("location", ""))
+    if fn_name == "execute_python":
+        return code_exec(fn_args.get("code", ""))
+    return f"Unknown tool: {fn_name!r}"

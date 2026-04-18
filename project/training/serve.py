@@ -33,10 +33,9 @@ MODEL_DIR = ROOT / "models" / "router-classifier-merged"
 SYSTEM_PROMPT = (
     "You are a query classifier for an LLM routing system. "
     "Given a user query, output a JSON object with two fields:\n"
-    '  "complexity": one of "simple", "medium", "hard", "verify", "tool"\n'
-    '  "domain":     one of "factual", "math", "code", "project", "weather", "code_exec"\n\n'
+    '  "complexity": one of "simple", "medium", "hard", "verify"\n'
+    '  "domain":     one of "factual", "math", "code", "project"\n\n'
     "Rules:\n"
-    '- "tool"    → query asks to execute code or check weather (use domain "code_exec" or "weather")\n'
     '- "verify"  → query asks about this specific project\'s architecture, models, or files\n'
     '- "simple"  → short factual or coding lookup, < 20 words, no reasoning required\n'
     '- "medium"  → requires explanation or multi-step description, 20-40 words\n'
@@ -44,16 +43,14 @@ SYSTEM_PROMPT = (
     '- "code"    → involves programming, debugging, or software implementation\n'
     '- "math"    → involves calculation, equations, or proofs\n'
     '- "factual" → general knowledge not covered by other domains\n'
-    '- "project" → only used when complexity is "verify"\n'
-    '- "weather" → only used when complexity is "tool"\n'
-    '- "code_exec" → only used when complexity is "tool"\n\n'
+    '- "project" → only used when complexity is "verify"\n\n'
     "Output only the JSON object, no explanation."
 )
 
 INSTRUCTION = "Classify this query for LLM routing. Return only a JSON object."
 
-VALID_COMPLEXITY = {"simple", "medium", "hard", "verify", "tool"}
-VALID_DOMAIN     = {"factual", "math", "code", "project", "weather", "code_exec"}
+VALID_COMPLEXITY = {"simple", "medium", "hard", "verify"}
+VALID_DOMAIN     = {"factual", "math", "code", "project"}
 
 FALLBACK = {"complexity": "hard", "domain": "factual"}
 
@@ -106,8 +103,6 @@ def parse_output(raw: str) -> dict:
             return FALLBACK
         if domain == "project" and complexity != "verify":
             complexity = "verify"
-        if domain in {"weather", "code_exec"} and complexity != "tool":
-            complexity = "tool"
         return {"complexity": complexity, "domain": domain}
     except (json.JSONDecodeError, AttributeError):
         return FALLBACK

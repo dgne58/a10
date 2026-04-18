@@ -39,7 +39,23 @@ def load_dataset_from_json(path: Path):
     return Dataset.from_list(data)
 
 
-def format_prompt(row: dict) -> dict:
+def format_prompt(row: dict, tokenizer=None) -> dict:
+    # Pre-formatted rows from prepare_function_calling.py already have "text"
+    if "text" in row:
+        return row
+    # Raw rows from prepare_function_calling.py have "messages" + "tools"
+    if "messages" in row and tokenizer is not None:
+        try:
+            text = tokenizer.apply_chat_template(
+                row["messages"],
+                tools=row.get("tools"),
+                tokenize=False,
+                add_generation_prompt=False,
+            )
+            return {"text": text}
+        except Exception:
+            pass
+    # CodeAlpaca format
     instruction = row["instruction"]
     inp = row.get("input", "").strip()
     system = row.get("system", "You are an expert software engineer.")
@@ -79,11 +95,28 @@ def main() -> None:
         random_state=42,
     )
 
-    train_ds = load_dataset_from_json(DATA_DIR / "code_alpaca_train.json")
-    val_ds   = load_dataset_from_json(DATA_DIR / "code_alpaca_val.json")
+    from datasets import concatenate_datasets
 
-    train_ds = train_ds.map(format_prompt)
-    val_ds   = val_ds.map(format_prompt)
+    train_code = load_dataset_from_json(DATA_DIR / "code_alpaca_train.json")
+    val_code   = load_dataset_from_json(DATA_DIR / "code_alpaca_val.json")
+
+    # Mix in function-calling data if available (balanced pos/neg tool examples)
+    fc_train_path = DATA_DIR / "func_call_train.json"
+    fc_val_path   = DATA_DIR / "func_call_val.json"
+    if fc_train_path.exists() and fc_val_path.exists():
+        train_fc = load_dataset_from_json(fc_train_path)
+        val_fc   = load_dataset_from_json(fc_val_path)
+        print(f"[train] Mixing CodeAlpaca ({len(train_code)}) + func_call ({len(train_fc)}) ...")
+        train_ds = concatenate_datasets([train_code, train_fc]).shuffle(seed=42)
+        val_ds   = concatenate_datasets([val_code,   val_fc])
+    else:
+        print("[train] func_call data not found — run prepare_function_calling.py first for tool support.")
+        train_ds = train_code
+        val_ds   = val_code
+
+    fmt = lambda row: format_prompt(row, tokenizer)
+    train_ds = train_ds.map(fmt)
+    val_ds   = val_ds.map(fmt)
 
     OUT_ADAPTER.mkdir(parents=True, exist_ok=True)
 
