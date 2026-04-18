@@ -36,8 +36,8 @@ def code_exec(code: str) -> str:
         stdout = result.stdout.strip()
         stderr = result.stderr.strip()
         if result.returncode == 0:
-            return stdout if stdout else "(no output)"
-        return f"Error (exit {result.returncode}):\n{stderr}"
+            return stdout if stdout else stderr if stderr else "(no output)"
+        return f"Error:\n{stderr or stdout}"
     except subprocess.TimeoutExpired:
         return "Error: execution timed out (5s limit)"
     finally:

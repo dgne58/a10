@@ -58,6 +58,8 @@ def stream_model(
     max_tokens: int = 512,
     system: str | None = None,
     messages: list[dict] | None = None,
+    base_url: str | None = None,
+    api_key: str | None = None,
 ) -> Generator[str, None, None]:
     """Yield text chunks from OpenRouter streaming completions.
 
@@ -69,14 +71,18 @@ def stream_model(
         if system:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": query})
+    _sm_endpoint = f"{base_url or OPENROUTER_BASE}/chat/completions"
+    _sm_key = api_key or API_KEY
+    _sm_headers: dict = {"Content-Type": "application/json"}
+    if _sm_key:
+        _sm_headers["Authorization"] = f"Bearer {_sm_key}"
+    if not base_url:
+        _sm_headers["HTTP-Referer"] = "https://hackathon-router.dev"
+        _sm_headers["X-Title"] = "Task-Aware Cost Router"
     with httpx.stream(
         "POST",
-        f"{OPENROUTER_BASE}/chat/completions",
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "HTTP-Referer": "https://hackathon-router.dev",
-            "X-Title": "Task-Aware Cost Router",
-        },
+        _sm_endpoint,
+        headers=_sm_headers,
         json={
             "model": model_id,
             "messages": messages,
@@ -132,6 +138,8 @@ def stream_with_tools(
     messages: list[dict],
     tools: list[dict] | None = None,
     max_tokens: int = 1024,
+    base_url: str | None = None,
+    api_key: str | None = None,
 ) -> Generator[str | dict, None, None]:
     """Stream from OpenRouter with optional tool support.
 
@@ -154,14 +162,19 @@ def stream_with_tools(
 
     structured_tool_call = False
 
+    endpoint = f"{base_url or OPENROUTER_BASE}/chat/completions"
+    _key = api_key or API_KEY
+    _headers: dict = {"Content-Type": "application/json"}
+    if _key:
+        _headers["Authorization"] = f"Bearer {_key}"
+    if not base_url:
+        _headers["HTTP-Referer"] = "https://hackathon-router.dev"
+        _headers["X-Title"] = "Task-Aware Cost Router"
+
     with httpx.stream(
         "POST",
-        f"{OPENROUTER_BASE}/chat/completions",
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "HTTP-Referer": "https://hackathon-router.dev",
-            "X-Title": "Task-Aware Cost Router",
-        },
+        endpoint,
+        headers=_headers,
         json=payload,
         timeout=30.0,
     ) as resp:

@@ -111,15 +111,27 @@ def route_stream():
             return
 
         model = MODEL_MAP.get(branch, FALLBACK_MODEL)
-        rationale = build_rationale(label, branch, model)
-        yield _sse({"type": "meta", "branch": branch, "model_used": model, "rationale": rationale})
+        cheap_url = os.getenv("CHEAP_MODEL_URL", "")
+        use_local = branch == "cheap_model" and bool(cheap_url)
+        if use_local:
+            actual_model = "llama-8b-code"
+            display_model = "llama-8b-code (local)"
+        else:
+            actual_model = model
+            display_model = model
+        rationale = build_rationale(label, branch, actual_model)
+        yield _sse({"type": "meta", "branch": branch, "model_used": display_model, "rationale": rationale})
 
         t0 = time.monotonic()
         full_text = ""
         messages = [{"role": "user", "content": query}]
 
         try:
-            for item in stream_with_tools(model, messages, tools=TOOL_DEFINITIONS):
+            stream_kwargs = {"tools": TOOL_DEFINITIONS}
+            if use_local:
+                stream_kwargs["base_url"] = cheap_url
+                stream_kwargs["api_key"] = "none"
+            for item in stream_with_tools(actual_model, messages, **stream_kwargs):
                 if isinstance(item, str):
                     full_text += item
                     yield _sse({"type": "token", "text": item})
@@ -139,7 +151,10 @@ def route_stream():
                         {"role": "assistant", "content": None, "tool_calls": [tc]},
                         {"role": "tool", "tool_call_id": tc["id"], "content": tool_result},
                     ]
-                    for tok in stream_model(model, "", messages=followup_messages):
+                    followup_kwargs = {}
+                    if use_local:
+                        followup_kwargs = {"base_url": cheap_url, "api_key": "none"}
+                    for tok in stream_model(actual_model, "", messages=followup_messages, **followup_kwargs):
                         full_text += tok
                         yield _sse({"type": "token", "text": tok})
                     break  # tool handled — don't re-enter the outer stream
@@ -156,7 +171,7 @@ def route_stream():
 
         latency_ms = int((time.monotonic() - t0) * 1000)
         approx_tokens = max(1, len(full_text.split()) * 1.3)
-        cost_usd = round((approx_tokens / 1_000_000) * COST_PER_1M.get(model, 0.35), 8)
+        cost_usd = 0.0 if use_local else round((approx_tokens / 1_000_000) * COST_PER_1M.get(actual_model, 0.35), 8)
         naive_cost_usd = round((approx_tokens / 1_000_000) * COST_PER_1M.get("openai/gpt-4o", 2.50), 8)
         yield _sse({"type": "done", "cost_usd": cost_usd,
                     "naive_cost_usd": naive_cost_usd, "latency_ms": latency_ms})

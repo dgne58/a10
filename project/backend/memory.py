@@ -3,7 +3,7 @@ import re
 from glob import glob
 
 WIKI_ROOT = os.environ.get("ROUTER_WIKI_PATH", os.path.join(os.path.dirname(__file__), "..", "..", "Wiki"))
-SCORE_THRESHOLD = 12.0
+SCORE_THRESHOLD = 8.0
 
 # Files that contain planning/demo content rather than reference knowledge
 _EXCLUDED_PATTERNS = ("design-doc", "design_doc", "demo", "clipping")
