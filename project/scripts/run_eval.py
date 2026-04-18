@@ -93,11 +93,6 @@ def run():
         branch = select_branch(label)
         model  = select_model(label)
 
-        if model is None:
-            model  = MODEL_MAP["cheap_model"]
-            branch = "cheap_model"
-            print(f"  [!] verify branch on q{i+1}, forcing cheap_model")
-
         router_result = call_model(model, prompt, max_tokens=10)
         router_ans    = extract_answer(router_result["answer"])
         router_cost   = compute_cost(router_result["usage"], model)

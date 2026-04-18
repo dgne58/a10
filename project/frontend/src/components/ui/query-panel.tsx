@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu, Wrench } from "lucide-react";
+import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Cpu, Wrench } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
@@ -33,8 +33,9 @@ const BRANCH_META: Record<string, {
   cheap_model:       { label: "Fast",    color: "text-blue-400",    bg: "bg-blue-500/15",    border: "border-blue-500/40",    Icon: Zap },
   mid_model:         { label: "Mid",     color: "text-amber-400",   bg: "bg-amber-500/15",   border: "border-amber-500/40",   Icon: Cpu },
   strong_model:      { label: "Strong",  color: "text-orange-400",  bg: "bg-orange-500/15",  border: "border-orange-500/40",  Icon: Brain },
-  verification_tool: { label: "Verify",  color: "text-violet-400",  bg: "bg-violet-500/15",  border: "border-violet-500/40",  Icon: Search },
 };
+
+const PROMPT_BRANCHES = ["memory_answer", "cheap_model", "mid_model", "strong_model"] as const;
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -368,7 +369,7 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
 
         {/* Active branch chips — light up when response arrives */}
         <div className="flex flex-wrap justify-center gap-2">
-          {(Object.keys(BRANCH_META) as Array<keyof typeof BRANCH_META>).map((b) => {
+          {PROMPT_BRANCHES.map((b) => {
             const { label, color, bg, border, Icon } = BRANCH_META[b];
             const active = meta?.branch === b;
             return (

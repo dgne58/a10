@@ -23,8 +23,8 @@
 ```json
 {
   "answer": "...",
-  "task_category": "wiki_lookup | simple_synthesis | hard_reasoning | local_verification",
-  "selected_path": "wiki_answer | cheap_model | strong_model | verification_tool",
+  "task_category": "memory_lookup | simple_synthesis | medium_synthesis | hard_reasoning",
+  "selected_path": "memory_answer | cheap_model | mid_model | strong_model",
   "model_used": "...",
   "rationale": "...",
   "cost_usd": 0.0,

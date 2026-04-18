@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   X,
-  Zap, Brain, Database, Search, Cpu,
+  Zap, Brain, Database, Cpu,
   CheckCircle, XCircle, TrendingDown,
 } from "lucide-react";
 
@@ -58,8 +58,6 @@ const BRANCH_META: Record<string, {
   cheap_model:       { label: "Fast",   barColor: "#94C9E9", textColor: "#1A6A99", Icon: Zap },
   mid_model:         { label: "Mid",    barColor: "#CAB3D6", textColor: "#6B3FA0", Icon: Cpu },
   strong_model:      { label: "Strong", barColor: "#F55702", textColor: "#B33D00", Icon: Brain },
-  tool_call:         { label: "Tool",   barColor: "#4DD0E1", textColor: "#00838F", Icon: Zap },
-  verification_tool: { label: "Verify", barColor: "#F5AA64", textColor: "#9A5A00", Icon: Search },
 };
 
 function hexAlpha(hex: string, alpha: number): string {

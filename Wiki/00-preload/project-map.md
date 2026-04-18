@@ -9,8 +9,8 @@
 - The actual problem is "which execution path is cheapest and sufficient for this request?"
 - Some requests are already answerable from local project memory.
 - Some requests need cheap synthesis.
+- Some requests need a medium-strength model.
 - Some requests need a stronger model.
-- Some requests require grounded local verification.
 
 ## Current System Shape
 - `Clippings/`: immutable external references.
@@ -24,7 +24,6 @@
 - Routing layer to choose the execution branch.
 - Local wiki/memory layer.
 - OpenRouter-backed model access layer.
-- Deterministic local verification layer.
 - Trace and fallback layer.
 
 ## Core Hackathon Components
@@ -38,9 +37,10 @@
 - A request enters through an app or API surface.
 - The system first checks whether the answer is already in the local wiki.
 - If not, it routes among:
+  - `mid_model`
   - `cheap_model`
   - `strong_model`
-  - `verification_tool`
+- Project/codebase questions still start with local memory before falling back to `cheap_model`.
 - OpenRouter is the model access layer, not the whole product.
 - Every response carries a visible routing trace.
 - The demo shows that the system chooses the cheapest sufficient branch, not just the cheapest model.
@@ -56,10 +56,9 @@
 - `frontend/src/`: query UI plus trace/eval display
 
 ## Known Gaps
-- No concrete code files exist yet.
-- The allowlist for the verification path is not locked yet.
-- The exact cheap/strong model pair is not locked yet.
-- The final mixed eval set does not exist yet.
+- Some preload/design pages still describe older branch names and need continued cleanup.
+- The exact cheap/mid/strong model lineup may still change as evals improve.
+- The final mixed eval artifacts should be refreshed after routing taxonomy changes.
 
 ## Related
 - [[file-map]]

@@ -164,9 +164,6 @@ def call_router(prompt: str) -> tuple[str, str, float]:
     label = classify(prompt)
     branch = select_branch(label)
 
-    if branch in {"verification_tool", "memory_answer"}:
-        branch = "cheap_model"
-
     model = MODEL_MAP.get(branch, FALLBACK_MODEL)
     result = call_model(model, prompt, max_tokens=1024, system=CODE_SYSTEM)
     return extract_code(result["answer"]), branch, result["cost_usd"]

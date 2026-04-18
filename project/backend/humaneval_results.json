@@ -26,7 +26,7 @@
     "router_pass": true,
     "router_cost": 0.000681,
     "naive_pass": true,
-    "naive_cost": 0.000681,
+    "naive_cost": 0.000696,
     "label": "strong_model"
   },
   {
@@ -56,7 +56,7 @@
     "router_pass": true,
     "router_cost": 6.475e-05,
     "naive_pass": true,
-    "naive_cost": 0.000906,
+    "naive_cost": 0.000669,
     "label": "mid_model"
   },
   {
@@ -64,7 +64,7 @@
     "router_branch": "strong_model",
     "router_model": "anthropic/claude-sonnet-4.6",
     "router_pass": true,
-    "router_cost": 0.001209,
+    "router_cost": 0.001251,
     "naive_pass": true,
     "naive_cost": 0.001251,
     "label": "strong_model"
@@ -74,7 +74,7 @@
     "router_branch": "mid_model",
     "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_pass": true,
-    "router_cost": 5.04e-05,
+    "router_cost": 5.67e-05,
     "naive_pass": true,
     "naive_cost": 0.000804,
     "label": "mid_model"
@@ -96,7 +96,7 @@
     "router_pass": true,
     "router_cost": 0.000651,
     "naive_pass": true,
-    "naive_cost": 0.000651,
+    "naive_cost": 0.000891,
     "label": "strong_model"
   },
   {
@@ -114,7 +114,7 @@
     "router_branch": "strong_model",
     "router_model": "anthropic/claude-sonnet-4.6",
     "router_pass": true,
-    "router_cost": 0.000714,
+    "router_cost": 0.000702,
     "naive_pass": true,
     "naive_cost": 0.000702,
     "label": "strong_model"
@@ -144,7 +144,7 @@
     "router_branch": "mid_model",
     "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_pass": true,
-    "router_cost": 4.375e-05,
+    "router_cost": 4.55e-05,
     "naive_pass": true,
     "naive_cost": 0.000549,
     "label": "mid_model"
@@ -164,9 +164,9 @@
     "router_branch": "mid_model",
     "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_pass": true,
-    "router_cost": 4.445e-05,
+    "router_cost": 4.48e-05,
     "naive_pass": true,
-    "naive_cost": 0.000591,
+    "naive_cost": 0.00042,
     "label": "mid_model"
   },
   {
@@ -174,7 +174,7 @@
     "router_branch": "strong_model",
     "router_model": "anthropic/claude-sonnet-4.6",
     "router_pass": true,
-    "router_cost": 0.000969,
+    "router_cost": 0.001371,
     "naive_pass": true,
     "naive_cost": 0.00093,
     "label": "strong_model"
@@ -184,9 +184,9 @@
     "router_branch": "mid_model",
     "router_model": "meta-llama/llama-3.1-70b-instruct",
     "router_pass": true,
-    "router_cost": 7e-05,
+    "router_cost": 6.86e-05,
     "naive_pass": true,
-    "naive_cost": 0.00093,
+    "naive_cost": 0.000696,
     "label": "mid_model"
   },
   {
@@ -196,7 +196,1447 @@
     "router_pass": true,
     "router_cost": 0.001245,
     "naive_pass": true,
-    "naive_cost": 0.001344,
+    "naive_cost": 0.000996,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/20",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001494,
+    "naive_pass": true,
+    "naive_cost": 0.001512,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/21",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001035,
+    "naive_pass": true,
+    "naive_cost": 0.001035,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/22",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.46e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000744,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/23",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_pass": true,
+    "router_cost": 6.2e-06,
+    "naive_pass": true,
+    "naive_cost": 0.000387,
+    "label": "cheap_model"
+  },
+  {
+    "task_id": "HumanEval/24",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.69e-05,
+    "naive_pass": true,
+    "naive_cost": 0.00054,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/25",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001152,
+    "naive_pass": true,
+    "naive_cost": 0.001152,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/26",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000762,
+    "naive_pass": true,
+    "naive_cost": 0.000762,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/27",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.095e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000465,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/28",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 3.885e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000528,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/29",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.425e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000555,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/30",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.02e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000885,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/31",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.58e-05,
+    "naive_pass": true,
+    "naive_cost": 0.001044,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/32",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": false,
+    "router_cost": 0.001914,
+    "naive_pass": false,
+    "naive_cost": 0.001914,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/33",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000828,
+    "naive_pass": true,
+    "naive_cost": 0.000825,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/34",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.305e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000585,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/35",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.62e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000717,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/36",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.02e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000789,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/37",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000753,
+    "naive_pass": true,
+    "naive_cost": 0.000744,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/38",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001542,
+    "naive_pass": true,
+    "naive_cost": 0.00156,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/39",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 8.855e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000831,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/40",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00099,
+    "naive_pass": true,
+    "naive_cost": 0.00099,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/41",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001119,
+    "naive_pass": true,
+    "naive_cost": 0.001119,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/42",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.775e-05,
+    "naive_pass": true,
+    "naive_cost": 0.00087,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/43",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001335,
+    "naive_pass": true,
+    "naive_cost": 0.000822,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/44",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.95e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000879,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/45",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_pass": true,
+    "router_cost": 5.05e-06,
+    "naive_pass": true,
+    "naive_cost": 0.000435,
+    "label": "cheap_model"
+  },
+  {
+    "task_id": "HumanEval/46",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001128,
+    "naive_pass": true,
+    "naive_cost": 0.001128,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/47",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.265e-05,
+    "naive_pass": true,
+    "naive_cost": 0.00081,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/48",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.375e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000648,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/49",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.845e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000789,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/50",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": false,
+    "router_cost": 0.000645,
+    "naive_pass": false,
+    "naive_cost": 0.000645,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/51",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.755e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000678,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/52",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.865e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000657,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/53",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_pass": true,
+    "router_cost": 5.45e-06,
+    "naive_pass": true,
+    "naive_cost": 0.000444,
+    "label": "cheap_model"
+  },
+  {
+    "task_id": "HumanEval/54",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 7.07e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000756,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/55",
+    "router_branch": "cheap_model",
+    "router_model": "meta-llama/llama-3.1-8b-instruct",
+    "router_pass": true,
+    "router_cost": 6.15e-06,
+    "naive_pass": true,
+    "naive_cost": 0.000672,
+    "label": "cheap_model"
+  },
+  {
+    "task_id": "HumanEval/56",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.86e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000615,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/57",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.65e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000897,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/58",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00087,
+    "naive_pass": true,
+    "naive_cost": 0.000876,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/59",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.11e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000756,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/60",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.46e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000816,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/61",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.44e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000621,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/62",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000876,
+    "naive_pass": true,
+    "naive_cost": 0.000876,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/63",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001065,
+    "naive_pass": true,
+    "naive_cost": 0.001065,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/64",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001557,
+    "naive_pass": true,
+    "naive_cost": 0.001467,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/65",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000591,
+    "naive_pass": true,
+    "naive_cost": 0.000852,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/66",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000558,
+    "naive_pass": true,
+    "naive_cost": 0.000558,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/67",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00102,
+    "naive_pass": true,
+    "naive_cost": 0.001029,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/68",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001506,
+    "naive_pass": true,
+    "naive_cost": 0.001506,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/69",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000822,
+    "naive_pass": true,
+    "naive_cost": 0.000807,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/70",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001182,
+    "naive_pass": true,
+    "naive_cost": 0.001176,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/71",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000792,
+    "naive_pass": true,
+    "naive_cost": 0.00078,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/72",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000975,
+    "naive_pass": true,
+    "naive_cost": 0.000975,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/73",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001263,
+    "naive_pass": true,
+    "naive_cost": 0.00081,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/74",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001032,
+    "naive_pass": true,
+    "naive_cost": 0.001032,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/75",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001152,
+    "naive_pass": true,
+    "naive_cost": 0.001221,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/76",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000783,
+    "naive_pass": true,
+    "naive_cost": 0.000783,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/77",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000603,
+    "naive_pass": true,
+    "naive_cost": 0.00063,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/78",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001281,
+    "naive_pass": true,
+    "naive_cost": 0.001281,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/79",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000657,
+    "naive_pass": true,
+    "naive_cost": 0.000657,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/80",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000714,
+    "naive_pass": true,
+    "naive_cost": 0.000714,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/81",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001926,
+    "naive_pass": true,
+    "naive_cost": 0.001926,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/82",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 8.05e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000552,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/83",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": false,
+    "router_cost": 4.83e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000978,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/84",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000669,
+    "naive_pass": true,
+    "naive_cost": 0.000657,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/85",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 4.41e-05,
+    "naive_pass": true,
+    "naive_cost": 0.00057,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/86",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000654,
+    "naive_pass": true,
+    "naive_cost": 0.001134,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/87",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001266,
+    "naive_pass": true,
+    "naive_cost": 0.001203,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/88",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000975,
+    "naive_pass": true,
+    "naive_cost": 0.000975,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/89",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000843,
+    "naive_pass": true,
+    "naive_cost": 0.000744,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/90",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000642,
+    "naive_pass": true,
+    "naive_cost": 0.000642,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/91",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000717,
+    "naive_pass": true,
+    "naive_cost": 0.000717,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/92",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00078,
+    "naive_pass": true,
+    "naive_cost": 0.00078,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/93",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000924,
+    "naive_pass": true,
+    "naive_cost": 0.000924,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/94",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001461,
+    "naive_pass": true,
+    "naive_cost": 0.001461,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/95",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001107,
+    "naive_pass": true,
+    "naive_cost": 0.000984,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/96",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000912,
+    "naive_pass": true,
+    "naive_cost": 0.000912,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/97",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000516,
+    "naive_pass": true,
+    "naive_cost": 0.000516,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/98",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.215e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000801,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/99",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001449,
+    "naive_pass": true,
+    "naive_cost": 0.000867,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/100",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001101,
+    "naive_pass": true,
+    "naive_cost": 0.000696,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/101",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000612,
+    "naive_pass": true,
+    "naive_cost": 0.000627,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/102",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.0006,
+    "naive_pass": true,
+    "naive_cost": 0.00093,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/103",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000702,
+    "naive_pass": true,
+    "naive_cost": 0.000702,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/104",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000951,
+    "naive_pass": true,
+    "naive_cost": 0.001032,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/105",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001341,
+    "naive_pass": true,
+    "naive_cost": 0.001326,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/106",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000846,
+    "naive_pass": true,
+    "naive_cost": 0.001239,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/107",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001179,
+    "naive_pass": true,
+    "naive_cost": 0.0012,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/108",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00141,
+    "naive_pass": true,
+    "naive_cost": 0.000846,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/109",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001539,
+    "naive_pass": true,
+    "naive_cost": 0.001545,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/110",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001056,
+    "naive_pass": true,
+    "naive_cost": 0.001062,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/111",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000894,
+    "naive_pass": true,
+    "naive_cost": 0.000906,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/112",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000777,
+    "naive_pass": true,
+    "naive_cost": 0.000777,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/113",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000975,
+    "naive_pass": true,
+    "naive_cost": 0.000996,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/114",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 6.335e-05,
+    "naive_pass": true,
+    "naive_cost": 0.0009,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/115",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001293,
+    "naive_pass": true,
+    "naive_cost": 0.001293,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/116",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001281,
+    "naive_pass": true,
+    "naive_cost": 0.001281,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/117",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001026,
+    "naive_pass": true,
+    "naive_cost": 0.001023,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/118",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001077,
+    "naive_pass": true,
+    "naive_cost": 0.001056,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/119",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001092,
+    "naive_pass": true,
+    "naive_cost": 0.001092,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/120",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000885,
+    "naive_pass": true,
+    "naive_cost": 0.000885,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/121",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000549,
+    "naive_pass": true,
+    "naive_cost": 0.000549,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/122",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000636,
+    "naive_pass": true,
+    "naive_cost": 0.000636,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/123",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001164,
+    "naive_pass": true,
+    "naive_cost": 0.001962,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/124",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.0018,
+    "naive_pass": true,
+    "naive_cost": 0.001818,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/125",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00084,
+    "naive_pass": true,
+    "naive_cost": 0.00084,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/126",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001098,
+    "naive_pass": true,
+    "naive_cost": 0.001284,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/127",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00141,
+    "naive_pass": true,
+    "naive_cost": 0.00141,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/128",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000795,
+    "naive_pass": true,
+    "naive_cost": 0.000831,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/129",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.003309,
+    "naive_pass": true,
+    "naive_cost": 0.003456,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/130",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001299,
+    "naive_pass": true,
+    "naive_cost": 0.001263,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/131",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": false,
+    "router_cost": 5.635e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000768,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/132",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001056,
+    "naive_pass": true,
+    "naive_cost": 0.001056,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/133",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001158,
+    "naive_pass": true,
+    "naive_cost": 0.000702,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/134",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000996,
+    "naive_pass": true,
+    "naive_cost": 0.001071,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/135",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000582,
+    "naive_pass": true,
+    "naive_cost": 0.000582,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/136",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00081,
+    "naive_pass": true,
+    "naive_cost": 0.00081,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/137",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000939,
+    "naive_pass": true,
+    "naive_cost": 0.000897,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/138",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000495,
+    "naive_pass": true,
+    "naive_cost": 0.000495,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/139",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000963,
+    "naive_pass": true,
+    "naive_cost": 0.000963,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/140",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000849,
+    "naive_pass": true,
+    "naive_cost": 0.000849,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/141",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001314,
+    "naive_pass": true,
+    "naive_cost": 0.001314,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/142",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001392,
+    "naive_pass": true,
+    "naive_cost": 0.001392,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/143",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000939,
+    "naive_pass": true,
+    "naive_cost": 0.000939,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/144",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000882,
+    "naive_pass": true,
+    "naive_cost": 0.000834,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/145",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000834,
+    "naive_pass": true,
+    "naive_cost": 0.000834,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/146",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.0009,
+    "naive_pass": true,
+    "naive_cost": 0.000828,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/147",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001044,
+    "naive_pass": true,
+    "naive_cost": 0.001044,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/148",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001188,
+    "naive_pass": true,
+    "naive_cost": 0.001188,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/149",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000906,
+    "naive_pass": true,
+    "naive_cost": 0.000906,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/150",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000843,
+    "naive_pass": true,
+    "naive_cost": 0.000603,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/151",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.00117,
+    "naive_pass": true,
+    "naive_cost": 0.001233,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/152",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000942,
+    "naive_pass": true,
+    "naive_cost": 0.000942,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/153",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001407,
+    "naive_pass": true,
+    "naive_cost": 0.001416,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/154",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001116,
+    "naive_pass": true,
+    "naive_cost": 0.00111,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/155",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.74e-05,
+    "naive_pass": true,
+    "naive_cost": 0.00081,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/156",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 0.000105,
+    "naive_pass": true,
+    "naive_cost": 0.001077,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/157",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000996,
+    "naive_pass": true,
+    "naive_cost": 0.000996,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/158",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000633,
+    "naive_pass": true,
+    "naive_cost": 0.000633,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/159",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001188,
+    "naive_pass": true,
+    "naive_cost": 0.001188,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/160",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.001005,
+    "naive_pass": true,
+    "naive_cost": 0.001005,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/161",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000675,
+    "naive_pass": true,
+    "naive_cost": 0.001146,
+    "label": "strong_model"
+  },
+  {
+    "task_id": "HumanEval/162",
+    "router_branch": "mid_model",
+    "router_model": "meta-llama/llama-3.1-70b-instruct",
+    "router_pass": true,
+    "router_cost": 5.18e-05,
+    "naive_pass": true,
+    "naive_cost": 0.000531,
+    "label": "mid_model"
+  },
+  {
+    "task_id": "HumanEval/163",
+    "router_branch": "strong_model",
+    "router_model": "anthropic/claude-sonnet-4.6",
+    "router_pass": true,
+    "router_cost": 0.000648,
+    "naive_pass": true,
+    "naive_cost": 0.000636,
     "label": "strong_model"
   }
 ]

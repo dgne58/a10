@@ -566,6 +566,35 @@ Verification:
 Observed result:
 - `run_humaneval.py --limit 1` completed successfully with `Router pass@1: 1/1` and `Naive pass@1: 1/1` using Claude Sonnet.
 
+## [2026-04-18 17:05] ui | remove Verify chip from prompt area
+
+What changed:
+- Removed the `Verify` branch chip from the frontend prompt-area branch selector row in `project/frontend/src/components/ui/query-panel.tsx`.
+- Kept the underlying `verification_tool` branch metadata intact so route traces can still render correctly if the backend returns that branch.
+
+Why:
+- The user wanted the `Verify` control removed from the frontend model prompting area without changing backend routing behavior.
+
+Verification:
+- `cd project/frontend && npm run build`
+
+## [2026-04-18 17:25] refactor | collapse surfaced router branches to four options
+
+What changed:
+- Removed the separate surfaced `verification_tool` path from the backend router, Flask app, training prompt/schema, CLI seed text, and frontend branch metadata.
+- Kept tool use as an internal capability of the local cheap path instead of a user-facing router option.
+- Updated project/codebase questions to classify as `simple` + `factual`, so they hit memory first and fall back to `cheap_model` on memory miss.
+- Removed the dead backend verifier module and updated preload wiki pages to reflect the current four-option branch set.
+
+Why:
+- The user wanted the router to expose only four choices: `memory_answer`, `cheap_model`, `mid_model`, and `strong_model`.
+- A separate verification branch no longer fit the product surface once project lookups were folded into the memory-first path.
+
+Verification:
+- `cd project && python -m unittest tests.test_run_humaneval tests.test_router_eval_contract`
+- `cd project && python -m py_compile backend\\app.py backend\\router.py scripts\\run_eval.py scripts\\run_humaneval.py training\\serve.py training\\integrate.py training\\prepare_dataset.py cli.py`
+- `cd project/frontend && npm run build`
+
 ## 2026-04-17
 
 Summary:

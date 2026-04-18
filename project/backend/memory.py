@@ -33,7 +33,7 @@ SEED_PAIRS = [
         "answer": (
             "This system is a branch router. Every query is routed to the cheapest "
             "sufficient execution path: local memory (free), cheap model, mid model, "
-            "strong model, tool call (free), or local verification (free). Every response "
+            "or strong model. Every response "
             "includes a visible trace showing which branch was chosen and why."
         ),
         "source": "Wiki/00-preload/project-map.md",

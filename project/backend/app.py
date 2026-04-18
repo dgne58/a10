@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 from router import route_and_call, classify, select_branch, build_rationale, _naive_cost
 from memory import check_memory
-from verifier import run_verification
 from tools import TOOL_DEFINITIONS, dispatch_tool
 from openrouter import stream_model, stream_with_tools, stream_local_rag, call_with_fallback, compute_cost
 from config import MODEL_MAP, FALLBACK_MODEL, COST_PER_1M
@@ -102,14 +101,6 @@ def route_stream():
         branch = select_branch(label)
 
         # Verification — no model call
-        if branch == "verification_tool":
-            result = run_verification(query)
-            yield _sse({"type": "meta", "branch": "verification_tool", "model_used": None,
-                        "rationale": result["rationale"]})
-            yield _sse({"type": "token", "text": result["answer"]})
-            yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": 5})
-            return
-
         model = MODEL_MAP.get(branch, FALLBACK_MODEL)
         cheap_url = os.getenv("CHEAP_MODEL_URL", "")
         use_local = branch == "cheap_model" and bool(cheap_url)
@@ -279,7 +270,7 @@ def eval_confusion():
     if not os.path.exists(HUMANEVAL_PATH):
         return jsonify({"error": "humaneval_results.json not found"}), 404
     data = json.load(open(HUMANEVAL_PATH))
-    branches = ["memory_answer", "cheap_model", "mid_model", "strong_model", "verification_tool"]
+    branches = ["memory_answer", "cheap_model", "mid_model", "strong_model"]
     matrix: dict = {b: {b2: 0 for b2 in branches} for b in branches}
     for r in data:
         actual = r.get("router_branch", "cheap_model")

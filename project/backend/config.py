@@ -1,10 +1,10 @@
 MODEL_MAP = {
     "cheap_model":       "meta-llama/llama-3.1-8b-instruct",
     "mid_model":         "meta-llama/llama-3.1-70b-instruct",
-    "strong_model":      "anthropic/claude-sonnet-4.6",
+    "strong_model":      "anthropic/claude-haiku-4.5",
 }
 
-FALLBACK_MODEL = "anthropic/claude-haiku-4.5"
+FALLBACK_MODEL = "anthropic/claude-sonnet-4.6"
 
 COST_PER_1M = {
     "meta-llama/llama-3.1-8b-instruct":  0.05,
@@ -20,6 +20,4 @@ BRANCH_COLORS = {
     "cheap_model":       "blue",
     "mid_model":         "yellow",
     "strong_model":      "orange",
-    "tool_call":         "teal",
-    "verification_tool": "purple",
 }

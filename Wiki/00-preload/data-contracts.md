@@ -7,7 +7,6 @@
 - route request
 - routing trace
 - route response
-- local verification result
 - evaluation summary
 - evaluation row
 
@@ -34,11 +33,11 @@
 
 ```json
 {
-  "task_category": "wiki_lookup | simple_synthesis | hard_reasoning | local_verification",
-  "selected_path": "wiki_answer | cheap_model | strong_model | verification_tool",
+  "task_category": "memory_lookup | simple_synthesis | medium_synthesis | hard_reasoning",
+  "selected_path": "memory_answer | cheap_model | mid_model | strong_model",
   "rationale": "...",
   "fallback_available": true,
-  "cost_tier": "free | cheap | expensive"
+  "cost_tier": "free | cheap | medium | expensive"
 }
 ```
 
@@ -55,8 +54,8 @@
 ```json
 {
   "answer": "...",
-  "task_category": "local_verification",
-  "selected_path": "verification_tool",
+  "task_category": "memory_lookup",
+  "selected_path": "memory_answer",
   "model_used": null,
   "rationale": "...",
   "cost_usd": 0.0,
@@ -76,18 +75,6 @@
 - Optional fields:
   - `model_used`
   - `source_refs`
-
-### Local Verification Result
-- Producers: verification path
-- Consumers: route response assembly
-- Shape:
-
-```json
-{
-  "fact": "...",
-  "source": "Wiki/00-preload/file-map.md"
-}
-```
 
 ### Evaluation Summary
 - Producers: offline eval script

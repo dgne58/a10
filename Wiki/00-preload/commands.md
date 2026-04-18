@@ -6,6 +6,7 @@
 - `python -m unittest tests.test_run_humaneval` is a working regression test for the HumanEval extraction and execution harness.
 - The OpenRouter-backed Anthropic model slugs now target `anthropic/claude-haiku-4.5` and `anthropic/claude-sonnet-4.6` instead of the previous OpenAI defaults.
 - `python scripts/run_eval.py` imports cleanly again after restoring `router.select_model()` compatibility.
+- The surfaced router branch set is now limited to `memory_answer`, `cheap_model`, `mid_model`, and `strong_model`; project/codebase questions are memory-first instead of using a separate verification branch.
 
 ## Working Commands
 

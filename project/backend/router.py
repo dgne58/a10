@@ -1,26 +1,25 @@
-from config import MODEL_MAP, FALLBACK_MODEL, COST_PER_1M
-from openrouter import call_with_fallback, compute_cost
+from config import COST_PER_1M, FALLBACK_MODEL, MODEL_MAP
 from memory import check_memory
-from verifier import run_verification
+from openrouter import call_with_fallback, compute_cost
 
 HARD_KEYWORDS = {
     "why", "explain", "compare", "analyze", "critique",
-    "implications", "evaluate", "derive", "prove", "pros and cons"
+    "implications", "evaluate", "derive", "prove", "pros and cons",
 }
 MEDIUM_KEYWORDS = {
-    "how", "describe", "summarize", "difference between", "steps to", "what causes"
+    "how", "describe", "summarize", "difference between", "steps to", "what causes",
 }
 CODE_KEYWORDS = {
     "code", "function", "debug", "python", "javascript",
-    "implement", "algorithm", "class", "error", "typescript"
+    "implement", "algorithm", "class", "error", "typescript",
 }
 MATH_KEYWORDS = {
     "calculate", "solve", "equation", "integral",
-    "derivative", "probability", "theorem", "proof"
+    "derivative", "probability", "theorem", "proof",
 }
-VERIFY_KEYWORDS = {
+PROJECT_KEYWORDS = {
     "what does the project", "what models does", "what architecture",
-    "what files", "which wiki", "what is the routing", "what components"
+    "what files", "which wiki", "what is the routing", "what components",
 }
 
 
@@ -28,8 +27,10 @@ def classify(query: str) -> dict:
     q = query.lower()
     word_count = len(query.split())
 
-    if any(w in q for w in VERIFY_KEYWORDS):
-        return {"complexity": "verify", "domain": "project"}
+    # Project/codebase questions should still go memory first, then fall
+    # through to the cheapest model path if memory misses.
+    if any(w in q for w in PROJECT_KEYWORDS):
+        return {"complexity": "simple", "domain": "factual"}
 
     if any(w in q for w in CODE_KEYWORDS):
         domain = "code"
@@ -49,35 +50,30 @@ def classify(query: str) -> dict:
 
 
 def select_branch(label: dict) -> str:
-    if label["complexity"] == "verify":
-        return "verification_tool"
     mapping = {
         "simple": "cheap_model",
         "medium": "mid_model",
-        "hard":   "strong_model",
+        "hard": "strong_model",
     }
     return mapping.get(label["complexity"], "strong_model")
 
 
-def select_model(label: dict) -> str | None:
+def select_model(label: dict) -> str:
     branch = select_branch(label)
-    if branch == "verification_tool":
-        return None
     return MODEL_MAP.get(branch, FALLBACK_MODEL)
 
 
 def build_rationale(label: dict, branch: str, model_id: str | None) -> str:
     branch_labels = {
-        "memory_answer":     "answered from local memory",
-        "verification_tool": "grounded from local project file",
-        "cheap_model":       f"simple query → cheapest model ({model_id})",
-        "mid_model":         f"medium query → mid-tier model ({model_id})",
-        "strong_model":      f"hard query → strong model ({model_id})",
+        "memory_answer": "answered from local memory",
+        "cheap_model": f"simple query -> cheapest model ({model_id})",
+        "mid_model": f"medium query -> mid-tier model ({model_id})",
+        "strong_model": f"hard query -> strong model ({model_id})",
     }
     complexity = label.get("complexity", "")
     domain = label.get("domain", "")
     label_str = f"{complexity} {domain}".strip().capitalize()
-    return f"{label_str} — {branch_labels.get(branch, branch)}"
+    return f"{label_str} - {branch_labels.get(branch, branch)}"
 
 
 def _naive_cost(usage: dict) -> float:
@@ -86,19 +82,12 @@ def _naive_cost(usage: dict) -> float:
 
 
 def route_and_call(query: str) -> dict:
-    # Memory check — free, no API call
     memory_hit = check_memory(query)
     if memory_hit:
         return memory_hit
 
     label = classify(query)
     branch = select_branch(label)
-
-    # Verification — free, no API call
-    if branch == "verification_tool":
-        return run_verification(query)
-
-    # Model branches
     model = MODEL_MAP.get(branch, FALLBACK_MODEL)
     result = call_with_fallback(model, query)
     actual_model = FALLBACK_MODEL if result["used_fallback"] else model

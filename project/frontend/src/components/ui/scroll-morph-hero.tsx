@@ -239,7 +239,7 @@ export default function IntroAnimation() {
                 num: "01",
                 label: "What it is",
                 title: "Task-Aware LLM Router",
-                body: "Every query is classified by complexity and domain, then sent to the cheapest sufficient path — local memory, 8B, 70B, GPT-4o Mini, or local file verification. No single model handles everything.",
+                body: "Every query is classified by complexity and domain, then sent to the cheapest sufficient path: local memory, the local cheap model, the medium OpenRouter model, or the strong OpenRouter model. No single path handles everything.",
               },
               {
                 num: "02",

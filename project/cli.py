@@ -56,7 +56,6 @@ _COLORS = {
     "mid_model":         "\033[93m",
     "strong_model":      "\033[91m",
     "tool_call":         "\033[96m",
-    "verification_tool": "\033[95m",
 }
 
 # ── Tool definitions (OpenAI function calling format) ─────────────────────────
@@ -159,15 +158,15 @@ def search_wiki(query: str) -> dict | None:
 _HARD_KW   = {"why", "explain", "compare", "analyze", "critique", "evaluate", "derive", "prove"}
 _MEDIUM_KW = {"how", "describe", "summarize", "difference between", "steps to", "what causes"}
 _CODE_KW   = {"code", "function", "debug", "python", "javascript", "implement", "algorithm", "class", "typescript"}
-_VERIFY_KW = {"what does the project", "what models does", "what architecture",
+_PROJECT_KW = {"what does the project", "what models does", "what architecture",
               "what files", "which wiki", "what is the routing", "what components"}
 
 
 def _rules_classify(query: str) -> dict:
     q  = query.lower()
     wc = len(query.split())
-    if any(k in q for k in _VERIFY_KW):
-        return {"complexity": "verify", "domain": "project"}
+    if any(k in q for k in _PROJECT_KW):
+        return {"complexity": "simple", "domain": "factual"}
     domain = "code" if any(k in q for k in _CODE_KW) else "factual"
     if any(k in q for k in _HARD_KW) or wc > 40:
         c = "hard"
@@ -197,8 +196,6 @@ def classify(query: str) -> dict:
 
 def select_branch(label: dict) -> str:
     c = label.get("complexity", "hard")
-    if c == "verify":
-        return "verification_tool"
     return {"simple": "cheap_model", "medium": "mid_model"}.get(c, "strong_model")
 
 # ── Tool execution ────────────────────────────────────────────────────────────
@@ -448,7 +445,7 @@ def route(query: str) -> None:
 
     SEED_TRIGGERS = {
         "what is routellm": "RouteLLM is a UC Berkeley + Anyscale router paper (arXiv:2406.18665). Up to 3.66x cost reduction on MT-Bench.",
-        "what does this project do": "Branch router: routes queries to memory, cheap/mid/strong model, tool, or verification — cheapest sufficient path.",
+        "what does this project do": "Branch router: routes queries to local memory, cheap model, mid model, or strong model — cheapest sufficient path.",
     }
     for trigger, answer in SEED_TRIGGERS.items():
         if trigger in query.lower():
@@ -470,14 +467,6 @@ def route(query: str) -> None:
     label  = classify(query)
     branch = select_branch(label)
     sp.stop()
-
-    if branch == "verification_tool":
-        map_path = WIKI_ROOT / "00-preload" / "project-map.md"
-        answer = map_path.read_text(encoding="utf-8")[:800] if map_path.exists() else "project-map.md not found."
-        ms = int((time.monotonic() - t0) * 1000)
-        print(badge("verification_tool", str(map_path), 0.0, ms))
-        print(answer)
-        return
 
     is_local = branch == "cheap_model" and bool(CHEAP_URL)
     if is_local:

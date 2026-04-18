@@ -3,15 +3,6 @@ serve.py
 
 Minimal FastAPI server that loads the merged classifier model via Transformers
 and exposes a single POST /classify endpoint.
-
-Prerequisites:
-    pip install -r requirements-serve.txt
-    # Merge must already exist at models/router-classifier-merged/
-    # (run train.py first)
-
-Run:
-    python serve.py                     # default port 8001
-    python serve.py --port 8001
 """
 
 import argparse
@@ -25,38 +16,30 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# ── Config ────────────────────────────────────────────────────────────────────
-
-ROOT      = Path(__file__).parent
+ROOT = Path(__file__).parent
 MODEL_DIR = ROOT / "models" / "router-classifier-merged"
 
 SYSTEM_PROMPT = (
     "You are a query classifier for an LLM routing system. "
     "Given a user query, output a JSON object with two fields:\n"
-    '  "complexity": one of "simple", "medium", "hard", "verify"\n'
-    '  "domain":     one of "factual", "math", "code", "project"\n\n'
+    '  "complexity": one of "simple", "medium", "hard"\n'
+    '  "domain":     one of "factual", "math", "code"\n\n'
     "Rules:\n"
-    '- "verify"  → query asks about this specific project\'s architecture, models, or files\n'
-    '- "simple"  → short factual or coding lookup, < 20 words, no reasoning required\n'
-    '- "medium"  → requires explanation or multi-step description, 20-40 words\n'
-    '- "hard"    → analysis, comparison, derivation, debugging, or architecture design\n'
-    '- "code"    → involves programming, debugging, or software implementation\n'
-    '- "math"    → involves calculation, equations, or proofs\n'
-    '- "factual" → general knowledge not covered by other domains\n'
-    '- "project" → only used when complexity is "verify"\n\n'
+    '- "simple"  -> short factual or coding lookup, < 20 words, no reasoning required\n'
+    '- "medium"  -> requires explanation or multi-step description, 20-40 words\n'
+    '- "hard"    -> analysis, comparison, derivation, debugging, or architecture design\n'
+    '- "code"    -> involves programming, debugging, or software implementation\n'
+    '- "math"    -> involves calculation, equations, or proofs\n'
+    '- "factual" -> general knowledge not covered by other domains\n\n'
     "Output only the JSON object, no explanation."
 )
 
 INSTRUCTION = "Classify this query for LLM routing. Return only a JSON object."
 
-VALID_COMPLEXITY = {"simple", "medium", "hard", "verify"}
-VALID_DOMAIN     = {"factual", "math", "code", "project"}
-
+VALID_COMPLEXITY = {"simple", "medium", "hard"}
+VALID_DOMAIN = {"factual", "math", "code"}
 FALLBACK = {"complexity": "hard", "domain": "factual"}
-
 MAX_NEW_TOKENS = 32
-
-# ── Model loading ─────────────────────────────────────────────────────────────
 
 print(f"Loading model from {MODEL_DIR} ...")
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -68,8 +51,6 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 model.eval()
 print(f"Model loaded on {device}.")
-
-# ── App ───────────────────────────────────────────────────────────────────────
 
 app = FastAPI(title="Router Classifier", version="1.0")
 
@@ -86,7 +67,7 @@ class ClassifyResponse(BaseModel):
 def build_prompt(query: str) -> str:
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user",   "content": f"{INSTRUCTION}\n\n{query}"},
+        {"role": "user", "content": f"{INSTRUCTION}\n\n{query}"},
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
@@ -98,11 +79,9 @@ def parse_output(raw: str) -> dict:
     try:
         parsed = json.loads(raw)
         complexity = parsed.get("complexity", "")
-        domain     = parsed.get("domain", "")
+        domain = parsed.get("domain", "")
         if complexity not in VALID_COMPLEXITY or domain not in VALID_DOMAIN:
             return FALLBACK
-        if domain == "project" and complexity != "verify":
-            complexity = "verify"
         return {"complexity": complexity, "domain": domain}
     except (json.JSONDecodeError, AttributeError):
         return FALLBACK
@@ -133,8 +112,6 @@ def classify(req: ClassifyRequest):
 def health():
     return {"status": "ok", "model": str(MODEL_DIR)}
 
-
-# ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

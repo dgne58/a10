@@ -21,9 +21,12 @@ class RouterEvalContractTests(unittest.TestCase):
             "meta-llama/llama-3.1-70b-instruct",
         )
 
-    def test_select_model_returns_none_for_verification_branch(self):
-        label = {"complexity": "verify", "domain": "project"}
-        self.assertIsNone(router.select_model(label))
+    def test_select_model_routes_project_queries_to_cheap_model(self):
+        label = {"complexity": "simple", "domain": "factual"}
+        self.assertEqual(
+            router.select_model(label),
+            "meta-llama/llama-3.1-8b-instruct",
+        )
 
     def test_extract_answer_reads_single_letter(self):
         self.assertEqual(run_eval.extract_answer("The answer is C."), "C")
