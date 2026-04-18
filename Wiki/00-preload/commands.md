@@ -3,6 +3,8 @@
 ## Current State
 - The app project now exists under `project/` and the backend import path is live.
 - `python -m unittest tests.test_router_eval_contract` is a working regression test for the router/eval contract.
+- `python -m unittest tests.test_run_humaneval` is a working regression test for the HumanEval extraction and execution harness.
+- The OpenRouter-backed Anthropic model slugs now target `anthropic/claude-haiku-4.5` and `anthropic/claude-sonnet-4.6` instead of the previous OpenAI defaults.
 - `python scripts/run_eval.py` imports cleanly again after restoring `router.select_model()` compatibility.
 
 ## Working Commands
@@ -13,6 +15,8 @@
 | sync clipping pages | `scripts\sync-clippings.cmd sync` | updates clipping tracking pages | run directly in shell |
 | direct PowerShell fallback | `powershell -ExecutionPolicy Bypass -File scripts/sync-clippings.ps1 check` | same as wrapper command | use if `.cmd` is inconvenient |
 | router/eval regression test | `cd project && python -m unittest tests.test_router_eval_contract` | verifies `run_eval.py` and `router.py` agree on model selection | no API calls |
+| HumanEval harness regression test | `cd project && python -m unittest tests.test_run_humaneval` | verifies body-only and full-function completions execute correctly | no API calls |
+| HumanEval smoke run | `cd project && python scripts/run_humaneval.py --limit 5` | should produce non-zero pass rate and save `backend/humaneval_results.json` | uses live model calls |
 | eval script import smoke test | `cd project && python -c "import os, sys; sys.path.insert(0, os.path.join(os.getcwd(), 'scripts')); import run_eval; print('run_eval import OK')"` | confirms the previous import failure is fixed | no API calls |
 
 ## Planned Hackathon Commands

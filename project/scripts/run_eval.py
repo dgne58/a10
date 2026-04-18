@@ -29,7 +29,7 @@ from config import MODEL_MAP
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "mmlu_100.csv")
 OUT_PATH  = os.path.join(os.path.dirname(__file__), "..", "backend", "eval_results.json")
-NAIVE_MODEL = "openai/gpt-4o"
+NAIVE_MODEL = "anthropic/claude-sonnet-4.6"
 
 PROMPT_TEMPLATE = (
     "{question}\n"

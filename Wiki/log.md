@@ -527,6 +527,45 @@ Pages updated:
 - `Wiki/sources/clipping-registry.md`
 - `Wiki/sources/clipping-intake-queue.md`
 
+## [2026-04-18 16:30] fix | HumanEval harness indentation and strong-model config
+
+What changed:
+- Rebuilt `project/scripts/run_humaneval.py` to normalize body-only completions before execution instead of stripping away indentation on the first line.
+- Added first-failure debug logging that prints the exact assembled program plus subprocess stdout/stderr.
+- Added focused regression tests for fenced code, body-only completions, and full-function completions.
+- Corrected `project/backend/config.py` so `strong_model` maps to `openai/gpt-4o` instead of `openai/gpt-4o-mini`.
+
+Why:
+- The prior harness turned valid HumanEval answers into syntax/indentation errors, collapsing pass@1 to near-zero even for `gpt-4o`.
+- The router's "strong" branch was also using a weaker model than intended.
+
+Verification:
+- `cd project && python -m unittest tests.test_run_humaneval tests.test_router_eval_contract`
+- `cd project && python scripts/run_humaneval.py --limit 5`
+
+Observed result:
+- `run_humaneval.py --limit 5` now produced `Router pass@1: 5/5` and `Naive pass@1: 5/5` in the smoke run.
+
+## [2026-04-18 16:55] update | swap OpenAI defaults to Claude Haiku and Sonnet
+
+What changed:
+- Replaced the remaining OpenAI default model selections in the router surfaces with Anthropic models on OpenRouter.
+- Updated the backend router to use `anthropic/claude-sonnet-4.6` for `strong_model` and `anthropic/claude-haiku-4.5` as fallback.
+- Updated the CLI's former `gpt-4o-mini` slot to `anthropic/claude-haiku-4.5`.
+- Switched the eval and HumanEval naive baselines to Claude Sonnet.
+- Tightened the HumanEval system prompt to request the full function definition so Claude outputs execute cleanly.
+
+Why:
+- The user wanted Claude Haiku and Sonnet as the day-to-day coding defaults instead of ChatGPT-family models.
+- The initial Claude slug choice was stale for OpenRouter and returned `404`, so the model IDs were corrected to current OpenRouter slugs.
+
+Verification:
+- `cd project && python -m unittest tests.test_run_humaneval tests.test_router_eval_contract`
+- `cd project && python scripts/run_humaneval.py --limit 1`
+
+Observed result:
+- `run_humaneval.py --limit 1` completed successfully with `Router pass@1: 1/1` and `Naive pass@1: 1/1` using Claude Sonnet.
+
 ## 2026-04-17
 
 Summary:

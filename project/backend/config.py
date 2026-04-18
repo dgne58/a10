@@ -1,16 +1,18 @@
 MODEL_MAP = {
     "cheap_model":       "meta-llama/llama-3.1-8b-instruct",
     "mid_model":         "meta-llama/llama-3.1-70b-instruct",
-    "strong_model":      "openai/gpt-4o-mini",
+    "strong_model":      "anthropic/claude-sonnet-4.6",
 }
 
-FALLBACK_MODEL = "openai/gpt-4o"
+FALLBACK_MODEL = "anthropic/claude-haiku-4.5"
 
 COST_PER_1M = {
     "meta-llama/llama-3.1-8b-instruct":  0.05,
     "meta-llama/llama-3.1-70b-instruct": 0.35,
     "openai/gpt-4o-mini":                0.15,
     "openai/gpt-4o":                     2.50,
+    "anthropic/claude-haiku-4.5":        1.00,
+    "anthropic/claude-sonnet-4.6":       3.00,
 }
 
 BRANCH_COLORS = {

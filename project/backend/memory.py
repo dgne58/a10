@@ -174,7 +174,9 @@ def check_memory(query: str) -> dict | None:
                 "source_ref": pair["source"],
             }
 
-    wiki_hit = _search_wiki(query)
+    # Skip BM25 for code-shaped inputs (function stubs, HumanEval prompts, etc.)
+    _is_code = "def " in query or '"""' in query or "'''" in query or "->" in query
+    wiki_hit = None if _is_code else _search_wiki(query)
     if wiki_hit:
         return {
             "answer": wiki_hit["answer"],

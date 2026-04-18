@@ -172,7 +172,7 @@ def route_stream():
         latency_ms = int((time.monotonic() - t0) * 1000)
         approx_tokens = max(1, len(full_text.split()) * 1.3)
         cost_usd = 0.0 if use_local else round((approx_tokens / 1_000_000) * COST_PER_1M.get(actual_model, 0.35), 8)
-        naive_cost_usd = round((approx_tokens / 1_000_000) * COST_PER_1M.get("openai/gpt-4o", 2.50), 8)
+        naive_cost_usd = round((approx_tokens / 1_000_000) * COST_PER_1M.get("anthropic/claude-sonnet-4.6", 3.00), 8)
         yield _sse({"type": "done", "cost_usd": cost_usd,
                     "naive_cost_usd": naive_cost_usd, "latency_ms": latency_ms})
 

@@ -82,7 +82,7 @@ def build_rationale(label: dict, branch: str, model_id: str | None) -> str:
 
 def _naive_cost(usage: dict) -> float:
     tokens = usage.get("total_tokens", 0)
-    return round((tokens / 1_000_000) * COST_PER_1M.get("openai/gpt-4o", 2.50), 8)
+    return round((tokens / 1_000_000) * COST_PER_1M.get("anthropic/claude-sonnet-4.6", 3.00), 8)
 
 
 def route_and_call(query: str) -> dict:
