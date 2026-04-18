@@ -1,11 +1,11 @@
 """
 train_llama_code.py
 
-Fine-tunes Llama-3.1-8B-Instruct on Code Alpaca using Unsloth + LoRA.
-Run this on the H200 after prepare_code_alpaca.py.
+Fine-tunes Llama-3.1-8B-Instruct on Code Alpaca + function-calling data
+using standard transformers + peft + trl (no Unsloth required).
 
 Prerequisites (H200):
-    pip install unsloth datasets trl transformers accelerate peft
+    pip install datasets trl transformers accelerate peft torch
 
 Run:
     python train_llama_code.py
@@ -17,6 +17,12 @@ Outputs:
 
 import json
 from pathlib import Path
+
+import torch
+from datasets import Dataset, concatenate_datasets
+from peft import LoraConfig, TaskType, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from trl import SFTTrainer, SFTConfig
 
 BASE_MODEL   = "meta-llama/Llama-3.1-8B-Instruct"
 DATA_DIR     = Path(__file__).parent / "data"
@@ -33,18 +39,17 @@ EPOCHS       = 3
 LR           = 2e-4
 
 
-def load_dataset_from_json(path: Path):
-    from datasets import Dataset
+def load_dataset_from_json(path: Path) -> Dataset:
     data = json.load(open(path))
     return Dataset.from_list(data)
 
 
-def format_prompt(row: dict, tokenizer=None) -> dict:
-    # Pre-formatted rows from prepare_function_calling.py already have "text"
+def format_prompt(row: dict, tokenizer) -> dict:
+    # Pre-formatted rows already have "text"
     if "text" in row:
-        return row
-    # Raw rows from prepare_function_calling.py have "messages" + "tools"
-    if "messages" in row and tokenizer is not None:
+        return {"text": row["text"]}
+    # Function-calling rows have "messages" + optional "tools"
+    if "messages" in row:
         try:
             text = tokenizer.apply_chat_template(
                 row["messages"],
@@ -72,35 +77,37 @@ def format_prompt(row: dict, tokenizer=None) -> dict:
 
 
 def main() -> None:
-    from unsloth import FastLanguageModel
-    from trl import SFTTrainer, SFTConfig
+    print(f"[train] Loading tokenizer from {BASE_MODEL} ...")
+    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
 
-    print(f"[train] Loading {BASE_MODEL} ...")
-    model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=BASE_MODEL,
-        max_seq_length=MAX_SEQ_LEN,
-        dtype=None,
-        load_in_4bit=False,
+    print(f"[train] Loading model ...")
+    model = AutoModelForCausalLM.from_pretrained(
+        BASE_MODEL,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
     )
+    model.config.use_cache = False
+    model.enable_input_require_grads()
 
-    model = FastLanguageModel.get_peft_model(
-        model,
+    lora_config = LoraConfig(
         r=LORA_RANK,
         lora_alpha=LORA_ALPHA,
         lora_dropout=LORA_DROPOUT,
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
                         "gate_proj", "up_proj", "down_proj"],
         bias="none",
-        use_gradient_checkpointing="unsloth",
-        random_state=42,
+        task_type=TaskType.CAUSAL_LM,
     )
+    model = get_peft_model(model, lora_config)
+    model.print_trainable_parameters()
 
-    from datasets import concatenate_datasets
-
+    # ── Load datasets ─────────────────────────────────────────────────────────
     train_code = load_dataset_from_json(DATA_DIR / "code_alpaca_train.json")
     val_code   = load_dataset_from_json(DATA_DIR / "code_alpaca_val.json")
 
-    # Mix in function-calling data if available (balanced pos/neg tool examples)
     fc_train_path = DATA_DIR / "func_call_train.json"
     fc_val_path   = DATA_DIR / "func_call_val.json"
     if fc_train_path.exists() and fc_val_path.exists():
@@ -110,13 +117,13 @@ def main() -> None:
         train_ds = concatenate_datasets([train_code, train_fc]).shuffle(seed=42)
         val_ds   = concatenate_datasets([val_code,   val_fc])
     else:
-        print("[train] func_call data not found — run prepare_function_calling.py first for tool support.")
+        print("[train] func_call data not found — run prepare_function_calling.py first.")
         train_ds = train_code
         val_ds   = val_code
 
     fmt = lambda row: format_prompt(row, tokenizer)
-    train_ds = train_ds.map(fmt)
-    val_ds   = val_ds.map(fmt)
+    train_ds = train_ds.map(fmt, remove_columns=train_ds.column_names)
+    val_ds   = val_ds.map(fmt, remove_columns=val_ds.column_names)
 
     OUT_ADAPTER.mkdir(parents=True, exist_ok=True)
 
@@ -128,33 +135,40 @@ def main() -> None:
         dataset_text_field="text",
         args=SFTConfig(
             output_dir=str(OUT_ADAPTER),
+            max_seq_length=MAX_SEQ_LEN,
             per_device_train_batch_size=BATCH_SIZE,
             gradient_accumulation_steps=GRAD_ACCUM,
             num_train_epochs=EPOCHS,
             learning_rate=LR,
+            warmup_ratio=0.05,
+            lr_scheduler_type="cosine",
             fp16=False,
             bf16=True,
             logging_steps=20,
             eval_strategy="epoch",
             save_strategy="epoch",
             load_best_model_at_end=True,
-            max_seq_length=MAX_SEQ_LEN,
+            metric_for_best_model="eval_loss",
             report_to="none",
+            seed=42,
         ),
     )
 
     print("[train] Starting training ...")
     trainer.train()
 
-    print(f"[train] Saving adapter to {OUT_ADAPTER} ...")
+    print(f"[train] Saving adapter → {OUT_ADAPTER}")
     model.save_pretrained(str(OUT_ADAPTER))
     tokenizer.save_pretrained(str(OUT_ADAPTER))
 
-    print(f"[train] Merging and saving to {OUT_MERGED} ...")
+    # ── Merge LoRA into base weights for vLLM ─────────────────────────────────
+    print(f"[train] Merging LoRA into base weights → {OUT_MERGED}")
     OUT_MERGED.mkdir(parents=True, exist_ok=True)
-    model.save_pretrained_merged(str(OUT_MERGED), tokenizer, save_method="merged_16bit")
+    merged = model.merge_and_unload()
+    merged.save_pretrained(str(OUT_MERGED), safe_serialization=True)
+    tokenizer.save_pretrained(str(OUT_MERGED))
 
-    print(f"[train] Done. Serve with:")
+    print("[train] Done. Serve with:")
     print(f"  vllm serve {OUT_MERGED} --host 0.0.0.0 --port 8002 --gpu-memory-utilization 0.45")
 
 
