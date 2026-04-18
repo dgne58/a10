@@ -24,7 +24,7 @@ from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from trl import SFTTrainer, SFTConfig
 
-BASE_MODEL   = "meta-llama/Llama-3.1-8B-Instruct"
+BASE_MODEL   = "NousResearch/Meta-Llama-3.1-8B-Instruct"
 DATA_DIR     = Path(__file__).parent / "data"
 OUT_ADAPTER  = Path(__file__).parent / "models" / "llama-8b-code"
 OUT_MERGED   = Path(__file__).parent / "models" / "llama-8b-code-merged"
