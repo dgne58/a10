@@ -107,7 +107,7 @@ def stream_model(
                 continue
 
 
-_TEXT_TOOL_NAMES = {"fetch_url", "execute_python"}
+_TEXT_TOOL_NAMES = {"fetch_url", "execute_python", "lint_python", "regex_test", "calculate"}
 
 
 def _parse_text_tool_call(text: str) -> dict | None:

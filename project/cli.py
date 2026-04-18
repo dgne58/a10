@@ -159,7 +159,7 @@ _HARD_KW   = {"why", "explain", "compare", "analyze", "critique", "evaluate", "d
 _MEDIUM_KW = {"how", "describe", "summarize", "difference between", "steps to", "what causes"}
 _CODE_KW   = {"code", "function", "debug", "python", "javascript", "implement", "algorithm", "class", "typescript"}
 _PROJECT_KW = {"what does the project", "what models does", "what architecture",
-              "what files", "which wiki", "what is the routing", "what components"}
+               "what files", "which wiki", "what is the routing", "what components"}
 
 
 def _rules_classify(query: str) -> dict:
@@ -364,7 +364,7 @@ class _Spinner:
 
 # ── Streaming ─────────────────────────────────────────────────────────────────
 
-_TEXT_TOOL_NAMES = {"fetch_url", "execute_python"}
+_TEXT_TOOL_NAMES = {"fetch_url", "execute_python", "lint_python", "regex_test", "calculate"}
 
 
 def _parse_text_tool_call(text: str) -> dict | None:

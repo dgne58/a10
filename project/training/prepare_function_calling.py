@@ -67,6 +67,71 @@ TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "lint_python",
+            "description": (
+                "Run pyflakes on a Python code snippet and return any warnings or errors. "
+                "Only call this when the user asks to lint, check, or find issues in Python code."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "description": "Python code to lint with pyflakes",
+                    }
+                },
+                "required": ["code"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "regex_test",
+            "description": (
+                "Apply a regex pattern to a text and return all matches using re.findall. "
+                "Only call this when the user provides both a regex pattern and a text to test it against."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pattern": {
+                        "type": "string",
+                        "description": "Regular expression pattern",
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "Text to search within",
+                    },
+                },
+                "required": ["pattern", "text"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "calculate",
+            "description": (
+                "Safely evaluate a mathematical expression and return the result. "
+                "Supports +, -, *, /, **, %. "
+                "Only call this when the user asks to calculate or evaluate a math expression."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "expression": {
+                        "type": "string",
+                        "description": "Math expression to evaluate, e.g. '2 ** 10 + 3 * 4'",
+                    }
+                },
+                "required": ["expression"],
+            },
+        },
+    },
 ]
 
 # ── Positive: model calls get_weather ────────────────────────────────────────
@@ -122,6 +187,56 @@ CODE_EXEC_EXAMPLES = [
      "nums=[1,2,3,4,5]; print(sum(nums)/len(nums))", "3.0"),
     ("Run: print(bin(42), hex(42))",
      "print(bin(42), hex(42))", "0b101010 0x2a"),
+]
+
+# ── Positive: model calls lint_python ────────────────────────────────────────
+
+LINT_PYTHON_EXAMPLES = [
+    ("Lint this code for me: import os\nx = 1\nprint(y)",
+     "import os\nx = 1\nprint(y)",
+     "<code>:3: undefined name 'y'"),
+    ("Check this Python for issues: import sys\nimport json\nprint('hello')",
+     "import sys\nimport json\nprint('hello')",
+     "<code>:2: 'json' imported but unused"),
+    ("Run pyflakes on: def foo():\n    x = 5\nfoo()",
+     "def foo():\n    x = 5\nfoo()",
+     "<code>:2: local variable 'x' is assigned to but never used"),
+    ("Find any linting errors in: x = [1,2,3]\nfor i in x:\n    pass",
+     "x = [1,2,3]\nfor i in x:\n    pass",
+     "No issues found."),
+    ("Lint this snippet: def add(a, b):\n    return a + b\nresult = add(1, 2)\nprint(result)",
+     "def add(a, b):\n    return a + b\nresult = add(1, 2)\nprint(result)",
+     "No issues found."),
+]
+
+# ── Positive: model calls regex_test ─────────────────────────────────────────
+
+REGEX_TEST_EXAMPLES = [
+    ("Test the regex \\d+ against 'there are 42 apples and 7 oranges'",
+     r"\d+", "there are 42 apples and 7 oranges",
+     "['42', '7']"),
+    ("Apply the pattern [A-Z][a-z]+ to 'Hello World this is Python'",
+     r"[A-Z][a-z]+", "Hello World this is Python",
+     "['Hello', 'World', 'Python']"),
+    ("Match all email addresses with \\S+@\\S+ in 'contact alice@example.com or bob@test.org'",
+     r"\S+@\S+", "contact alice@example.com or bob@test.org",
+     "['alice@example.com', 'bob@test.org']"),
+    ("Test pattern (\\w+)=(\\d+) on 'x=10 y=20 z=30'",
+     r"(\w+)=(\d+)", "x=10 y=20 z=30",
+     "[('x', '10'), ('y', '20'), ('z', '30')]"),
+    ("Find all words starting with 'py' using py\\w+ in 'python pyflakes pydantic java ruby'",
+     r"py\w+", "python pyflakes pydantic java ruby",
+     "['python', 'pyflakes', 'pydantic']"),
+]
+
+# ── Positive: model calls calculate ──────────────────────────────────────────
+
+CALCULATE_EXAMPLES = [
+    ("Calculate 2 ** 10",                   "2 ** 10",       "1024"),
+    ("What is 17 * 13 + 5?",               "17 * 13 + 5",   "226"),
+    ("Compute 100 / 4 - 3",                "100 / 4 - 3",   "22.0"),
+    ("Evaluate the expression 7 % 3",       "7 % 3",         "1"),
+    ("Calculate (2 + 3) ** 2 * 4",         "(2 + 3) ** 2 * 4", "100"),
 ]
 
 # ── Negative: tools available, model answers directly ────────────────────────
@@ -241,6 +356,31 @@ NEGATIVE_EXAMPLES = [
      "the branch point. Rebase replays your commits on top of the target branch, "
      "creating a linear history. Use merge for shared/public branches; use rebase to "
      "clean up local commits before merging. Never rebase commits already pushed to shared branches."),
+    ("What does pyflakes check for that pylint doesn't?",
+     "Pyflakes focuses on logical errors — undefined names, unused imports, redefined variables — "
+     "without enforcing style rules. Pylint is broader: it checks style (PEP 8), complexity, "
+     "and logic errors. Pyflakes is faster and produces fewer false positives. "
+     "Use pyflakes for quick checks; use pylint for comprehensive code quality audits."),
+    ("How do I write a regex to match email addresses?",
+     "A common email regex is `r'[\\w.+-]+@[\\w-]+\\.[a-zA-Z]+'`. "
+     "It matches a local part (word chars, dots, plus, hyphen), an @ sign, a domain, and a TLD. "
+     "For production use, prefer a library like `email-validator` — full RFC 5322 compliance "
+     "is extremely complex to capture in a single regex."),
+    ("What math operations does Python's ast module support safely?",
+     "Python's `ast` module lets you parse expressions into a tree without executing them. "
+     "By walking the tree yourself, you can allow only safe node types: `ast.Constant` for numbers, "
+     "`ast.BinOp` for binary operations (+,-,*,/,**,%), and `ast.UnaryOp` for negation. "
+     "Reject everything else to prevent code injection. This is safer than `eval()`."),
+    ("When should I use re.match vs re.search vs re.findall?",
+     "`re.match()` anchors at the start of the string. "
+     "`re.search()` scans for the first match anywhere. "
+     "`re.findall()` returns all non-overlapping matches as a list. "
+     "Use `findall` when you need every occurrence; use `search` for the first occurrence; "
+     "use `match` only when the pattern must start at the beginning of the string."),
+    ("Why is eval() dangerous in Python?",
+     "`eval()` executes arbitrary Python code, so user-controlled input can run system commands, "
+     "read files, or import malicious modules. For math expressions, use `ast.parse()` + a safe "
+     "node evaluator instead. For JSON, use `json.loads()`. Never pass untrusted strings to `eval()`."),
     ("What is CORS and how do I fix a CORS error?",
      "CORS (Cross-Origin Resource Sharing) is a browser security policy that blocks "
      "requests from a different origin unless the server explicitly allows it. "
@@ -248,6 +388,51 @@ NEGATIVE_EXAMPLES = [
      "`Access-Control-Allow-Origin: *` (or a specific domain). "
      "In Flask use `flask-cors`; in Express use the `cors` middleware."),
 ]
+
+
+def make_positive_lint(question: str, code: str, result: str) -> dict:
+    tc = {
+        "id": "call_lint_001",
+        "type": "function",
+        "function": {"name": "lint_python", "arguments": json.dumps({"code": code})},
+    }
+    messages = [
+        {"role": "user", "content": question},
+        {"role": "assistant", "content": None, "tool_calls": [tc]},
+        {"role": "tool", "tool_call_id": "call_lint_001", "content": result},
+        {"role": "assistant", "content": f"Pyflakes result:\n\n```\n{result}\n```"},
+    ]
+    return {"messages": messages, "tools": TOOLS}
+
+
+def make_positive_regex(question: str, pattern: str, text: str, result: str) -> dict:
+    tc = {
+        "id": "call_regex_001",
+        "type": "function",
+        "function": {"name": "regex_test", "arguments": json.dumps({"pattern": pattern, "text": text})},
+    }
+    messages = [
+        {"role": "user", "content": question},
+        {"role": "assistant", "content": None, "tool_calls": [tc]},
+        {"role": "tool", "tool_call_id": "call_regex_001", "content": result},
+        {"role": "assistant", "content": f"The regex `{pattern}` found the following matches: {result}"},
+    ]
+    return {"messages": messages, "tools": TOOLS}
+
+
+def make_positive_calculate(question: str, expression: str, result: str) -> dict:
+    tc = {
+        "id": "call_calc_001",
+        "type": "function",
+        "function": {"name": "calculate", "arguments": json.dumps({"expression": expression})},
+    }
+    messages = [
+        {"role": "user", "content": question},
+        {"role": "assistant", "content": None, "tool_calls": [tc]},
+        {"role": "tool", "tool_call_id": "call_calc_001", "content": result},
+        {"role": "assistant", "content": f"The result of `{expression}` is **{result}**."},
+    ]
+    return {"messages": messages, "tools": TOOLS}
 
 
 def make_positive_weather(question: str, location: str, result: str) -> dict:
@@ -316,6 +501,9 @@ def main():
     positives = (
         [make_positive_weather(q, loc, res) for q, loc, res in WEATHER_EXAMPLES]
         + [make_positive_code_exec(q, code, out) for q, code, out in CODE_EXEC_EXAMPLES]
+        + [make_positive_lint(q, code, res) for q, code, res in LINT_PYTHON_EXAMPLES]
+        + [make_positive_regex(q, pat, txt, res) for q, pat, txt, res in REGEX_TEST_EXAMPLES]
+        + [make_positive_calculate(q, expr, res) for q, expr, res in CALCULATE_EXAMPLES]
     )
     negatives = [make_negative(q, a) for q, a in NEGATIVE_EXAMPLES]
 

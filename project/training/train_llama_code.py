@@ -20,7 +20,7 @@ from pathlib import Path
 
 import torch
 from datasets import Dataset, concatenate_datasets
-from peft import LoraConfig, TaskType, get_peft_model
+from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from trl import SFTTrainer, SFTConfig
 
@@ -29,12 +29,12 @@ DATA_DIR     = Path(__file__).parent / "data"
 OUT_ADAPTER  = Path(__file__).parent / "models" / "llama-8b-code"
 OUT_MERGED   = Path(__file__).parent / "models" / "llama-8b-code-merged"
 
-MAX_SEQ_LEN  = 1024
+MAX_SEQ_LEN  = 256
 LORA_RANK    = 16
 LORA_ALPHA   = 32
 LORA_DROPOUT = 0.05
-BATCH_SIZE   = 2
-GRAD_ACCUM   = 8
+BATCH_SIZE   = 1
+GRAD_ACCUM   = 16
 EPOCHS       = 3
 LR           = 2e-4
 
@@ -46,7 +46,7 @@ def load_dataset_from_json(path: Path) -> Dataset:
 
 def format_prompt(row: dict, tokenizer) -> dict:
     # Pre-formatted rows already have "text"
-    if "text" in row:
+    if row.get("text") is not None:
         return {"text": row["text"]}
     # Function-calling rows have "messages" + optional "tools"
     if "messages" in row:
@@ -83,13 +83,26 @@ def main() -> None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
-    print(f"[train] Loading model ...")
+    print(f"[train] Loading model (QLoRA 4-bit) ...")
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.bfloat16,
+    )
     model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL,
-        torch_dtype=torch.bfloat16,
-        device_map="auto",
+        quantization_config=bnb_config,
+        device_map={"": 0},
     )
     model.config.use_cache = False
+    model = prepare_model_for_kbit_training(model)
+    # prepare_model_for_kbit_training upcasts embeddings to float32 (~1GB extra).
+    # Cast them back to bfloat16 to stay within the MIG memory budget.
+    for module in model.modules():
+        if hasattr(module, "weight") and module.weight is not None and module.weight.dtype == torch.float32:
+            if module.weight.shape[0] > 10000:  # only large embedding tables
+                module.weight.data = module.weight.data.to(torch.bfloat16)
     model.enable_input_require_grads()
 
     lora_config = LoraConfig(
@@ -144,6 +157,8 @@ def main() -> None:
             lr_scheduler_type="cosine",
             fp16=False,
             bf16=True,
+            gradient_checkpointing=True,
+            gradient_checkpointing_kwargs={"use_reentrant": False},
             logging_steps=20,
             eval_strategy="epoch",
             save_strategy="epoch",
