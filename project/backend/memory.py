@@ -2,11 +2,20 @@ import os
 import re
 from glob import glob
 
+_WIKI_LINK_RE = re.compile(r"\[\[([^\]|]+)\|([^\]]+)\]\]")   # [[link|display]] → display
+_WIKI_LINK_BARE_RE = re.compile(r"\[\[([^\]]+)\]\]")           # [[link]] → link
+
+
+def _clean_wiki_text(text: str) -> str:
+    text = _WIKI_LINK_RE.sub(r"\2", text)
+    text = _WIKI_LINK_BARE_RE.sub(r"\1", text)
+    return text
+
 WIKI_ROOT = os.environ.get("ROUTER_WIKI_PATH", os.path.join(os.path.dirname(__file__), "..", "..", "Wiki"))
-SCORE_THRESHOLD = 8.0
+SCORE_THRESHOLD = 10.0
 
 # Files that contain planning/demo content rather than reference knowledge
-_EXCLUDED_PATTERNS = ("design-doc", "design_doc", "demo", "clipping")
+_EXCLUDED_PATTERNS = ("design-doc", "design_doc", "demo", "clipping", "index", "readme", "toc", "00-index")
 
 SEED_PAIRS = [
     {
@@ -32,12 +41,51 @@ SEED_PAIRS = [
 ]
 
 _bm25 = None
-_corpus_paths: list[str] = []
-_corpus_lines: list[str] = []
+_corpus_paths: list[str] = []   # one entry per file (relative path)
+_corpus_excerpts: list[str] = []  # first ~400 chars of prose per file
+
+
+def _prose_lines(path: str) -> list[str]:
+    """Extract prose lines from a markdown file, stripping frontmatter, code blocks, and noise."""
+    result = []
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as f:
+            raw_lines = f.readlines()
+
+        in_frontmatter = False
+        frontmatter_done = False
+        in_code = False
+
+        for i, line in enumerate(raw_lines):
+            s = line.strip()
+            # Handle YAML frontmatter block (--- ... ---)
+            if i == 0 and s == "---":
+                in_frontmatter = True
+                continue
+            if in_frontmatter:
+                if s == "---":
+                    in_frontmatter = False
+                    frontmatter_done = True
+                continue
+            if s.startswith("```"):
+                in_code = not in_code
+                continue
+            if in_code:
+                continue
+            if s.startswith(("{", "[", "|", "#!", "//", "$ ", "- {")):
+                continue
+            if s.endswith(".md") or s.endswith(".md)"):
+                continue
+            s = _clean_wiki_text(s)
+            if len(s) > 20:
+                result.append(s)
+    except OSError:
+        pass
+    return result
 
 
 def _load_bm25() -> None:
-    global _bm25, _corpus_paths, _corpus_lines
+    global _bm25, _corpus_paths, _corpus_excerpts
     try:
         from rank_bm25 import BM25Okapi
     except ImportError:
@@ -45,62 +93,29 @@ def _load_bm25() -> None:
 
     wiki_glob = os.path.join(WIKI_ROOT, "**", "*.md")
     paths = glob(wiki_glob, recursive=True)
-    lines: list[str] = []
-    line_paths: list[str] = []
+    docs: list[str] = []
+    doc_paths: list[str] = []
+    excerpts: list[str] = []
 
     for path in paths:
         if any(p in path.lower() for p in _EXCLUDED_PATTERNS):
             continue
-        try:
-            with open(path, encoding="utf-8", errors="ignore") as f:
-                in_code_block = False
-                for i, line in enumerate(f, 1):
-                    stripped = line.strip()
-                    if stripped.startswith("```"):
-                        in_code_block = not in_code_block
-                        continue
-                    if in_code_block:
-                        continue
-                    # Skip lines that look like code or data, not prose
-                    if stripped.startswith(("{", "[", "|", "#!", "//", "$ ", "- {")):
-                        continue
-                    if len(stripped) > 30:
-                        lines.append(stripped)
-                        line_paths.append(f"{os.path.relpath(path, WIKI_ROOT)}:{i}")
-        except OSError:
+        lines = _prose_lines(path)
+        if len(lines) < 3:
             continue
+        full_text = " ".join(lines)
+        excerpt = "\n".join(lines[:8])
+        docs.append(full_text)
+        doc_paths.append(os.path.relpath(path, WIKI_ROOT))
+        excerpts.append(excerpt)
 
-    if not lines:
+    if not docs:
         return
 
-    tokenized = [l.lower().split() for l in lines]
+    tokenized = [d.lower().split() for d in docs]
     _bm25 = BM25Okapi(tokenized)
-    _corpus_paths = line_paths
-    _corpus_lines = lines
-
-
-def _get_paragraph(source_ref: str, center_line: int, window: int = 8) -> str:
-    """Return up to `window` lines around `center_line` from the source file."""
-    try:
-        rel_path = source_ref.split(":")[0]
-        full_path = os.path.join(WIKI_ROOT, rel_path)
-        with open(full_path, encoding="utf-8", errors="ignore") as f:
-            all_lines = f.readlines()
-        start = max(0, center_line - 3)
-        end = min(len(all_lines), center_line + window)
-        lines = []
-        in_code = False
-        for ln in all_lines[start:end]:
-            s = ln.strip()
-            if s.startswith("```"):
-                in_code = not in_code
-                continue
-            if in_code or not s or s.startswith(("#!", "//", "$ ", "- {", "{", "[")):
-                continue
-            lines.append(s)
-        return "\n".join(lines[:window])
-    except OSError:
-        return ""
+    _corpus_paths = doc_paths
+    _corpus_excerpts = excerpts
 
 
 def _get_page_content(source_ref: str, max_chars: int = 3000) -> str:
@@ -110,20 +125,9 @@ def _get_page_content(source_ref: str, max_chars: int = 3000) -> str:
         full_path = os.path.join(WIKI_ROOT, rel_path)
         with open(full_path, encoding="utf-8", errors="ignore") as f:
             raw = f.read()
-        lines = []
-        in_code = False
-        for ln in raw.splitlines():
-            s = ln.strip()
-            if s.startswith("```"):
-                in_code = not in_code
-                continue
-            if in_code:
-                continue
-            if s.startswith(("{", "[", "|", "#!", "//", "$ ", "- {")):
-                continue
-            lines.append(s)
-        text = "\n".join(l for l in lines if l)
-        return text[:max_chars]
+        lines = _prose_lines(full_path)
+        text = "\n".join(lines)
+        return _clean_wiki_text(text)[:max_chars]
     except OSError:
         return ""
 
@@ -144,10 +148,8 @@ def _search_wiki(query: str) -> dict | None:
         return None
 
     source_ref = _corpus_paths[best_idx]
-    center_line = int(source_ref.split(":")[-1]) if ":" in source_ref else 1
-    paragraph = _get_paragraph(source_ref, center_line)
-    snippet = paragraph if paragraph else _corpus_lines[best_idx]
     page_content = _get_page_content(source_ref)
+    snippet = _corpus_excerpts[best_idx]
     return {
         "answer": snippet,
         "source_ref": source_ref,

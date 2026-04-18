@@ -231,7 +231,7 @@ def stream_local_rag(
     wiki_context: str,
     query: str,
     cheap_url: str,
-    max_tokens: int = 512,
+    max_tokens: int = 1024,
 ) -> Generator[str, None, None]:
     """Stream a RAG answer from the local vLLM endpoint using wiki page as context."""
     prompt = (

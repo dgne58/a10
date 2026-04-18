@@ -12,11 +12,13 @@ Usage:
 """
 
 import argparse
+import itertools
 import json
 import os
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import urllib.parse
 import urllib.request
@@ -332,6 +334,113 @@ def badge(branch: str, source: str, cost_usd: float, ms: int,
     tool_str = f"  {_MUTED}[tool: {tool_used}]{_RESET}" if tool_used else ""
     return f"{color}{_BOLD}[{branch}]{_RESET} {source}{tool_str}  {_MUTED}{cost_str}  {ms}ms{_RESET}"
 
+
+# ── Spinner ───────────────────────────────────────────────────────────────────
+
+_SPIN_FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+
+
+class _Spinner:
+    def __init__(self, label: str = "Thinking"):
+        self.label = label
+        self._stop = threading.Event()
+        self._t = threading.Thread(target=self._run, daemon=True)
+
+    def start(self) -> "_Spinner":
+        self._t.start()
+        return self
+
+    def stop(self) -> None:
+        self._stop.set()
+        self._t.join(timeout=0.5)
+        sys.stdout.write("\r\033[K")
+        sys.stdout.flush()
+
+    def _run(self) -> None:
+        for ch in itertools.cycle(_SPIN_FRAMES):
+            if self._stop.is_set():
+                break
+            sys.stdout.write(f"\r{_MUTED}{ch}{_RESET} {self.label}…")
+            sys.stdout.flush()
+            time.sleep(0.08)
+
+
+# ── Streaming ─────────────────────────────────────────────────────────────────
+
+_TEXT_TOOL_NAMES = {"fetch_url", "execute_python"}
+
+
+def _parse_text_tool_call(text: str) -> dict | None:
+    s = text.strip()
+    if not (s.startswith("{") and s.endswith("}")):
+        return None
+    try:
+        obj = json.loads(s)
+    except json.JSONDecodeError:
+        return None
+    name = obj.get("name") or obj.get("function") or obj.get("tool")
+    if name not in _TEXT_TOOL_NAMES:
+        return None
+    raw_args = obj.get("parameters") or obj.get("arguments") or obj.get("input") or {}
+    args_str = json.dumps(raw_args) if isinstance(raw_args, dict) else str(raw_args)
+    return {"id": "call_0", "type": "function", "function": {"name": name, "arguments": args_str}}
+
+
+def _stream_tokens(url: str, payload: dict, headers: dict, buffer: bool = False):
+    """Yield str tokens live. If tool call detected, yield {"tool_call": ...} and return.
+    buffer=True delays token output until end (needed for local models that output
+    tool calls as plain-text JSON rather than structured finish_reason)."""
+    data = json.dumps({**payload, "stream": True}).encode()
+    req = urllib.request.Request(url, data=data, headers=headers, method="POST")
+    buffered: list[str] = []
+    accumulated_tc: dict[int, dict] = {}
+
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        for raw in resp:
+            line = raw.decode("utf-8", errors="replace").rstrip("\n")
+            if not line.startswith("data: "):
+                continue
+            raw_data = line[6:]
+            if raw_data.strip() == "[DONE]":
+                break
+            try:
+                chunk = json.loads(raw_data)
+                choice = chunk["choices"][0]
+                delta = choice.get("delta", {})
+                finish = choice.get("finish_reason")
+                content = delta.get("content") or ""
+                if content:
+                    if buffer:
+                        buffered.append(content)
+                    else:
+                        yield content
+                for tc_delta in delta.get("tool_calls", []):
+                    idx = tc_delta.get("index", 0)
+                    if idx not in accumulated_tc:
+                        accumulated_tc[idx] = {
+                            "id": tc_delta.get("id", "call_0"),
+                            "type": "function",
+                            "function": {"name": "", "arguments": ""},
+                        }
+                    fn = tc_delta.get("function", {})
+                    accumulated_tc[idx]["function"]["name"] += fn.get("name", "")
+                    accumulated_tc[idx]["function"]["arguments"] += fn.get("arguments", "")
+                if finish == "tool_calls" and accumulated_tc:
+                    yield {"tool_call": accumulated_tc[0]}
+                    return
+            except (json.JSONDecodeError, KeyError, IndexError):
+                continue
+
+    if buffer:
+        full = "".join(buffered)
+        text_tc = _parse_text_tool_call(full)
+        if text_tc:
+            yield {"tool_call": text_tc}
+            return
+        for tok in buffered:
+            yield tok
+
+
 # ── Main routing ──────────────────────────────────────────────────────────────
 
 def route(query: str) -> None:
@@ -348,15 +457,19 @@ def route(query: str) -> None:
             print(answer)
             return
 
+    sp = _Spinner("Searching memory").start()
     hit = search_wiki(query)
+    sp.stop()
     if hit:
         ms = int((time.monotonic() - t0) * 1000)
         print(badge("memory_answer", hit["source"], 0.0, ms))
         print(hit["answer"])
         return
 
+    sp = _Spinner("Routing").start()
     label  = classify(query)
     branch = select_branch(label)
+    sp.stop()
 
     if branch == "verification_tool":
         map_path = WIKI_ROOT / "00-preload" / "project-map.md"
@@ -366,10 +479,89 @@ def route(query: str) -> None:
         print(answer)
         return
 
-    answer, cost, model_name, tool_used = call_model(branch, query)
+    is_local = branch == "cheap_model" and bool(CHEAP_URL)
+    if is_local:
+        model       = "llama-8b-code"
+        url         = f"{CHEAP_URL}/chat/completions"
+        req_headers = {"Content-Type": "application/json"}
+        display     = "llama-8b-code (local)"
+    else:
+        model       = MODEL_MAP.get(branch, MODEL_MAP["strong_model"])
+        url         = OPENROUTER_BASE
+        req_headers = _openrouter_headers()
+        display     = model
+
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": query}],
+        "max_tokens": 1024,
+        "tools": TOOL_DEFINITIONS,
+        "tool_choice": "auto",
+    }
+
+    sp = _Spinner("Thinking").start()
+    first_tok = True
+    full_text = ""
+    tool_used: str | None = None
+
+    try:
+        for item in _stream_tokens(url, payload, req_headers, buffer=is_local):
+            if first_tok:
+                sp.stop()
+                first_tok = False
+
+            if isinstance(item, str):
+                print(item, end="", flush=True)
+                full_text += item
+
+            elif isinstance(item, dict) and "tool_call" in item:
+                tc = item["tool_call"]
+                fn_name = tc["function"]["name"]
+                try:
+                    fn_args = json.loads(tc["function"]["arguments"])
+                except (json.JSONDecodeError, ValueError):
+                    fn_args = {}
+                tool_used = fn_name
+                print(f"\n{_MUTED}[tool: {fn_name}]{_RESET}", flush=True)
+                result = dispatch_tool(fn_name, fn_args)
+                print(f"{_MUTED}{result[:400]}{_RESET}\n", flush=True)
+
+                followup_payload = {k: v for k, v in payload.items() if k not in ("tools", "tool_choice")}
+                followup_payload["messages"] = [
+                    {"role": "user", "content": query},
+                    {"role": "assistant", "content": None, "tool_calls": [tc]},
+                    {"role": "tool", "tool_call_id": tc["id"], "content": result},
+                ]
+                sp2 = _Spinner("Summarizing").start()
+                first2 = True
+                for tok in _stream_tokens(url, followup_payload, req_headers):
+                    if first2:
+                        sp2.stop()
+                        first2 = False
+                    if isinstance(tok, str):
+                        print(tok, end="", flush=True)
+                        full_text += tok
+                if first2:
+                    sp2.stop()
+                break
+
+    except Exception:
+        if first_tok:
+            sp.stop()
+        answer, cost, model_name, tool_used = call_model(branch, query)
+        ms = int((time.monotonic() - t0) * 1000)
+        print(badge(branch, model_name, cost, ms, tool_used=tool_used))
+        print(answer)
+        return
+
+    if first_tok:
+        sp.stop()
+
+    print()
     ms = int((time.monotonic() - t0) * 1000)
-    print(badge(branch, model_name, cost, ms, tool_used=tool_used))
-    print(answer)
+    tokens = max(1, len(full_text.split()) * 1.3)
+    cost = 0.0 if is_local else round((tokens / 1_000_000) * COST_PER_1M.get(model, 0.35), 8)
+    print(badge(branch, display, cost, ms, tool_used=tool_used))
 
 
 def main() -> None:
