@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import uuid
 from collections.abc import Generator
 
 import httpx
@@ -100,6 +101,32 @@ def stream_model(
                 continue
 
 
+_TEXT_TOOL_NAMES = {"fetch_url", "execute_python"}
+
+
+def _parse_text_tool_call(text: str) -> dict | None:
+    """Detect models that output tool calls as plain-text JSON instead of using
+    finish_reason='tool_calls'. Returns a normalised tool_call dict or None."""
+    stripped = text.strip()
+    if not (stripped.startswith("{") and stripped.endswith("}")):
+        return None
+    try:
+        obj = json.loads(stripped)
+    except json.JSONDecodeError:
+        return None
+    name = obj.get("name") or obj.get("function") or obj.get("tool")
+    if name not in _TEXT_TOOL_NAMES:
+        return None
+    # Accept either "parameters" or "arguments" key
+    raw_args = obj.get("parameters") or obj.get("arguments") or obj.get("input") or {}
+    args_str = json.dumps(raw_args) if isinstance(raw_args, dict) else str(raw_args)
+    return {
+        "id": f"call_{uuid.uuid4().hex[:8]}",
+        "type": "function",
+        "function": {"name": name, "arguments": args_str},
+    }
+
+
 def stream_with_tools(
     model_id: str,
     messages: list[dict],
@@ -108,10 +135,12 @@ def stream_with_tools(
 ) -> Generator[str | dict, None, None]:
     """Stream from OpenRouter with optional tool support.
 
-    Yields str tokens for direct content. If the model calls a tool, the final
-    yielded item is {"tool_call": <tool_call_dict>} and content will be empty.
+    Yields str tokens for direct content. If the model calls a tool (via either
+    structured finish_reason='tool_calls' OR plain-text JSON fallback), the final
+    yielded item is {"tool_call": <tool_call_dict>} and no content tokens are emitted.
     """
     accumulated_tc: dict[int, dict] = {}
+    buffered_tokens: list[str] = []
 
     payload: dict = {
         "model": model_id,
@@ -122,6 +151,8 @@ def stream_with_tools(
     if tools:
         payload["tools"] = tools
         payload["tool_choice"] = "auto"
+
+    structured_tool_call = False
 
     with httpx.stream(
         "POST",
@@ -149,13 +180,13 @@ def stream_with_tools(
 
                 content = delta.get("content")
                 if content:
-                    yield content
+                    buffered_tokens.append(content)
 
                 for tc_delta in delta.get("tool_calls", []):
                     idx = tc_delta.get("index", 0)
                     if idx not in accumulated_tc:
                         accumulated_tc[idx] = {
-                            "id": tc_delta.get("id", ""),
+                            "id": tc_delta.get("id", f"call_{uuid.uuid4().hex[:8]}"),
                             "type": "function",
                             "function": {"name": "", "arguments": ""},
                         }
@@ -164,8 +195,64 @@ def stream_with_tools(
                     accumulated_tc[idx]["function"]["arguments"] += fn.get("arguments", "")
 
                 if finish == "tool_calls" and accumulated_tc:
+                    structured_tool_call = True
                     yield {"tool_call": accumulated_tc[0]}
+                    return
 
+            except (json.JSONDecodeError, KeyError, IndexError):
+                continue
+
+    # No structured tool call — check if model outputted a text-format tool call
+    full_text = "".join(buffered_tokens)
+    text_tc = _parse_text_tool_call(full_text)
+    if text_tc:
+        yield {"tool_call": text_tc}
+        return
+
+    # Normal content — flush buffered tokens
+    for tok in buffered_tokens:
+        yield tok
+
+
+def stream_local_rag(
+    wiki_context: str,
+    query: str,
+    cheap_url: str,
+    max_tokens: int = 512,
+) -> Generator[str, None, None]:
+    """Stream a RAG answer from the local vLLM endpoint using wiki page as context."""
+    prompt = (
+        "You are a technical assistant. Answer the question using only the context below. "
+        "Be concise and direct.\n\n"
+        f"Context:\n{wiki_context}\n\n"
+        f"Question: {query}\n"
+        "Answer:"
+    )
+    payload = {
+        "model": "llama-8b-code",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
+        "stream": True,
+    }
+    with httpx.stream(
+        "POST",
+        f"{cheap_url}/chat/completions",
+        headers={"Content-Type": "application/json"},
+        json=payload,
+        timeout=30.0,
+    ) as resp:
+        resp.raise_for_status()
+        for line in resp.iter_lines():
+            if not line.startswith("data: "):
+                continue
+            raw = line[6:]
+            if raw.strip() == "[DONE]":
+                break
+            try:
+                chunk = json.loads(raw)
+                delta = chunk["choices"][0]["delta"].get("content") or ""
+                if delta:
+                    yield delta
             except (json.JSONDecodeError, KeyError, IndexError):
                 continue
 

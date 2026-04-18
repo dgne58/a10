@@ -8,7 +8,7 @@ from router import route_and_call, classify, select_branch, build_rationale, _na
 from memory import check_memory
 from verifier import run_verification
 from tools import TOOL_DEFINITIONS, dispatch_tool
-from openrouter import stream_model, stream_with_tools, call_with_fallback, compute_cost
+from openrouter import stream_model, stream_with_tools, stream_local_rag, call_with_fallback, compute_cost
 from config import MODEL_MAP, FALLBACK_MODEL, COST_PER_1M
 
 app = Flask(__name__)
@@ -73,13 +73,29 @@ def route_stream():
                         "naive_cost_usd": cached["naive_cost_usd"], "latency_ms": cached["latency_ms"]})
             return
 
-        # Memory — no model call
+        # Memory — wiki RAG via local model if available, else return snippet
         memory_hit = check_memory(query)
         if memory_hit:
-            yield _sse({"type": "meta", "branch": memory_hit["branch"], "model_used": None,
-                        "rationale": memory_hit["rationale"]})
-            yield _sse({"type": "token", "text": memory_hit["answer"]})
-            yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": 1})
+            wiki_context = memory_hit.get("wiki_context")
+            cheap_url = os.getenv("CHEAP_MODEL_URL", "")
+            use_rag = bool(wiki_context and cheap_url)
+            rationale = memory_hit["rationale"]
+            if use_rag:
+                rationale = rationale.replace("no model call needed", "wiki RAG via local model — $0")
+            yield _sse({"type": "meta", "branch": memory_hit["branch"],
+                        "model_used": "llama-8b-code (local)" if use_rag else None,
+                        "rationale": rationale})
+            t0 = time.monotonic()
+            if use_rag:
+                try:
+                    for tok in stream_local_rag(wiki_context, query, cheap_url):
+                        yield _sse({"type": "token", "text": tok})
+                except Exception:
+                    yield _sse({"type": "token", "text": memory_hit["answer"]})
+            else:
+                yield _sse({"type": "token", "text": memory_hit["answer"]})
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": latency_ms})
             return
 
         label = classify(query)
@@ -126,6 +142,7 @@ def route_stream():
                     for tok in stream_model(model, "", messages=followup_messages):
                         full_text += tok
                         yield _sse({"type": "token", "text": tok})
+                    break  # tool handled — don't re-enter the outer stream
 
         except Exception:
             result = call_with_fallback(model, query)

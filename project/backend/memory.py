@@ -3,7 +3,10 @@ import re
 from glob import glob
 
 WIKI_ROOT = os.environ.get("ROUTER_WIKI_PATH", os.path.join(os.path.dirname(__file__), "..", "..", "Wiki"))
-SCORE_THRESHOLD = 3.0
+SCORE_THRESHOLD = 12.0
+
+# Files that contain planning/demo content rather than reference knowledge
+_EXCLUDED_PATTERNS = ("design-doc", "design_doc", "demo", "clipping")
 
 SEED_PAIRS = [
     {
@@ -46,10 +49,21 @@ def _load_bm25() -> None:
     line_paths: list[str] = []
 
     for path in paths:
+        if any(p in path.lower() for p in _EXCLUDED_PATTERNS):
+            continue
         try:
             with open(path, encoding="utf-8", errors="ignore") as f:
+                in_code_block = False
                 for i, line in enumerate(f, 1):
                     stripped = line.strip()
+                    if stripped.startswith("```"):
+                        in_code_block = not in_code_block
+                        continue
+                    if in_code_block:
+                        continue
+                    # Skip lines that look like code or data, not prose
+                    if stripped.startswith(("{", "[", "|", "#!", "//", "$ ", "- {")):
+                        continue
                     if len(stripped) > 30:
                         lines.append(stripped)
                         line_paths.append(f"{os.path.relpath(path, WIKI_ROOT)}:{i}")
@@ -63,6 +77,55 @@ def _load_bm25() -> None:
     _bm25 = BM25Okapi(tokenized)
     _corpus_paths = line_paths
     _corpus_lines = lines
+
+
+def _get_paragraph(source_ref: str, center_line: int, window: int = 8) -> str:
+    """Return up to `window` lines around `center_line` from the source file."""
+    try:
+        rel_path = source_ref.split(":")[0]
+        full_path = os.path.join(WIKI_ROOT, rel_path)
+        with open(full_path, encoding="utf-8", errors="ignore") as f:
+            all_lines = f.readlines()
+        start = max(0, center_line - 3)
+        end = min(len(all_lines), center_line + window)
+        lines = []
+        in_code = False
+        for ln in all_lines[start:end]:
+            s = ln.strip()
+            if s.startswith("```"):
+                in_code = not in_code
+                continue
+            if in_code or not s or s.startswith(("#!", "//", "$ ", "- {", "{", "[")):
+                continue
+            lines.append(s)
+        return "\n".join(lines[:window])
+    except OSError:
+        return ""
+
+
+def _get_page_content(source_ref: str, max_chars: int = 3000) -> str:
+    """Read the full wiki page as prose (code blocks + noisy lines stripped)."""
+    try:
+        rel_path = source_ref.split(":")[0]
+        full_path = os.path.join(WIKI_ROOT, rel_path)
+        with open(full_path, encoding="utf-8", errors="ignore") as f:
+            raw = f.read()
+        lines = []
+        in_code = False
+        for ln in raw.splitlines():
+            s = ln.strip()
+            if s.startswith("```"):
+                in_code = not in_code
+                continue
+            if in_code:
+                continue
+            if s.startswith(("{", "[", "|", "#!", "//", "$ ", "- {")):
+                continue
+            lines.append(s)
+        text = "\n".join(l for l in lines if l)
+        return text[:max_chars]
+    except OSError:
+        return ""
 
 
 def _search_wiki(query: str) -> dict | None:
@@ -80,12 +143,16 @@ def _search_wiki(query: str) -> dict | None:
     if best_score < SCORE_THRESHOLD:
         return None
 
-    snippet = _corpus_lines[best_idx]
     source_ref = _corpus_paths[best_idx]
+    center_line = int(source_ref.split(":")[-1]) if ":" in source_ref else 1
+    paragraph = _get_paragraph(source_ref, center_line)
+    snippet = paragraph if paragraph else _corpus_lines[best_idx]
+    page_content = _get_page_content(source_ref)
     return {
         "answer": snippet,
         "source_ref": source_ref,
         "bm25_score": best_score,
+        "wiki_context": page_content,
     }
 
 

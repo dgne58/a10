@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu } from "lucide-react";
+import { ArrowUp, ArrowRight, Loader2, Zap, Brain, Database, Search, Cpu, Wrench } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,11 @@ interface RouteMeta {
   cost_usd: number;
   naive_cost_usd: number;
   latency_ms?: number;
+}
+
+interface ToolUseEvent {
+  tool: string;
+  result: string;
 }
 
 // ── Branch config ─────────────────────────────────────────────────────────────
@@ -76,14 +81,35 @@ function CostTicker({ routerTotal, naiveTotal }: { routerTotal: number; naiveTot
   );
 }
 
+function ToolUseBadge({ toolUse }: { toolUse: ToolUseEvent }) {
+  const label = toolUse.tool === "fetch_url" ? "fetch_url" : toolUse.tool === "execute_python" ? "execute_python" : toolUse.tool;
+  const preview = toolUse.result.length > 120 ? toolUse.result.slice(0, 120) + "…" : toolUse.result;
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      transition={{ duration: 0.25 }}
+      className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 space-y-1"
+    >
+      <div className="flex items-center gap-1.5 text-xs font-semibold text-cyan-400">
+        <Wrench className="h-3 w-3" />
+        Tool: {label}
+      </div>
+      <p className="text-xs text-white/50 font-mono break-all">{preview}</p>
+    </motion.div>
+  );
+}
+
 function RouteTrace({
   meta,
   answer,
   isStreaming,
+  toolUse,
 }: {
   meta: RouteMeta;
   answer: string;
   isStreaming: boolean;
+  toolUse: ToolUseEvent | null;
 }) {
   const modelLabel = meta.model_used
     ? meta.model_used.split("/").pop() ?? meta.model_used
@@ -101,6 +127,12 @@ function RouteTrace({
         <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-white/50 font-mono">
           {modelLabel}
         </span>
+        {toolUse && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-xs font-semibold text-cyan-400">
+            <Wrench className="h-3 w-3" />
+            {toolUse.tool === "fetch_url" ? "fetch_url" : toolUse.tool === "execute_python" ? "execute_python" : toolUse.tool}
+          </span>
+        )}
         <span className="ml-auto text-xs text-white/30 font-mono">
           {isStreaming ? (
             <span className="text-white/20 animate-pulse">streaming…</span>
@@ -117,8 +149,10 @@ function RouteTrace({
       <p className="text-xs text-white/40 italic border-l-2 border-white/10 pl-3">
         {meta.rationale}
       </p>
+      {toolUse && <ToolUseBadge toolUse={toolUse} />}
       <div className="h-px bg-white/10" />
-      <div className="prose prose-sm prose-invert max-w-none text-white/80
+      <div className="overflow-y-auto max-h-72 pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-track]:bg-transparent
+        prose prose-sm prose-invert max-w-none text-white/80
         [&>h1]:text-base [&>h1]:font-semibold [&>h1]:mt-3 [&>h1]:mb-1
         [&>h2]:text-base [&>h2]:font-semibold [&>h2]:mt-3 [&>h2]:mb-1
         [&>h3]:text-sm  [&>h3]:font-semibold [&>h3]:mt-2 [&>h3]:mb-0.5
@@ -156,6 +190,7 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
   const [answer, setAnswer] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [toolUse, setToolUse] = useState<ToolUseEvent | null>(null);
   const [routerTotal, setRouterTotal] = useState(0);
   const [naiveTotal, setNaiveTotal] = useState(0);
   const hasRun = routerTotal > 0;
@@ -176,6 +211,7 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
     setError(null);
     setMeta(null);
     setAnswer("");
+    setToolUse(null);
     setQuery("");
 
     try {
@@ -216,6 +252,8 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
               });
             } else if (event.type === "token") {
               setAnswer((a) => a + event.text);
+            } else if (event.type === "tool_use") {
+              setToolUse({ tool: event.tool, result: event.result });
             } else if (event.type === "done") {
               setMeta((m) => m ? {
                 ...m,
@@ -385,7 +423,7 @@ export default function QueryPanel({ onOpenBenchmark }: QueryPanelProps) {
         {/* Route trace */}
         <AnimatePresence>
           {meta && (
-            <RouteTrace meta={meta} answer={answer} isStreaming={isStreaming} />
+            <RouteTrace meta={meta} answer={answer} isStreaming={isStreaming} toolUse={toolUse} />
           )}
         </AnimatePresence>
       </motion.div>

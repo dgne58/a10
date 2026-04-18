@@ -38,9 +38,9 @@ def classify(query: str) -> dict:
     else:
         domain = "factual"
 
-    if any(w in q for w in HARD_KEYWORDS) or word_count > 40 or domain in {"code", "math"}:
+    if any(w in q for w in HARD_KEYWORDS) or word_count > 40:
         complexity = "hard"
-    elif any(w in q for w in MEDIUM_KEYWORDS) or word_count > 20:
+    elif any(w in q for w in MEDIUM_KEYWORDS) or word_count > 20 or domain in {"code", "math"}:
         complexity = "medium"
     else:
         complexity = "simple"
