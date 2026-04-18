@@ -58,6 +58,7 @@ const BRANCH_META: Record<string, {
   cheap_model:       { label: "Fast",   barColor: "#94C9E9", textColor: "#1A6A99", Icon: Zap },
   mid_model:         { label: "Mid",    barColor: "#CAB3D6", textColor: "#6B3FA0", Icon: Cpu },
   strong_model:      { label: "Strong", barColor: "#F55702", textColor: "#B33D00", Icon: Brain },
+  tool_call:         { label: "Tool",   barColor: "#4DD0E1", textColor: "#00838F", Icon: Zap },
   verification_tool: { label: "Verify", barColor: "#F5AA64", textColor: "#9A5A00", Icon: Search },
 };
 
@@ -307,6 +308,177 @@ function QuestionTable({ questions }: { questions: EvalQuestion[] }) {
   );
 }
 
+// ── HumanEval types ───────────────────────────────────────────────────────────
+
+interface HumanEvalSummary {
+  total: number;
+  router_pass_at_1: number;
+  naive_pass_at_1: number;
+  router_cost_usd: number;
+  naive_cost_usd: number;
+  cost_reduction_pct: number;
+}
+
+interface ParetoPoint { label: string; cost: number; quality: number; highlight: boolean; }
+interface PGRData { pgr: number; router_cost_fraction: number; curve: { cost_fraction: number; quality: number }[]; }
+
+// ── HumanEval stats card ──────────────────────────────────────────────────────
+
+function HumanEvalStats({ data }: { data: HumanEvalSummary }) {
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>HumanEval — pass@1</span>
+      <div style={{ ...INNER_CARD, overflow: "hidden" }}>
+        <div className="grid grid-cols-2">
+          {[
+            { label: "Router pass@1", value: `${Math.round(data.router_pass_at_1 * 100)}%`, green: false },
+            { label: "GPT-4o-mini",   value: `${Math.round(data.naive_pass_at_1 * 100)}%`,  green: false },
+            { label: "Cost saved",    value: `${data.cost_reduction_pct}%`, green: true },
+            { label: "Tasks solved",  value: `${Math.round(data.router_pass_at_1 * data.total)}/${data.total}`, green: false },
+          ].map((s, i) => (
+            <div
+              key={s.label}
+              className="flex flex-col gap-1"
+              style={{
+                padding: 14,
+                borderRight: i % 2 === 0 ? "1px solid rgba(0,0,0,0.07)" : undefined,
+                borderBottom: i < 2 ? "1px solid rgba(0,0,0,0.07)" : undefined,
+              }}
+            >
+              <span style={LABEL_STYLE}>{s.label}</span>
+              <span className="text-xl font-bold font-mono" style={{ color: s.green ? "#059669" : TEXT_DARK }}>
+                {s.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Pareto frontier chart ─────────────────────────────────────────────────────
+
+function ParetoChart({ points }: { points: ParetoPoint[] }) {
+  const maxCost    = Math.max(...points.map(p => p.cost)) * 1.2 || 1;
+  const maxQuality = 1.0;
+  const W = 260, H = 120, PAD = 28;
+
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Pareto frontier — cost vs quality</span>
+      <div style={{ ...INNER_CARD, padding: 16 }}>
+        <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+          {/* axes */}
+          <line x1={PAD} y1={H - PAD} x2={W - 8} y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+          <line x1={PAD} y1={8}        x2={PAD}   y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+          <text x={W / 2} y={H - 4} textAnchor="middle" fontSize={8} fill={TEXT_MUTED}>Cost (USD)</text>
+          <text x={8} y={H / 2} textAnchor="middle" fontSize={8} fill={TEXT_MUTED} transform={`rotate(-90,8,${H/2})`}>Quality</text>
+          {points.map((p) => {
+            const cx = PAD + ((p.cost / maxCost) * (W - PAD - 16));
+            const cy = (H - PAD) - (p.quality / maxQuality) * (H - PAD - 12);
+            return (
+              <g key={p.label}>
+                {p.highlight
+                  ? <polygon points={`${cx},${cy - 7} ${cx + 6},${cy + 4} ${cx - 6},${cy + 4}`} fill="#059669" />
+                  : <circle cx={cx} cy={cy} r={5} fill="rgba(107,76,48,0.25)" stroke="rgba(107,76,48,0.5)" strokeWidth={1} />
+                }
+                <text x={cx + 8} y={cy + 3} fontSize={7} fill={p.highlight ? "#059669" : TEXT_MUTED}>{p.label}</text>
+              </g>
+            );
+          })}
+        </svg>
+        <p className="text-[10px] mt-1" style={{ color: TEXT_MUTED }}>
+          ▲ = Router (green). Closer to top-left = better trade-off.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── PGR curve ─────────────────────────────────────────────────────────────────
+
+function PGRCurve({ data }: { data: PGRData }) {
+  const W = 260, H = 110, PAD = 28;
+  const pts = data.curve;
+  const toX = (f: number) => PAD + f * (W - PAD - 12);
+  const toY = (q: number) => (H - PAD) - q * (H - PAD - 12);
+  const pathD = pts.map((p, i) => `${i === 0 ? "M" : "L"}${toX(p.cost_fraction).toFixed(1)},${toY(p.quality).toFixed(1)}`).join(" ");
+  const rx = toX(data.router_cost_fraction);
+
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>PGR curve — Performance Gap Recovered</span>
+      <div style={{ ...INNER_CARD, padding: 16 }}>
+        <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+          <line x1={PAD} y1={H - PAD} x2={W - 8}  y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+          <line x1={PAD} y1={8}        x2={PAD}    y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+          <path d={pathD} fill="none" stroke="#94C9E9" strokeWidth={2} strokeLinejoin="round" />
+          <line x1={rx} y1={12} x2={rx} y2={H - PAD} stroke="#059669" strokeWidth={1.5} strokeDasharray="3,2" />
+          <text x={rx + 3} y={22} fontSize={7} fill="#059669">router</text>
+          <text x={W / 2} y={H - 4} textAnchor="middle" fontSize={8} fill={TEXT_MUTED}>Cost fraction</text>
+          <text x={8} y={H / 2} textAnchor="middle" fontSize={8} fill={TEXT_MUTED} transform={`rotate(-90,8,${H/2})`}>Quality</text>
+        </svg>
+        <p className="text-[10px] mt-1 font-mono" style={{ color: TEXT_MUTED }}>
+          PGR = {(data.pgr * 100).toFixed(0)}% of strong-model quality recovered
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Confusion matrix ──────────────────────────────────────────────────────────
+
+function ConfusionMatrix({ matrix }: { matrix: Record<string, Record<string, number>> }) {
+  const branches = Object.keys(matrix).filter(b => Object.values(matrix[b]).some(v => v > 0));
+  if (branches.length === 0) return null;
+
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Classifier confusion matrix</span>
+      <div style={{ ...INNER_CARD, padding: 12, overflowX: "auto" }}>
+        <table style={{ fontSize: 10, borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>
+              <th style={{ padding: "3px 6px", color: TEXT_MUTED, textAlign: "left", fontWeight: 500 }}>actual\pred</th>
+              {branches.map(b => (
+                <th key={b} style={{ padding: "3px 4px", color: TEXT_MUTED, fontWeight: 500, textAlign: "center" }}>
+                  {BRANCH_META[b]?.label ?? b}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {branches.map(row => (
+              <tr key={row}>
+                <td style={{ padding: "3px 6px", color: TEXT_MED, fontWeight: 500 }}>{BRANCH_META[row]?.label ?? row}</td>
+                {branches.map(col => {
+                  const v = matrix[row]?.[col] ?? 0;
+                  const isCorrect = row === col && v > 0;
+                  return (
+                    <td
+                      key={col}
+                      style={{
+                        padding: "3px 4px",
+                        textAlign: "center",
+                        fontFamily: "monospace",
+                        background: isCorrect ? "rgba(5,150,105,0.1)" : v > 0 ? "rgba(239,68,68,0.07)" : undefined,
+                        color: isCorrect ? "#059669" : v > 0 ? "#EF4444" : TEXT_MUTED,
+                      }}
+                    >
+                      {v}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 interface DashboardProps {
@@ -318,6 +490,10 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
   const setIsOpen = (val: boolean) => { if (!val) onClose(); };
   const [summary, setSummary] = useState<EvalSummary | null>(null);
   const [allQuestions, setAllQuestions] = useState<EvalQuestion[]>([]);
+  const [humanEval, setHumanEval] = useState<HumanEvalSummary | null>(null);
+  const [pareto, setPareto] = useState<ParetoPoint[] | null>(null);
+  const [pgr, setPgr] = useState<PGRData | null>(null);
+  const [confusion, setConfusion] = useState<Record<string, Record<string, number>> | null>(null);
   const [error, setError] = useState(false);
   const hasFetched = useRef(false);
 
@@ -325,15 +501,22 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
   useEffect(() => {
     if (!isOpen || hasFetched.current) return;
     hasFetched.current = true;
-    Promise.all([
+    Promise.allSettled([
       fetch("http://localhost:5000/api/eval/summary").then((r) => r.json()),
       fetch("http://localhost:5000/api/eval/questions").then((r) => r.json()),
-    ])
-      .then(([sum, qs]) => {
-        setSummary(sum);
-        setAllQuestions(Array.isArray(qs) ? qs : []);
-      })
-      .catch(() => setError(true));
+      fetch("http://localhost:5000/api/eval/humaneval").then((r) => r.json()),
+      fetch("http://localhost:5000/api/eval/pareto").then((r) => r.json()),
+      fetch("http://localhost:5000/api/eval/pgr").then((r) => r.json()),
+      fetch("http://localhost:5000/api/eval/confusion").then((r) => r.json()),
+    ]).then(([sum, qs, he, par, pg, conf]) => {
+      if (sum.status === "fulfilled" && !sum.value.error) setSummary(sum.value);
+      else setError(true);
+      if (qs.status === "fulfilled" && Array.isArray(qs.value)) setAllQuestions(qs.value);
+      if (he.status === "fulfilled" && !he.value.error) setHumanEval(he.value);
+      if (par.status === "fulfilled" && Array.isArray(par.value)) setPareto(par.value);
+      if (pg.status === "fulfilled" && !pg.value.error) setPgr(pg.value);
+      if (conf.status === "fulfilled" && !conf.value.error) setConfusion(conf.value);
+    });
   }, [isOpen]);
 
   // Esc to close
@@ -433,7 +616,7 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
 
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                   <div style={{ height: 1, width: 16, background: "rgba(168,152,128,0.4)" }} />
-                  <span style={LABEL_STYLE}>MMLU Benchmark · 100 questions · 5 subjects</span>
+                  <span style={LABEL_STYLE}>HumanEval · 100 Python problems · pass@1</span>
                 </div>
                 <h2 style={{
                   fontFamily: FONT_DISPLAY,
@@ -445,9 +628,9 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                   Benchmark results
                 </h2>
                 <p style={{ fontSize: 13, color: TEXT_MED, lineHeight: 1.6, maxWidth: 380 }}>
-                  Router vs naive GPT-4o. Grounded in{" "}
+                  Router vs naive GPT-4o-mini on coding tasks. Grounded in{" "}
                   <span style={{ fontWeight: 600, color: TEXT_DARK }}>RouteLLM (Berkeley, 2024)</span>
-                  {" "}— up to 3.66× cost reduction at minimal accuracy cost.
+                  {" "}— Pareto-optimal cost/quality trade-off.
                 </p>
               </div>
 
@@ -562,12 +745,56 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                     </motion.div>
                   )}
 
+                  {/* HumanEval stats */}
+                  {humanEval && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.28 }}
+                    >
+                      <HumanEvalStats data={humanEval} />
+                    </motion.div>
+                  )}
+
+                  {/* Pareto frontier */}
+                  {pareto && pareto.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.32 }}
+                    >
+                      <ParetoChart points={pareto} />
+                    </motion.div>
+                  )}
+
+                  {/* PGR curve */}
+                  {pgr && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.36 }}
+                    >
+                      <PGRCurve data={pgr} />
+                    </motion.div>
+                  )}
+
+                  {/* Confusion matrix */}
+                  {confusion && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.40 }}
+                    >
+                      <ConfusionMatrix matrix={confusion} />
+                    </motion.div>
+                  )}
+
                   {/* Table */}
                   {questions.length > 0 && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.3 }}
+                      transition={{ duration: 0.4, delay: 0.44 }}
                     >
                       <QuestionTable questions={questions} />
                     </motion.div>

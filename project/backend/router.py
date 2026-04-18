@@ -22,11 +22,25 @@ VERIFY_KEYWORDS = {
     "what does the project", "what models does", "what architecture",
     "what files", "which wiki", "what is the routing", "what components"
 }
+TOOL_WEATHER_KEYWORDS = {
+    "weather", "temperature", "forecast", "raining", "sunny", "humid",
+    "wind", "celsius", "fahrenheit", "climate today"
+}
+TOOL_CODE_EXEC_KEYWORDS = {
+    "run this", "execute this", "run the code", "execute the code",
+    "run this code", "execute this snippet", "what does this print",
+    "output of this", "result of this code"
+}
 
 
 def classify(query: str) -> dict:
     q = query.lower()
     word_count = len(query.split())
+
+    if any(w in q for w in TOOL_CODE_EXEC_KEYWORDS):
+        return {"complexity": "tool", "domain": "code_exec"}
+    if any(w in q for w in TOOL_WEATHER_KEYWORDS):
+        return {"complexity": "tool", "domain": "weather"}
 
     if any(w in q for w in VERIFY_KEYWORDS):
         return {"complexity": "verify", "domain": "project"}
@@ -49,6 +63,8 @@ def classify(query: str) -> dict:
 
 
 def select_branch(label: dict) -> str:
+    if label["complexity"] == "tool":
+        return "tool_call"
     if label["complexity"] == "verify":
         return "verification_tool"
     mapping = {
@@ -70,6 +86,7 @@ def build_rationale(label: dict, branch: str, model_id: str | None) -> str:
     branch_labels = {
         "memory_answer":     "answered from local memory",
         "verification_tool": "grounded from local project file",
+        "tool_call":         "tool execution — no model cost",
         "cheap_model":       f"simple query → cheapest model ({model_id})",
         "mid_model":         f"medium query → mid-tier model ({model_id})",
         "strong_model":      f"hard query → strong model ({model_id})",

@@ -1,8 +1,7 @@
 # ── Project content (local only) ────────────────────────────────────────────
-Clippings/
-Wiki/
 nimbalyst-local/
-scripts/
+scripts-local/
+slides/
 
 # ── Project root docs (sensitive / local contracts) ──────────────────────────
 AGENTS.md

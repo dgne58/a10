@@ -18,5 +18,6 @@ BRANCH_COLORS = {
     "cheap_model":       "blue",
     "mid_model":         "yellow",
     "strong_model":      "orange",
+    "tool_call":         "teal",
     "verification_tool": "purple",
 }

@@ -19,8 +19,12 @@ def compute_cost(usage: dict, model_id: str) -> float:
     return round((total_tokens / 1_000_000) * rate, 8)
 
 
-def call_model(model_id: str, query: str, max_tokens: int = 512) -> dict:
+def call_model(model_id: str, query: str, max_tokens: int = 512, system: str | None = None) -> dict:
     t0 = time.monotonic()
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": query})
     resp = httpx.post(
         f"{OPENROUTER_BASE}/chat/completions",
         headers={
@@ -30,7 +34,7 @@ def call_model(model_id: str, query: str, max_tokens: int = 512) -> dict:
         },
         json={
             "model": model_id,
-            "messages": [{"role": "user", "content": query}],
+            "messages": messages,
             "max_tokens": max_tokens,
         },
         timeout=15.0,
@@ -47,8 +51,12 @@ def call_model(model_id: str, query: str, max_tokens: int = 512) -> dict:
     }
 
 
-def stream_model(model_id: str, query: str, max_tokens: int = 512) -> Generator[str, None, None]:
+def stream_model(model_id: str, query: str, max_tokens: int = 512, system: str | None = None) -> Generator[str, None, None]:
     """Yield text chunks from OpenRouter streaming completions."""
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": query})
     with httpx.stream(
         "POST",
         f"{OPENROUTER_BASE}/chat/completions",
@@ -59,7 +67,7 @@ def stream_model(model_id: str, query: str, max_tokens: int = 512) -> Generator[
         },
         json={
             "model": model_id,
-            "messages": [{"role": "user", "content": query}],
+            "messages": messages,
             "max_tokens": max_tokens,
             "stream": True,
         },

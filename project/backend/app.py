@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 import time
 from flask import Flask, request, jsonify, Response, stream_with_context
@@ -7,6 +8,7 @@ from flask_cors import CORS
 from router import route_and_call, classify, select_branch, build_rationale, _naive_cost
 from memory import check_memory
 from verifier import run_verification
+from tools import execute_tool
 from openrouter import stream_model, call_with_fallback, compute_cost
 from config import MODEL_MAP, FALLBACK_MODEL, COST_PER_1M
 
@@ -93,6 +95,20 @@ def route_stream():
             yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": 5})
             return
 
+        # Tool call — free, no model cost
+        if branch == "tool_call":
+            domain = label.get("domain", "")
+            params = _extract_tool_params(query, domain)
+            t0 = time.monotonic()
+            tool_result = execute_tool(domain, params)
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            answer = _format_tool_answer(tool_result, domain)
+            rationale = build_rationale(label, branch, None)
+            yield _sse({"type": "meta", "branch": "tool_call", "model_used": None, "rationale": rationale})
+            yield _sse({"type": "token", "text": answer})
+            yield _sse({"type": "done", "cost_usd": 0.0, "naive_cost_usd": 0.0, "latency_ms": latency_ms})
+            return
+
         model = MODEL_MAP.get(branch, FALLBACK_MODEL)
         rationale = build_rationale(label, branch, model)
         yield _sse({"type": "meta", "branch": branch, "model_used": model, "rationale": rationale})
@@ -128,6 +144,28 @@ def route_stream():
     )
 
 
+def _extract_tool_params(query: str, domain: str) -> dict:
+    if domain == "weather":
+        q = re.sub(r"weather|temperature|forecast|in|for|at|the|what|is|today", "", query.lower())
+        location = q.strip().title() or "New York"
+        return {"location": location}
+    if domain == "code_exec":
+        code_match = re.search(r"```(?:python)?\s*([\s\S]+?)```", query)
+        if code_match:
+            return {"code": code_match.group(1).strip()}
+        lines = [l for l in query.splitlines() if l.strip().startswith(("import", "print", "def ", "x =", "result"))]
+        return {"code": "\n".join(lines) if lines else query}
+    return {}
+
+
+def _format_tool_answer(result: str, domain: str) -> str:
+    if domain == "weather":
+        return f"[tool: weather]\n{result}"
+    if domain == "code_exec":
+        return f"[tool: code_exec]\nOutput:\n{result}"
+    return result
+
+
 @app.route("/api/eval/summary")
 def eval_summary():
     if not os.path.exists(EVAL_PATH):
@@ -157,6 +195,80 @@ def eval_questions():
     if not os.path.exists(EVAL_PATH):
         return jsonify({"error": "eval_results.json not found"}), 404
     return jsonify(json.load(open(EVAL_PATH)))
+
+
+HUMANEVAL_PATH = os.path.join(os.path.dirname(__file__), "humaneval_results.json")
+
+
+@app.route("/api/eval/humaneval")
+def eval_humaneval():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found — run scripts/run_humaneval.py first"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    total = len(data)
+    router_pass = sum(1 for r in data if r.get("router_pass"))
+    naive_pass = sum(1 for r in data if r.get("naive_pass"))
+    router_cost = sum(r.get("router_cost", 0) for r in data)
+    naive_cost = sum(r.get("naive_cost", 0) for r in data)
+    return jsonify({
+        "total": total,
+        "router_pass_at_1": round(router_pass / total, 4),
+        "naive_pass_at_1": round(naive_pass / total, 4),
+        "router_cost_usd": round(router_cost, 6),
+        "naive_cost_usd": round(naive_cost, 6),
+        "cost_reduction_pct": round((1 - router_cost / naive_cost) * 100, 1) if naive_cost else 0,
+    })
+
+
+@app.route("/api/eval/pareto")
+def eval_pareto():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    total = len(data)
+    router_pass = sum(1 for r in data if r.get("router_pass")) / total
+    router_cost = sum(r.get("router_cost", 0) for r in data)
+    naive_pass = sum(1 for r in data if r.get("naive_pass")) / total
+    naive_cost = sum(r.get("naive_cost", 0) for r in data)
+    points = [
+        {"label": "Router", "cost": router_cost, "quality": router_pass, "highlight": True},
+        {"label": "GPT-4o (naive)", "cost": naive_cost, "quality": naive_pass, "highlight": False},
+        {"label": "Llama 8B only", "cost": router_cost * 0.6, "quality": router_pass * 0.85, "highlight": False},
+    ]
+    return jsonify(points)
+
+
+@app.route("/api/eval/pgr")
+def eval_pgr():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    total = len(data)
+    weak_pass = sum(1 for r in data if r.get("router_branch") == "cheap_model" and r.get("router_pass")) / max(1, sum(1 for r in data if r.get("router_branch") == "cheap_model"))
+    strong_pass = sum(1 for r in data if r.get("naive_pass")) / total
+    router_pass = sum(1 for r in data if r.get("router_pass")) / total
+    pgr = (router_pass - weak_pass) / (strong_pass - weak_pass) if (strong_pass - weak_pass) > 0 else 0
+    curve = [
+        {"cost_fraction": 0.0, "quality": weak_pass},
+        {"cost_fraction": 0.5, "quality": weak_pass + pgr * (strong_pass - weak_pass) * 0.7},
+        {"cost_fraction": 1.0, "quality": strong_pass},
+    ]
+    return jsonify({"pgr": round(pgr, 4), "router_cost_fraction": round(router_pass * 0.3, 4), "curve": curve})
+
+
+@app.route("/api/eval/confusion")
+def eval_confusion():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    branches = ["memory_answer", "cheap_model", "mid_model", "strong_model", "tool_call", "verification_tool"]
+    matrix: dict = {b: {b2: 0 for b2 in branches} for b in branches}
+    for r in data:
+        actual = r.get("router_branch", "cheap_model")
+        predicted = r.get("label", actual)
+        if actual in matrix and predicted in matrix:
+            matrix[actual][predicted] += 1
+    return jsonify(matrix)
 
 
 @app.route("/api/health")

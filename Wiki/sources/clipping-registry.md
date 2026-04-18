@@ -1,0 +1,569 @@
+﻿# Clipping Registry
+
+## Purpose
+- Provide a central provenance map between raw files in `Clippings/` and synthesized wiki pages.
+- Make it obvious where a clipping belongs, whether it has been synthesized, and which pages depend on it.
+- Keep the registry lighter and more navigable than the intake queue while still pointing to authoritative destinations.
+
+## How To Use This Page
+
+When a new clipping is added:
+1. Add the exact filename under `Unsorted / New`.
+2. Once classified, move it into the best thematic section.
+3. Add the destination wiki pages that synthesize or depend on it.
+4. If the clipping drives an exact number, benchmark, quote, or command, reopen the raw file from `Clippings/` during answer generation.
+
+Status meanings:
+- `synthesized`: covered substantively by one or more wiki pages
+- `partial`: referenced or lightly integrated, but still a candidate for deeper synthesis
+- `new`: present in `Clippings/` but not yet integrated
+
+## Theme Map
+
+### MCP And Agentic Workflows
+- `Introducing the Model Context Protocol.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]], [[mcp-overview]], [[../workflows/mcp-agentic-patterns|../workflows/mcp-agentic-patterns]]
+- `Model Context Protocol.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]]
+- `How MCP Enables Agentic AI Workflows.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]], [[mcp-overview]], [[../workflows/mcp-agentic-patterns|../workflows/mcp-agentic-patterns]]
+- `How to build a simple agentic AI server with MCP.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]], [[mcp-overview]]
+- `MCP and Connectors  OpenAI API.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]]
+- `Function calling  OpenAI API.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]]
+- `lastmile-aimcp-agent Build effective agents using Model Context Protocol and simple workflow patterns.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]], [[mcp-overview]], [[../workflows/mcp-agentic-patterns|../workflows/mcp-agentic-patterns]]
+- `Put AI Agents to Work Faster Using MCP.md`
+  - status: `partial`
+  - pages: [[mcp-agentic-workflows]]
+- `Agentic AI & MCP for Platform Engineering Teams.md`
+  - status: `synthesized`
+  - pages: [[mcp-agentic-workflows]], [[mcp-overview]]
+- `What is the Model Context Protocol (MCP).md`
+  - status: `synthesized`
+  - pages: [[mcp-overview]], [[mcp-agentic-workflows]]
+
+### Task-Aware Routing And Inference
+- `RouteLLM Learning to Route LLMs with Preference Data.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[routing-papers]], [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]]
+- `RouteLLM Learning to Route LLMs with Preference Data 1.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `lm-sysRouteLLM A framework for serving and evaluating LLM routers - save LLM costs without compromising quality 1.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `Task-Aware LLM Routing with Multi-Level Task-Profile-Guided Data Synthesis for Cold-Start Scenarios.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[routing-papers]]
+- `LLM Router Blueprint by NVIDIA.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[routing-papers]], [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]]
+- `LLM routing for quality, low-cost responses.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]]
+- `LLM Semantic Router Intelligent request routing for large language models.md`
+  - status: `partial`
+  - pages: [[task-aware-routing]]
+- `Bringing intelligent, efficient routing to open source AI with vLLM Semantic Router.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[routing-papers]], [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]], [[serving-and-inference]]
+- `Meet LLMRouter An Intelligent Routing System designed to Optimize LLM Inference by Dynamically Selecting the most Suitable Model for Each Query.md`
+  - status: `partial`
+  - pages: [[task-aware-routing]]
+- `MetaLLM A High-performant and Cost-efficient Dynamic Framework for Wrapping LLMs.md`
+  - status: `partial`
+  - pages: [[task-aware-routing]]
+- `Multi-Model Routing Choosing the Best LLM per Task.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[routing-papers]], [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]]
+- `Hybrid LLM Cost-Efficient and Quality-Aware Query Routing.md`
+  - status: `synthesized`
+  - pages: [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]]
+- `Router-R1 Teaching LLMs Multi-Round Routing and Aggregation via Reinforcement Learning.md`
+  - status: `synthesized`
+  - pages: [[../workflows/llm-routing-approaches|../workflows/llm-routing-approaches]]
+- `Not-Diamondawesome-ai-model-routing A curated list of awesome approaches to AI model routing.md`
+  - status: `partial`
+  - pages: [[task-aware-routing]]
+- `pulzeai-ossknn-router.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `EmbedLLM Learning Compact Representations of Large Language Models.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `Language Models are Unsupervised Multitask Learners.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]], [[post-training-and-alignment]]
+- `PDF to Markdown.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `PDF to Markdown 4.md`
+  - status: `synthesized`
+  - pages: [[routing-papers]]
+- `What is an LLM (large language model).md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]]
+- `What is artificial intelligence (AI).md`
+  - status: `partial`
+  - pages: [[task-aware-routing]]
+- `Overview – NVIDIA NeMo Framework User Guide.md`
+  - status: `partial`
+  - pages: [[task-aware-routing]], [[serving-and-inference]]
+- `Overview – TensorRT LLM.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[serving-and-inference]]
+- `Welcome to TensorRT LLM's Documentation! — TensorRT LLM.md`
+  - status: `synthesized`
+  - pages: [[serving-and-inference]], [[task-aware-routing]]
+- `ai-dynamodynamo A Datacenter Scale Distributed Inference Serving Framework.md`
+  - status: `synthesized`
+  - pages: [[task-aware-routing]], [[serving-and-inference]]
+
+### Post-Training And Alignment
+- `A Practical Guide to Fine-Tuning Small Language Models.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]], [[../workflows/slm-fine-tuning-pipeline|../workflows/slm-fine-tuning-pipeline]]
+- `Fine-Tuning Small Language Models Practical Recommendations.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]]
+- `The Complete Guide to Fine-Tuning LLMs and SLMs in 2025.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `The Comprehensive Guide to Fine-tuning LLM.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]]
+- `LLM Fine-Tuning Methods Post-Training Optimization Techniques.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `LLM alignment techniques 4 post-training approaches.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]]
+- `LLM Post-Training A Deep Dive into Reasoning Large Language Models.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]]
+- `Teaching Large Language Models to Reason with Reinforcement Learning.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Training language models to follow instructions with human feedback.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Reinforcement Learning from Human Feedback.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `RLHF Deciphered A Critical Analysis of Reinforcement Learning from Human Feedback for LLMs.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `The Art of (Mis)alignment How Fine-Tuning Methods Effectively Misalign and Realign LLMs in Post-Training.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]], [[fine-tuning-notes]]
+- `Demystifying Long Chain-of-Thought Reasoning in LLMs.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `What is LoRA  Low-rank adaptation.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Low-rank approximation - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Reward hacking - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Model specification (artificial intelligence) - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Reasoning model - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `Data parallelism - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `PDF to Markdown 2.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+- `PDF to Markdown 3.md`
+  - status: `synthesized`
+  - pages: [[post-training-and-alignment]]
+
+### Security, Networking, And Governance
+- `Context-aware Security for Agentic AI Gateways.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]], [[envoy-gateway-notes]]
+- `The case for Envoy networking in the agentic AI era.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]], [[envoy-gateway-notes]], [[../components/envoy-ai-gateway|../components/envoy-ai-gateway]]
+- `Establishing Runtime Security for Agentic AI.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]], [[agentic-security-notes]], [[../components/policy-gateway|../components/policy-gateway]]
+- `Agentic AI Governance How to Approach It.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]], [[agentic-security-notes]]
+- `Envoy AI Gateway.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]], [[envoy-gateway-notes]], [[../components/envoy-ai-gateway|../components/envoy-ai-gateway]]
+- `Envoy AI Gateway 1.md`
+  - status: `partial`
+  - pages: [[envoy-gateway-notes]]
+- `Supported AI Providers  Envoy AI Gateway.md`
+  - status: `partial`
+  - pages: [[envoy-gateway-notes]], [[../components/envoy-ai-gateway|../components/envoy-ai-gateway]]
+- `What Is Envoy Proxy Concepts, Architecture & Use Cases  Solo.io.md`
+  - status: `partial`
+  - pages: [[security-networking-and-governance]]
+- `Load Balancing Solutions for Availability & Security.md`
+  - status: `partial`
+  - pages: [[security-networking-and-governance]]
+- `What is data loss prevention (DLP).md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]]
+- `PDF to Markdown 1.md`
+  - status: `synthesized`
+  - pages: [[security-networking-and-governance]]
+- `What is a Zero Trust network.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `What is Zero Trust Network Access (ZTNA).md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `What is CASB  Cloud access security brokers.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Open Policy Agent (OPA)  Open Policy Agent.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Cloud Native Security and Kubernetes.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Kubernetes Security - OWASP Cheat Sheet Series.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Pod Security Standards.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Pod Security Standards 1.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `What is gVisor - gVisor.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Introduction to gVisor security - gVisor.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `Firecracker.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+- `firecrackerdocsdesign.md at main.md`
+  - status: `synthesized`
+  - pages: [[infrastructure-security]]
+
+### App Stack And Delivery
+- `Best Practices for Flask API Development.md`
+  - status: `synthesized`
+  - pages: [[app-stack-and-delivery]], [[app-stack-notes]]
+- `Build a Flask REST API with Python (Step-by-Step Guide).md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `Designing a RESTful API with Python and Flask.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `Developing RESTful APIs with Python and Flask.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `How To Structure a Large Flask Application-Best Practices for 2025.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]], [[app-stack-notes]]
+- `Flask-RESTful — Flask-RESTful 0.3.10 documentation.md`
+  - status: `synthesized`
+  - pages: [[app-stack-and-delivery]], [[app-stack-notes]]
+- `Quickstart — Flask-RESTful 0.3.10 documentation.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `API Docs — Flask-RESTful 0.3.10 documentation.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `React Stack Patterns.md`
+  - status: `synthesized`
+  - pages: [[app-stack-and-delivery]]
+- `Designing delightful frontends with GPT-5.4.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `Create CICD Pipelines with GitHub Actions A practical introduction to pipelines for smarter deliveries - Fernando Lisboa.md`
+  - status: `partial`
+  - pages: [[app-stack-and-delivery]]
+- `n8n A Guide With Practical Examples.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `What is edge computing  Benefits of the edge.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `What is Function-as-a-Service (FaaS).md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `What is serverless computing.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `Why use serverless computing  Pros and cons of serverless.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `JSON Schema - Specification section.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+- `OpenAPI Specification v3.1.0.md`
+  - status: `synthesized`
+  - pages: [[app-stack-notes]]
+
+### Protocols, Observability, And Evaluation Material
+- `About RFCs.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]]
+- `Request for Comments - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]]
+- `Internet Engineering Task Force - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]]
+- `RFC 2616 Hypertext Transfer Protocol -- HTTP1.1.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]], [[network-protocols]]
+- `HTTPS - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]], [[network-protocols]]
+- `Introduction to gRPC.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `Language Guide (proto 3).md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `Protocol Buffers Language Specification (Proto3).md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `grpcgrpc C++ based gRPC (C++, Python, Ruby, Objective-C, PHP, C).md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `RFC 9113 HTTP2.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `RFC 9293 Transmission Control Protocol (TCP).md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `RFC 8446 The Transport Layer Security (TLS) Protocol Version 1.3.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `RFC 1035 Domain names - implementation and specification.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `Domain Name System - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `Transmission Control Protocol - Wikipedia.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `What is DNS  How DNS works.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `DNS server types.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `What are DNS records.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `How does the Internet work.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `What is a LAN (local area network).md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `What is routing  IP routing.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `What is the network layer  Network vs. Internet layer.md`
+  - status: `synthesized`
+  - pages: [[network-protocols]]
+- `Home - Wireshark Wiki.md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]]
+- `Monitoring With Zeek — Book of Zeek (8.1.1).md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]], [[datasets-and-evaluation]]
+- `Zeek Documentation — Book of Zeek (8.1.1).md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]]
+- `Zeek Log Formats and Inspection — Book of Zeek (8.1.1).md`
+  - status: `synthesized`
+  - pages: [[protocols-and-observability]], [[datasets-and-evaluation]]
+- `A Detailed Analysis of the KDD CUP 99 Data Set.md`
+  - status: `synthesized`
+  - pages: [[datasets-and-evaluation]]
+- `The UNSW-NB15 Dataset  UNSW Research.md`
+  - status: `synthesized`
+  - pages: [[datasets-and-evaluation]]
+- `IDS 2017  Datasets  Research  Canadian Institute for Cybersecurity.md`
+  - status: `synthesized`
+  - pages: [[datasets-and-evaluation]]
+
+### Network Attacks And Service Mesh Deep Dives
+- `Cloudflare DDoS Protection.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `How to DDoS  DoS and DDoS attack tools.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `What is a DDoS botnet.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `What is a distributed denial-of-service (DDoS) attack.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `What is a DNS flood  DNS flood DDoS attack.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `What is DNS Security.md`
+  - status: `synthesized`
+  - pages: [[network-attacks]]
+- `What is Envoy — envoy 1.38.0-dev-550d57 documentation.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Listeners — envoy 1.38.0-dev-550d57 documentation.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Listener filters — envoy 1.38.0-dev-550d57 documentation.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Terminology — envoy 1.38.0-dev-550d57 documentation.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Threading model — envoy 1.38.0-dev-550d57 documentation.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Circuit Breaking.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Rate Limiting.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Retries.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Cancellation.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Deadlines.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Status Codes.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Compression.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Observability.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Proxy Configuration.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Proxy Log Level.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Proxy Metrics.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Custom Backend Metrics.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Custom Load Balancing Policies.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Custom Name Resolution.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Benchmarking.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Authentication.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Debugging.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Architecture.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Multi-cluster communication.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Cluster Configuration.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Control Plane Port Names.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Service Profiles.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `EgressNetwork.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `ExternalWorkload.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `GRPCRoute.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `HTTPRoute.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Traffic Management.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Security.md`
+  - status: `synthesized`
+  - pages: [[linkerd-notes]]
+- `Extensibility.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+- `Security - Wasmtime.md`
+  - status: `synthesized`
+  - pages: [[envoy-gateway-notes]]
+
+### A10 Product Surface
+- `Products.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 1.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 2.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 3.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 4.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 5.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+- `Products 6.md`
+  - status: `synthesized`
+  - pages: [[a10-product-notes]]
+
+## Unsorted / New
+- No currently known unclassified files.
+- Use [[clipping-intake-queue]] as the authoritative queue for newly added raw sources and deeper-synthesis candidates.
+
+## Related
+- [[clipping-intake-queue]]
+- [[clipping-inventory]]
+- [[../workflows/raw-source-verification|Raw Source Verification]]
+- [[../workflows/clippings-ingest-workflow|Clippings Ingest Workflow]]
