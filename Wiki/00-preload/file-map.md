@@ -5,6 +5,7 @@
 - `WIKI.md`: shared schema for all agents.
 - `CLAUDE.md`: minimal Claude pointer file.
 - `Wiki/design-doc.md`: current implementation-facing design for the hackathon build.
+- `slides/canva-hackathon-presentation.md`: Canva-ready presentation script aligned to the current web app, CLI, backend router, and honest benchmark placeholders.
 - `Clippings/`: immutable external references and clipped docs.
 - `scripts/sync-clippings.ps1`: validates and updates clipping tracking pages from the raw `Clippings/` directory.
 - `scripts/sync-clippings.cmd`: Windows wrapper for the clipping sync command.

@@ -16,6 +16,7 @@ WIKI.md
 .trash/
 
 # ── Codex / Codex plugin ─────────────────────────────────────────────────────
+.agents/
 .codex/
 .codex-plugin/
 codex-local/
