@@ -3,6 +3,7 @@ import os
 import time
 import uuid
 from collections.abc import Generator
+from typing import Optional
 
 import httpx
 from dotenv import load_dotenv
@@ -20,7 +21,7 @@ def compute_cost(usage: dict, model_id: str) -> float:
     return round((total_tokens / 1_000_000) * rate, 8)
 
 
-def call_model(model_id: str, query: str, max_tokens: int = 512, system: str | None = None) -> dict:
+def call_model(model_id: str, query: str, max_tokens: int = 512, system: Optional[str] = None) -> dict:
     t0 = time.monotonic()
     messages = []
     if system:
@@ -67,10 +68,10 @@ def stream_model(
     model_id: str,
     query: str,
     max_tokens: int = 512,
-    system: str | None = None,
-    messages: list[dict] | None = None,
-    base_url: str | None = None,
-    api_key: str | None = None,
+    system: Optional[str] = None,
+    messages: Optional[list] = None,
+    base_url: Optional[str] = None,
+    api_key: Optional[str] = None,
 ) -> Generator[str, None, None]:
     """Yield text chunks from OpenRouter streaming completions.
 
@@ -121,7 +122,7 @@ def stream_model(
 _TEXT_TOOL_NAMES = {"fetch_url", "execute_python", "lint_python", "regex_test", "calculate"}
 
 
-def _parse_text_tool_call(text: str) -> dict | None:
+def _parse_text_tool_call(text: str) -> Optional[dict]:
     """Detect models that output tool calls as plain-text JSON instead of using
     finish_reason='tool_calls'. Returns a normalised tool_call dict or None."""
     stripped = text.strip()
@@ -147,11 +148,11 @@ def _parse_text_tool_call(text: str) -> dict | None:
 def stream_with_tools(
     model_id: str,
     messages: list[dict],
-    tools: list[dict] | None = None,
+    tools: Optional[list] = None,
     max_tokens: int = 1024,
-    base_url: str | None = None,
-    api_key: str | None = None,
-) -> Generator[str | dict, None, None]:
+    base_url: Optional[str] = None,
+    api_key: Optional[str] = None,
+) -> Generator:
     """Stream from OpenRouter with optional tool support.
 
     Yields str tokens for direct content. If the model calls a tool (via either

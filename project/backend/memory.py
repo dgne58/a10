@@ -1,6 +1,7 @@
 import os
 import re
 from glob import glob
+from typing import Optional
 
 _WIKI_LINK_RE = re.compile(r"\[\[([^\]|]+)\|([^\]]+)\]\]")   # [[link|display]] → display
 _WIKI_LINK_BARE_RE = re.compile(r"\[\[([^\]]+)\]\]")           # [[link]] → link
@@ -132,7 +133,7 @@ def _get_page_content(source_ref: str, max_chars: int = 3000) -> str:
         return ""
 
 
-def _search_wiki(query: str) -> dict | None:
+def _search_wiki(query: str) -> Optional[dict]:
     global _bm25
     if _bm25 is None:
         _load_bm25()
@@ -158,7 +159,7 @@ def _search_wiki(query: str) -> dict | None:
     }
 
 
-def check_memory(query: str) -> dict | None:
+def check_memory(query: str) -> Optional[dict]:
     q = query.lower()
     for pair in SEED_PAIRS:
         if any(trigger in q for trigger in pair["triggers"]):
