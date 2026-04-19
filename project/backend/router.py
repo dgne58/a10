@@ -1,3 +1,4 @@
+from typing import Optional
 from config import COST_PER_1M, FALLBACK_MODEL, MODEL_MAP
 from memory import check_memory
 from openrouter import call_with_fallback, compute_cost
@@ -63,7 +64,7 @@ def select_model(label: dict) -> str:
     return MODEL_MAP.get(branch, FALLBACK_MODEL)
 
 
-def build_rationale(label: dict, branch: str, model_id: str | None) -> str:
+def build_rationale(label: dict, branch: str, model_id: Optional[str]) -> str:
     branch_labels = {
         "memory_answer": "answered from local memory",
         "cheap_model": f"simple query -> cheapest model ({model_id})",
