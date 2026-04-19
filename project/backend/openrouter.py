@@ -26,30 +26,41 @@ def call_model(model_id: str, query: str, max_tokens: int = 512, system: str | N
     if system:
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": query})
-    resp = httpx.post(
-        f"{OPENROUTER_BASE}/chat/completions",
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "HTTP-Referer": "https://hackathon-router.dev",
-            "X-Title": "Task-Aware Cost Router",
-        },
-        json={
-            "model": model_id,
-            "messages": messages,
-            "max_tokens": max_tokens,
-        },
-        timeout=15.0,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    latency_ms = int((time.monotonic() - t0) * 1000)
-    usage = data.get("usage", {})
-    return {
-        "answer": data["choices"][0]["message"]["content"],
-        "usage": usage,
-        "latency_ms": latency_ms,
-        "cost_usd": compute_cost(usage, model_id),
-    }
+
+    last_err: Exception | None = None
+    for attempt in range(3):
+        if attempt:
+            time.sleep(2 ** attempt)
+        try:
+            resp = httpx.post(
+                f"{OPENROUTER_BASE}/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {API_KEY}",
+                    "HTTP-Referer": "https://hackathon-router.dev",
+                    "X-Title": "Task-Aware Cost Router",
+                },
+                json={
+                    "model": model_id,
+                    "messages": messages,
+                    "max_tokens": max_tokens,
+                },
+                timeout=60.0,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            if "choices" not in data:
+                raise ValueError(f"No choices in response: {data}")
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            usage = data.get("usage", {})
+            return {
+                "answer": data["choices"][0]["message"]["content"],
+                "usage": usage,
+                "latency_ms": latency_ms,
+                "cost_usd": compute_cost(usage, model_id),
+            }
+        except (httpx.TimeoutException, httpx.HTTPStatusError, ValueError) as e:
+            last_err = e
+    raise RuntimeError(f"call_model failed after 3 attempts: {last_err}")
 
 
 def stream_model(

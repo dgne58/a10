@@ -116,7 +116,7 @@ def run_tests(
     debug_label: str | None = None,
 ) -> bool:
     code = assemble_candidate_code(prompt, completion, test, entry_point)
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as handle:
         handle.write(code)
         tmp = handle.name
 
@@ -177,6 +177,7 @@ def call_naive(prompt: str) -> tuple[str, float]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=100)
+    parser.add_argument("--offset", type=int, default=0, help="Skip the first N problems (resume from a crash).")
     parser.add_argument(
         "--skip-naive",
         action="store_true",
@@ -191,9 +192,15 @@ def main() -> None:
     args = parser.parse_args()
 
     problems = download_humaneval(args.limit)
-    print(f"[humaneval] Running {len(problems)} problems...")
+    if args.offset:
+        problems = problems[args.offset:]
+    print(f"[humaneval] Running {len(problems)} problems (offset={args.offset})...")
 
     results: list[dict] = []
+    if args.offset and os.path.exists(HUMANEVAL_PATH):
+        with open(HUMANEVAL_PATH, encoding="utf-8") as f:
+            results = json.load(f)
+        print(f"[humaneval] Loaded {len(results)} existing results from {HUMANEVAL_PATH}")
     logged_failure = False
 
     for index, problem in enumerate(problems):
@@ -240,6 +247,8 @@ def main() -> None:
             "label": branch,
         }
         results.append(record)
+        with open(HUMANEVAL_PATH, "w", encoding="utf-8") as handle:
+            json.dump(results, handle, indent=2)
 
         status = "PASS" if router_pass else "FAIL"
         print(f"[{index + 1:3}/{len(problems)}] {task_id} | {branch:15} | router={status}")

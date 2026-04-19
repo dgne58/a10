@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.backends.legacy:build"
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "router-cli"
@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = ["rank-bm25"]
 
 [project.scripts]
-router = "cli:main"
+dispatch = "cli:main"
 
 [tool.setuptools]
 py-modules = ["cli"]

@@ -280,6 +280,50 @@ def eval_confusion():
     return jsonify(matrix)
 
 
+@app.route("/api/eval/branch_accuracy")
+def eval_branch_accuracy():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    branches = ["cheap_model", "mid_model", "strong_model"]
+    result = {}
+    for b in branches:
+        rows = [r for r in data if r.get("router_branch") == b]
+        passed = sum(1 for r in rows if r.get("router_pass"))
+        result[b] = {"count": len(rows), "pass": passed, "pass_rate": round(passed / len(rows), 4) if rows else 0}
+    return jsonify(result)
+
+
+@app.route("/api/eval/cost_breakdown")
+def eval_cost_breakdown():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    total_cost = sum(r.get("router_cost", 0) for r in data) or 1
+    branches = ["cheap_model", "mid_model", "strong_model"]
+    result = []
+    for b in branches:
+        rows = [r for r in data if r.get("router_branch") == b]
+        cost = sum(r.get("router_cost", 0) for r in rows)
+        result.append({"branch": b, "cost": round(cost, 6), "pct": round(cost / total_cost * 100, 1), "count": len(rows)})
+    return jsonify(result)
+
+
+@app.route("/api/eval/savings_curve")
+def eval_savings_curve():
+    if not os.path.exists(HUMANEVAL_PATH):
+        return jsonify({"error": "humaneval_results.json not found"}), 404
+    data = json.load(open(HUMANEVAL_PATH))
+    router_cum, naive_cum = 0.0, 0.0
+    curve = []
+    for i, r in enumerate(data):
+        router_cum += r.get("router_cost", 0)
+        naive_cum += r.get("naive_cost", 0)
+        if i % 3 == 0 or i == len(data) - 1:
+            curve.append({"i": i + 1, "router": round(router_cum, 6), "naive": round(naive_cum, 6)})
+    return jsonify(curve)
+
+
 @app.route("/api/health")
 def health():
     return jsonify({"ok": True})

@@ -1,14 +1,14 @@
 """
-router CLI — developer assistant powered by the cost-aware LLM router.
+dispatch CLI — developer assistant powered by the cost-aware LLM router.
 
 Install:
     pip install -e .        # from project/ directory
 
 Usage:
-    router "write a binary search in Python"
-    router -f script.py "what does this do"
-    echo "what is BM25?" | router
-    router run "print(sum(range(10)))"   # shortcut: always execute code directly
+    dispatch "write a binary search in Python"
+    dispatch -f script.py "what does this do"
+    echo "what is BM25?" | dispatch
+    dispatch run "print(sum(range(10)))"   # shortcut: always execute code directly
 """
 
 import argparse
@@ -441,121 +441,42 @@ def _stream_tokens(url: str, payload: dict, headers: dict, buffer: bool = False)
 # ── Main routing ──────────────────────────────────────────────────────────────
 
 def route(query: str) -> None:
-    t0 = time.monotonic()
-
-    SEED_TRIGGERS = {
-        "what is routellm": "RouteLLM is a UC Berkeley + Anyscale router paper (arXiv:2406.18665). Up to 3.66x cost reduction on MT-Bench.",
-        "what does this project do": "Branch router: routes queries to local memory, cheap model, mid model, or strong model — cheapest sufficient path.",
-    }
-    for trigger, answer in SEED_TRIGGERS.items():
-        if trigger in query.lower():
-            ms = int((time.monotonic() - t0) * 1000)
-            print(badge("memory_answer", "seed pairs", 0.0, ms))
-            print(answer)
-            return
-
-    sp = _Spinner("Searching memory").start()
-    hit = search_wiki(query)
-    sp.stop()
-    if hit:
-        ms = int((time.monotonic() - t0) * 1000)
-        print(badge("memory_answer", hit["source"], 0.0, ms))
-        print(hit["answer"])
-        return
+    backend = os.environ.get("ROUTER_BACKEND", "").rstrip("/")
+    if not backend:
+        print("Error: ROUTER_BACKEND not set. Example:\n  export ROUTER_BACKEND=https://53ce-69-5-185-3.ngrok-free.app", file=sys.stderr)
+        sys.exit(1)
 
     sp = _Spinner("Routing").start()
-    label  = classify(query)
-    branch = select_branch(label)
-    sp.stop()
-
-    is_local = branch == "cheap_model" and bool(CHEAP_URL)
-    if is_local:
-        model       = "llama-8b-code"
-        url         = f"{CHEAP_URL}/chat/completions"
-        req_headers = {"Content-Type": "application/json"}
-        display     = "llama-8b-code (local)"
-    else:
-        model       = MODEL_MAP.get(branch, MODEL_MAP["strong_model"])
-        url         = OPENROUTER_BASE
-        req_headers = _openrouter_headers()
-        display     = model
-
-    payload = {
-        "model": model,
-        "messages": [{"role": "user", "content": query}],
-        "max_tokens": 1024,
-        "tools": TOOL_DEFINITIONS,
-        "tool_choice": "auto",
-    }
-
-    sp = _Spinner("Thinking").start()
-    first_tok = True
-    full_text = ""
-    tool_used: str | None = None
-
+    t0 = time.monotonic()
     try:
-        for item in _stream_tokens(url, payload, req_headers, buffer=is_local):
-            if first_tok:
-                sp.stop()
-                first_tok = False
-
-            if isinstance(item, str):
-                print(item, end="", flush=True)
-                full_text += item
-
-            elif isinstance(item, dict) and "tool_call" in item:
-                tc = item["tool_call"]
-                fn_name = tc["function"]["name"]
-                try:
-                    fn_args = json.loads(tc["function"]["arguments"])
-                except (json.JSONDecodeError, ValueError):
-                    fn_args = {}
-                tool_used = fn_name
-                print(f"\n{_MUTED}[tool: {fn_name}]{_RESET}", flush=True)
-                result = dispatch_tool(fn_name, fn_args)
-                print(f"{_MUTED}{result[:400]}{_RESET}\n", flush=True)
-
-                followup_payload = {k: v for k, v in payload.items() if k not in ("tools", "tool_choice")}
-                followup_payload["messages"] = [
-                    {"role": "user", "content": query},
-                    {"role": "assistant", "content": None, "tool_calls": [tc]},
-                    {"role": "tool", "tool_call_id": tc["id"], "content": result},
-                ]
-                sp2 = _Spinner("Summarizing").start()
-                first2 = True
-                for tok in _stream_tokens(url, followup_payload, req_headers):
-                    if first2:
-                        sp2.stop()
-                        first2 = False
-                    if isinstance(tok, str):
-                        print(tok, end="", flush=True)
-                        full_text += tok
-                if first2:
-                    sp2.stop()
-                break
-
-    except Exception:
-        if first_tok:
-            sp.stop()
-        answer, cost, model_name, tool_used = call_model(branch, query)
-        ms = int((time.monotonic() - t0) * 1000)
-        print(badge(branch, model_name, cost, ms, tool_used=tool_used))
-        print(answer)
-        return
-
-    if first_tok:
+        payload = json.dumps({"query": query}).encode()
+        req = urllib.request.Request(
+            f"{backend}/api/route",
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.loads(resp.read())
+    except Exception as exc:
         sp.stop()
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
 
-    print()
+    sp.stop()
     ms = int((time.monotonic() - t0) * 1000)
-    tokens = max(1, len(full_text.split()) * 1.3)
-    cost = 0.0 if is_local else round((tokens / 1_000_000) * COST_PER_1M.get(model, 0.35), 8)
-    print(badge(branch, display, cost, ms, tool_used=tool_used))
+
+    branch   = data.get("branch", "unknown")
+    answer   = data.get("answer", "")
+    model    = data.get("model_used") or MODEL_MAP.get(branch, "")
+    cost     = data.get("cost_usd", 0.0)
+    print(badge(branch, model, cost, ms))
+    print(answer)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        prog="router",
+        prog="dispatch",
         description="Cost-aware LLM router — developer assistant",
     )
     parser.add_argument("query", nargs="?", default=None)

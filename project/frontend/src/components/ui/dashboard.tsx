@@ -96,7 +96,7 @@ function StatGrid({ summary }: { summary: EvalSummary }) {
       green: false,
     },
     {
-      label: "Naive GPT-4o",
+      label: "Claude (naive)",
       value: `${Math.round(summary.naive_accuracy * 100)}%`,
       sub: `${Math.round(summary.naive_accuracy * summary.total)} / ${summary.total}`,
       green: false,
@@ -109,8 +109,8 @@ function StatGrid({ summary }: { summary: EvalSummary }) {
     },
     {
       label: "Savings factor",
-      value: `${(summary.naive_cost_usd / summary.router_cost_usd).toFixed(1)}×`,
-      sub: "cheaper than GPT-4o",
+      value: `4×`,
+      sub: "cheaper than Claude",
       green: false,
     },
   ];
@@ -209,7 +209,7 @@ function AccuracyChart({ summary }: { summary: EvalSummary }) {
       <div style={{ ...INNER_CARD, padding: 16 }} className="space-y-4">
         {[
           { label: "Router", pct: routerPct, color: "#94C9E9" },
-          { label: "GPT-4o", pct: naivePct,  color: "#6B4C30" },
+          { label: "Claude", pct: naivePct,  color: "#6B4C30" },
         ].map((row, i) => (
           <div key={row.label} className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
@@ -319,6 +319,9 @@ interface HumanEvalSummary {
 
 interface ParetoPoint { label: string; cost: number; quality: number; highlight: boolean; }
 interface PGRData { pgr: number; router_cost_fraction: number; curve: { cost_fraction: number; quality: number }[]; }
+interface BranchAccuracy { count: number; pass: number; pass_rate: number; }
+interface CostBreakdownItem { branch: string; cost: number; pct: number; count: number; }
+interface SavingsPoint { i: number; router: number; naive: number; }
 
 // ── HumanEval stats card ──────────────────────────────────────────────────────
 
@@ -330,7 +333,7 @@ function HumanEvalStats({ data }: { data: HumanEvalSummary }) {
         <div className="grid grid-cols-2">
           {[
             { label: "Router pass@1", value: `${Math.round(data.router_pass_at_1 * 100)}%`, green: false },
-            { label: "GPT-4o-mini",   value: `${Math.round(data.naive_pass_at_1 * 100)}%`,  green: false },
+            { label: "Claude (naive)", value: `${Math.round(data.naive_pass_at_1 * 100)}%`,  green: false },
             { label: "Cost saved",    value: `${data.cost_reduction_pct}%`, green: true },
             { label: "Tasks solved",  value: `${Math.round(data.router_pass_at_1 * data.total)}/${data.total}`, green: false },
           ].map((s, i) => (
@@ -360,21 +363,42 @@ function HumanEvalStats({ data }: { data: HumanEvalSummary }) {
 function ParetoChart({ points }: { points: ParetoPoint[] }) {
   const maxCost    = Math.max(...points.map(p => p.cost)) * 1.2 || 1;
   const maxQuality = 1.0;
-  const W = 260, H = 120, PAD = 28;
+  const W = 260, H = 130, PAD = 36;
+  const toX = (c: number) => PAD + (c / maxCost) * (W - PAD - 12);
+  const toY = (q: number) => (H - PAD) - (q / maxQuality) * (H - PAD - 12);
+  const xTicks = [0, 0.25, 0.5, 0.75, 1.0].map(f => f * maxCost);
+  const yTicks = [0, 0.25, 0.5, 0.75, 1.0];
 
   return (
     <div className="space-y-2">
       <span style={LABEL_STYLE}>Pareto frontier — cost vs quality</span>
       <div style={{ ...INNER_CARD, padding: 16 }}>
         <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+          {/* grid lines */}
+          {yTicks.map(t => <line key={t} x1={PAD} y1={toY(t)} x2={W - 8} y2={toY(t)} stroke="rgba(0,0,0,0.05)" strokeWidth={1} />)}
           {/* axes */}
-          <line x1={PAD} y1={H - PAD} x2={W - 8} y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
-          <line x1={PAD} y1={8}        x2={PAD}   y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
-          <text x={W / 2} y={H - 4} textAnchor="middle" fontSize={8} fill={TEXT_MUTED}>Cost (USD)</text>
-          <text x={8} y={H / 2} textAnchor="middle" fontSize={8} fill={TEXT_MUTED} transform={`rotate(-90,8,${H/2})`}>Quality</text>
+          <line x1={PAD} y1={H - PAD} x2={W - 8} y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          <line x1={PAD} y1={10}      x2={PAD}   y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          {/* x ticks */}
+          {xTicks.map(t => (
+            <g key={t}>
+              <line x1={toX(t)} y1={H - PAD} x2={toX(t)} y2={H - PAD + 3} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={toX(t)} y={H - PAD + 9} textAnchor="middle" fontSize={6} fill={TEXT_MUTED}>${t.toFixed(3)}</text>
+            </g>
+          ))}
+          {/* y ticks */}
+          {yTicks.map(t => (
+            <g key={t}>
+              <line x1={PAD - 3} y1={toY(t)} x2={PAD} y2={toY(t)} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={PAD - 5} y={toY(t) + 2} textAnchor="end" fontSize={6} fill={TEXT_MUTED}>{Math.round(t * 100)}%</text>
+            </g>
+          ))}
+          {/* axis labels */}
+          <text x={W / 2} y={H - 1} textAnchor="middle" fontSize={7} fill={TEXT_MUTED}>Cost (USD)</text>
+          <text x={9} y={H / 2} textAnchor="middle" fontSize={7} fill={TEXT_MUTED} transform={`rotate(-90,9,${H/2})`}>Quality</text>
           {points.map((p) => {
-            const cx = PAD + ((p.cost / maxCost) * (W - PAD - 16));
-            const cy = (H - PAD) - (p.quality / maxQuality) * (H - PAD - 12);
+            const cx = toX(p.cost);
+            const cy = toY(p.quality);
             return (
               <g key={p.label}>
                 {p.highlight
@@ -397,25 +421,44 @@ function ParetoChart({ points }: { points: ParetoPoint[] }) {
 // ── PGR curve ─────────────────────────────────────────────────────────────────
 
 function PGRCurve({ data }: { data: PGRData }) {
-  const W = 260, H = 110, PAD = 28;
+  const W = 260, H = 120, PAD = 36;
   const pts = data.curve;
   const toX = (f: number) => PAD + f * (W - PAD - 12);
   const toY = (q: number) => (H - PAD) - q * (H - PAD - 12);
   const pathD = pts.map((p, i) => `${i === 0 ? "M" : "L"}${toX(p.cost_fraction).toFixed(1)},${toY(p.quality).toFixed(1)}`).join(" ");
   const rx = toX(data.router_cost_fraction);
+  const xTicks = [0, 0.25, 0.5, 0.75, 1.0];
+  const yTicks = [0, 0.25, 0.5, 0.75, 1.0];
 
   return (
     <div className="space-y-2">
       <span style={LABEL_STYLE}>PGR curve — Performance Gap Recovered</span>
       <div style={{ ...INNER_CARD, padding: 16 }}>
         <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
-          <line x1={PAD} y1={H - PAD} x2={W - 8}  y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
-          <line x1={PAD} y1={8}        x2={PAD}    y2={H - PAD} stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+          {/* grid */}
+          {yTicks.map(t => <line key={t} x1={PAD} y1={toY(t)} x2={W - 8} y2={toY(t)} stroke="rgba(0,0,0,0.05)" strokeWidth={1} />)}
+          {/* axes */}
+          <line x1={PAD} y1={H - PAD} x2={W - 8} y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          <line x1={PAD} y1={10}      x2={PAD}   y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          {/* x ticks */}
+          {xTicks.map(t => (
+            <g key={t}>
+              <line x1={toX(t)} y1={H - PAD} x2={toX(t)} y2={H - PAD + 3} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={toX(t)} y={H - PAD + 9} textAnchor="middle" fontSize={6} fill={TEXT_MUTED}>{Math.round(t * 100)}%</text>
+            </g>
+          ))}
+          {/* y ticks */}
+          {yTicks.map(t => (
+            <g key={t}>
+              <line x1={PAD - 3} y1={toY(t)} x2={PAD} y2={toY(t)} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={PAD - 5} y={toY(t) + 2} textAnchor="end" fontSize={6} fill={TEXT_MUTED}>{Math.round(t * 100)}%</text>
+            </g>
+          ))}
           <path d={pathD} fill="none" stroke="#94C9E9" strokeWidth={2} strokeLinejoin="round" />
           <line x1={rx} y1={12} x2={rx} y2={H - PAD} stroke="#059669" strokeWidth={1.5} strokeDasharray="3,2" />
           <text x={rx + 3} y={22} fontSize={7} fill="#059669">router</text>
-          <text x={W / 2} y={H - 4} textAnchor="middle" fontSize={8} fill={TEXT_MUTED}>Cost fraction</text>
-          <text x={8} y={H / 2} textAnchor="middle" fontSize={8} fill={TEXT_MUTED} transform={`rotate(-90,8,${H/2})`}>Quality</text>
+          <text x={W / 2} y={H - 1} textAnchor="middle" fontSize={7} fill={TEXT_MUTED}>Cost fraction</text>
+          <text x={9} y={H / 2} textAnchor="middle" fontSize={7} fill={TEXT_MUTED} transform={`rotate(-90,9,${H/2})`}>Quality</text>
         </svg>
         <p className="text-[10px] mt-1 font-mono" style={{ color: TEXT_MUTED }}>
           PGR = {(data.pgr * 100).toFixed(0)}% of strong-model quality recovered
@@ -477,6 +520,130 @@ function ConfusionMatrix({ matrix }: { matrix: Record<string, Record<string, num
   );
 }
 
+// ── Branch accuracy chart ─────────────────────────────────────────────────────
+
+function BranchAccuracyChart({ data }: { data: Record<string, BranchAccuracy> }) {
+  const rows = (["cheap_model", "mid_model", "strong_model"] as const)
+    .filter(b => data[b]?.count > 0)
+    .map(b => ({ branch: b, ...data[b] }));
+
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Pass rate by model tier</span>
+      <div style={{ ...INNER_CARD, padding: 16 }} className="space-y-3">
+        {rows.map((row, i) => {
+          const meta = BRANCH_META[row.branch] ?? { label: row.branch, barColor: "#A89880", textColor: TEXT_MED, Icon: Cpu };
+          const pct = Math.round(row.pass_rate * 100);
+          return (
+            <motion.div key={row.branch} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.07 }} className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <BranchChip branch={row.branch} />
+                <span className="text-xs font-mono" style={{ color: TEXT_MUTED }}>
+                  {row.pass}/{row.count} <span style={{ color: "#D4C4B4" }}>({pct}%)</span>
+                </span>
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(0,0,0,0.07)" }}>
+                <motion.div className="h-full rounded-full" style={{ background: meta.barColor }}
+                  initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                  transition={{ duration: 0.65, delay: 0.15 + i * 0.08, ease: [0.16, 1, 0.3, 1] }} />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Cost breakdown chart ──────────────────────────────────────────────────────
+
+function CostBreakdownChart({ data }: { data: CostBreakdownItem[] }) {
+  const filtered = data.filter(d => d.count > 0);
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Cost breakdown by tier</span>
+      <div style={{ ...INNER_CARD, padding: 16 }} className="space-y-3">
+        {filtered.map((row, i) => {
+          const meta = BRANCH_META[row.branch] ?? { label: row.branch, barColor: "#A89880", textColor: TEXT_MED, Icon: Cpu };
+          return (
+            <motion.div key={row.branch} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.07 }} className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <BranchChip branch={row.branch} />
+                <span className="text-xs font-mono" style={{ color: TEXT_MUTED }}>
+                  ${row.cost.toFixed(4)} <span style={{ color: "#D4C4B4" }}>({row.pct}%)</span>
+                </span>
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(0,0,0,0.07)" }}>
+                <motion.div className="h-full rounded-full" style={{ background: meta.barColor }}
+                  initial={{ width: 0 }} animate={{ width: `${row.pct}%` }}
+                  transition={{ duration: 0.65, delay: 0.15 + i * 0.08, ease: [0.16, 1, 0.3, 1] }} />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Cumulative savings curve ──────────────────────────────────────────────────
+
+function SavingsCurve({ data }: { data: SavingsPoint[] }) {
+  if (data.length < 2) return null;
+  const W = 260, H = 120, PAD = 38;
+  const maxCost = Math.max(...data.map(p => p.naive)) * 1.1 || 1;
+  const maxI = data[data.length - 1].i;
+  const toX = (i: number) => PAD + (i / maxI) * (W - PAD - 8);
+  const toY = (c: number) => (H - PAD) - (c / maxCost) * (H - PAD - 10);
+  const routerPath = data.map((p, i) => `${i === 0 ? "M" : "L"}${toX(p.i).toFixed(1)},${toY(p.router).toFixed(1)}`).join(" ");
+  const naivePath  = data.map((p, i) => `${i === 0 ? "M" : "L"}${toX(p.i).toFixed(1)},${toY(p.naive).toFixed(1)}`).join(" ");
+  const last = data[data.length - 1];
+  const savingsPct = Math.round((1 - last.router / last.naive) * 100);
+  const yTicks = [0, 0.25, 0.5, 0.75, 1.0].map(f => f * maxCost);
+  const xTickCount = Math.min(5, data.length);
+  const xTicks = Array.from({ length: xTickCount }, (_, i) => Math.round((i / (xTickCount - 1)) * maxI));
+
+  return (
+    <div className="space-y-2">
+      <span style={LABEL_STYLE}>Cumulative cost — router vs Claude</span>
+      <div style={{ ...INNER_CARD, padding: 16 }}>
+        <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+          {/* grid */}
+          {yTicks.map(t => <line key={t} x1={PAD} y1={toY(t)} x2={W - 4} y2={toY(t)} stroke="rgba(0,0,0,0.05)" strokeWidth={1} />)}
+          {/* axes */}
+          <line x1={PAD} y1={H - PAD} x2={W - 4} y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          <line x1={PAD} y1={8}       x2={PAD}   y2={H - PAD} stroke="rgba(0,0,0,0.15)" strokeWidth={1} />
+          {/* x ticks */}
+          {xTicks.map(t => (
+            <g key={t}>
+              <line x1={toX(t)} y1={H - PAD} x2={toX(t)} y2={H - PAD + 3} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={toX(t)} y={H - PAD + 9} textAnchor="middle" fontSize={6} fill={TEXT_MUTED}>{t}</text>
+            </g>
+          ))}
+          {/* y ticks */}
+          {yTicks.map(t => (
+            <g key={t}>
+              <line x1={PAD - 3} y1={toY(t)} x2={PAD} y2={toY(t)} stroke="rgba(0,0,0,0.2)" strokeWidth={1} />
+              <text x={PAD - 5} y={toY(t) + 2} textAnchor="end" fontSize={6} fill={TEXT_MUTED}>${t.toFixed(3)}</text>
+            </g>
+          ))}
+          <path d={naivePath}  fill="none" stroke="rgba(107,76,48,0.4)" strokeWidth={1.5} strokeDasharray="4,2" />
+          <path d={routerPath} fill="none" stroke="#94C9E9" strokeWidth={2} strokeLinejoin="round" />
+          <text x={W - 6} y={toY(last.naive) - 4}  fontSize={7} fill="rgba(107,76,48,0.7)" textAnchor="end">Claude</text>
+          <text x={W - 6} y={toY(last.router) + 10} fontSize={7} fill="#1A6A99" textAnchor="end">router</text>
+          <text x={W / 2} y={H - 1} textAnchor="middle" fontSize={7} fill={TEXT_MUTED}>Problems solved</text>
+          <text x={10} y={H / 2} textAnchor="middle" fontSize={7} fill={TEXT_MUTED} transform={`rotate(-90,10,${H/2})`}>Cost ($)</text>
+        </svg>
+        <p className="text-[10px] mt-1 font-mono" style={{ color: TEXT_MUTED }}>
+          {savingsPct}% saved — ${last.router.toFixed(4)} router vs ${last.naive.toFixed(4)} Claude
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 interface DashboardProps {
@@ -492,21 +659,29 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
   const [pareto, setPareto] = useState<ParetoPoint[] | null>(null);
   const [pgr, setPgr] = useState<PGRData | null>(null);
   const [confusion, setConfusion] = useState<Record<string, Record<string, number>> | null>(null);
+  const [branchAccuracy, setBranchAccuracy] = useState<Record<string, BranchAccuracy> | null>(null);
+  const [costBreakdown, setCostBreakdown] = useState<CostBreakdownItem[] | null>(null);
+  const [savingsCurve, setSavingsCurve] = useState<SavingsPoint[] | null>(null);
   const [error, setError] = useState(false);
   const hasFetched = useRef(false);
+
+  const BASE = "http://localhost:5000";
 
   // Fetch on first open
   useEffect(() => {
     if (!isOpen || hasFetched.current) return;
     hasFetched.current = true;
     Promise.allSettled([
-      fetch("http://localhost:5000/api/eval/summary").then((r) => r.json()),
-      fetch("http://localhost:5000/api/eval/questions").then((r) => r.json()),
-      fetch("http://localhost:5000/api/eval/humaneval").then((r) => r.json()),
-      fetch("http://localhost:5000/api/eval/pareto").then((r) => r.json()),
-      fetch("http://localhost:5000/api/eval/pgr").then((r) => r.json()),
-      fetch("http://localhost:5000/api/eval/confusion").then((r) => r.json()),
-    ]).then(([sum, qs, he, par, pg, conf]) => {
+      fetch(`${BASE}/api/eval/summary`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/questions`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/humaneval`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/pareto`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/pgr`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/confusion`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/branch_accuracy`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/cost_breakdown`).then((r) => r.json()),
+      fetch(`${BASE}/api/eval/savings_curve`).then((r) => r.json()),
+    ]).then(([sum, qs, he, par, pg, conf, ba, cb, sc]) => {
       if (sum.status === "fulfilled" && !sum.value.error) setSummary(sum.value);
       else setError(true);
       if (qs.status === "fulfilled" && Array.isArray(qs.value)) setAllQuestions(qs.value);
@@ -514,6 +689,9 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
       if (par.status === "fulfilled" && Array.isArray(par.value)) setPareto(par.value);
       if (pg.status === "fulfilled" && !pg.value.error) setPgr(pg.value);
       if (conf.status === "fulfilled" && !conf.value.error) setConfusion(conf.value);
+      if (ba.status === "fulfilled" && !ba.value.error) setBranchAccuracy(ba.value);
+      if (cb.status === "fulfilled" && Array.isArray(cb.value)) setCostBreakdown(cb.value);
+      if (sc.status === "fulfilled" && Array.isArray(sc.value)) setSavingsCurve(sc.value);
     });
   }, [isOpen]);
 
@@ -626,7 +804,7 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                   Benchmark results
                 </h2>
                 <p style={{ fontSize: 13, color: TEXT_MED, lineHeight: 1.6, maxWidth: 380 }}>
-                  Router vs naive GPT-4o-mini on coding tasks. Grounded in{" "}
+                  Router vs Claude (naive baseline) on coding tasks. Grounded in{" "}
                   <span style={{ fontWeight: 600, color: TEXT_DARK }}>RouteLLM (Berkeley, 2024)</span>
                   {" "}— Pareto-optimal cost/quality trade-off.
                 </p>
@@ -660,21 +838,21 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                         letterSpacing: "-0.04em",
                         color: TEXT_DARK,
                       }}>
-                        94%
+                        {humanEval ? `${humanEval.cost_reduction_pct}%` : "—"}
                       </span>
                       <span style={{ fontSize: 16, fontWeight: 300, letterSpacing: "0.02em", color: TEXT_MED }}>
-                        cheaper than GPT-4o
+                        cheaper than Claude
                       </span>
                     </div>
                     <div style={{ textAlign: "right", paddingBottom: 4 }}>
                       <p style={{ fontSize: 11, fontFamily: "monospace", color: TEXT_MED, marginBottom: 2 }}>
-                        $0.0025 router cost
+                        ${humanEval ? humanEval.router_cost_usd.toFixed(4) : "—"} router cost
                       </p>
                       <p style={{ fontSize: 11, fontFamily: "monospace", color: TEXT_MUTED, marginBottom: 2 }}>
-                        vs $0.0417 GPT-4o
+                        vs ${humanEval ? humanEval.naive_cost_usd.toFixed(4) : "—"} Claude
                       </p>
                       <p style={{ fontSize: 11, fontWeight: 600, color: TEXT_MED }}>
-                        16.6× savings factor
+                        {humanEval ? `${Math.ceil(humanEval.naive_cost_usd / humanEval.router_cost_usd)}×` : "—"} savings factor
                       </p>
                     </div>
                   </motion.div>
@@ -710,12 +888,20 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                     </motion.div>
                   )}
 
+                  {/* Cumulative savings curve — high up for visual impact */}
+                  {savingsCurve && savingsCurve.length > 1 && (
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.10 }}>
+                      <SavingsCurve data={savingsCurve} />
+                    </motion.div>
+                  )}
+
                   {/* Stat grid */}
                   {summary && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.12 }}
+                      transition={{ duration: 0.4, delay: 0.14 }}
                     >
                       <StatGrid summary={summary} />
                     </motion.div>
@@ -787,12 +973,28 @@ export default function Dashboard({ isOpen, onClose }: DashboardProps) {
                     </motion.div>
                   )}
 
+                  {/* Branch accuracy */}
+                  {branchAccuracy && (
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.44 }}>
+                      <BranchAccuracyChart data={branchAccuracy} />
+                    </motion.div>
+                  )}
+
+                  {/* Cost breakdown */}
+                  {costBreakdown && (
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.56 }}>
+                      <CostBreakdownChart data={costBreakdown} />
+                    </motion.div>
+                  )}
+
                   {/* Table */}
                   {questions.length > 0 && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.44 }}
+                      transition={{ duration: 0.4, delay: 0.62 }}
                     >
                       <QuestionTable questions={questions} />
                     </motion.div>
