@@ -1,6 +1,20 @@
-# Cost-Aware LLM Router
+# Dispatch
 
-A task-aware router that classifies incoming queries and dispatches them to the cheapest model capable of handling them, with optional memory (wiki RAG), tool calls, and a fine-tuned Qwen classifier. Ships with a Flask backend, a React/Vite frontend, a CLI (`dispatch`), and evaluation harnesses for MMLU and HumanEval.
+**Winner — Best Customer Usability, A10 Networks Hackathon 2025**
+
+Dispatch is a cost-aware LLM router built solo over a single weekend. It classifies incoming queries and dynamically routes them to the most cost-effective model capable of handling the request across four lanes: **memory**, **fast**, **medium**, and **strong**.
+
+The routing core is based on Berkeley's 2024 [RouteLLM paper](https://arxiv.org/abs/2406.18665). The memory lane is built on Andrej Karpathy's local wiki idea — a folder of small, narrowly-scoped markdown files with an index, searched on demand via BM25 so only the relevant pages enter the context window. The classifier is a fine-tuned Qwen 1.5B Instruct (PEFT + LoRA). The fast lane uses a Llama 3.1 8B fine-tuned on Glaive Function Calling v2 for tool use.
+
+On HumanEval, Dispatch scores **71% pass@1** vs Claude Sonnet 4.6's **82%** — roughly 87% of Sonnet's accuracy at **74% lower cost**.
+
+![Benchmark results — 71% accuracy, 4× cheaper than Claude](docs/benchmark-results.png)
+
+There's also a CLI (`dispatch`) you can use like Claude Code — pipe files or questions in from the terminal and they get routed the same way.
+
+![CLI demo — tool call and routing in the terminal](docs/cli-demo.png)
+
+Ships with a Flask backend, a React/Vite frontend, the `dispatch` CLI, and evaluation harnesses for MMLU and HumanEval.
 
 ## Repository Layout
 
